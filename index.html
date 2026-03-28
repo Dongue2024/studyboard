@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>STUDYBOARD · NDJANPA Alex</title>
+<title>StudyFirst · NDJANPA Alex</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#080c18;--s1:#0f1426;--s2:#161c30;--s3:#1c2340;
@@ -437,242 +436,169 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   border-radius:6px;padding:6px 14px;margin-bottom:16px;
   font-size:.82rem;color:var(--gold);font-weight:600;
 }
-
-/* ── DRAWER MENU ── */
-.dr-section{padding:8px 0;}
-.dr-section-lbl{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;
-  color:var(--muted);padding:8px 18px 4px;display:block;}
-.dr-item{display:flex;align-items:center;gap:12px;padding:12px 18px;
-  cursor:pointer;transition:all .2s;border:none;background:transparent;
-  width:100%;text-align:left;color:var(--txt);}
-.dr-item:hover{background:var(--s2);}
-.dr-icon{width:36px;height:36px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.dr-lbl{font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;}
-.dr-sub{font-size:.7rem;color:var(--muted);margin-top:1px;}
-/* ── INNER PAGES ── */
-.ipage{display:none;padding:20px 24px 40px;}
-.ipage.on{display:block;animation:fu .3s ease both;}
-.ipage-back{display:inline-flex;align-items:center;gap:6px;
-  background:var(--s2);border:1px solid var(--brd);border-radius:6px;
-  padding:7px 13px;font-size:.78rem;color:var(--muted);cursor:pointer;
-  font-family:'DM Sans',sans-serif;transition:all .2s;margin-bottom:18px;}
-.ipage-back:hover{color:var(--txt);border-color:var(--brd2);}
-/* PROFILE */
-.prof-hero{background:var(--s2);border:1px solid var(--brd2);border-radius:12px;
-  padding:28px 20px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden;}
-.prof-hero::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(201,146,42,.1),transparent 60%);}
-.prof-av{width:76px;height:76px;border-radius:50%;margin:0 auto 12px;
-  background:linear-gradient(135deg,var(--gold),var(--blue));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Playfair Display',serif;font-weight:800;font-size:1.5rem;color:#fff;
-  border:3px solid rgba(201,146,42,.5);box-shadow:0 0 24px rgba(201,146,42,.25);position:relative;}
-.prof-av::after{content:'';position:absolute;bottom:2px;right:2px;
-  width:14px;height:14px;border-radius:50%;background:var(--green);border:2.5px solid var(--s2);}
-.prof-name-big{font-family:'Playfair Display',serif;font-weight:800;font-size:1.2rem;margin-bottom:3px;}
-.prof-email-sm{font-size:.76rem;color:var(--muted);margin-bottom:10px;}
-.info-card{background:var(--s1);border:1px solid var(--brd);border-radius:10px;
-  padding:16px 18px;margin-bottom:12px;}
-.ic-title{font-size:.63rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:10px;}
-.ic-row{display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0;border-bottom:1px solid var(--brd);font-size:.83rem;}
-.ic-row:last-child{border-bottom:none;}
-.ic-row span:first-child{color:var(--muted);}
-.ic-row span:last-child{font-weight:600;}
-/* PARRAINAGE */
-.parr-hero{background:linear-gradient(135deg,rgba(201,146,42,.12),rgba(79,142,247,.08));
-  border:1px solid var(--brd2);border-radius:12px;padding:24px 20px;
-  text-align:center;margin-bottom:18px;}
-.parr-step{background:var(--s1);border:1px solid var(--brd);border-radius:10px;
-  padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
-.step-n{width:30px;height:30px;border-radius:50%;background:var(--gold);
-  color:#080c18;font-weight:800;font-size:.85rem;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.step-t{font-size:.83rem;line-height:1.6;}
-.step-t strong{color:var(--gold2);}
-.gain-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-.gain-card{background:var(--s1);border:1px solid var(--brd);border-radius:10px;
-  padding:14px;text-align:center;}
-.gain-n{font-family:'Playfair Display',serif;font-weight:800;font-size:1.3rem;color:var(--gold);}
-.gain-l{font-size:.7rem;color:var(--muted);margin-top:3px;}
-/* SETTINGS */
-.sg{background:var(--s1);border:1px solid var(--brd);border-radius:10px;
-  margin-bottom:12px;overflow:hidden;}
-.sg-title{font-size:.63rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--gold);padding:12px 16px 8px;}
-.sg-row{display:flex;align-items:center;justify-content:space-between;
-  padding:11px 16px;border-top:1px solid var(--brd);}
-.sg-lbl{font-size:.84rem;}
-.sg-sub{font-size:.7rem;color:var(--muted);margin-top:1px;}
-.toggle{width:42px;height:23px;border-radius:99px;border:none;cursor:pointer;
-  position:relative;transition:background .3s;flex-shrink:0;}
-.toggle.on{background:var(--gold);}
-.toggle.off{background:var(--s3);}
-.toggle::after{content:'';position:absolute;width:17px;height:17px;
-  border-radius:50%;background:#fff;top:3px;transition:left .3s;}
-.toggle.on::after{left:22px;}
-.toggle.off::after{left:3px;}
-.fs-btns{display:flex;gap:5px;}
-.fsb{padding:4px 11px;border-radius:5px;border:1px solid var(--brd);
-  background:transparent;color:var(--muted);cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-size:.78rem;transition:all .2s;}
-.fsb.on{background:var(--gold);color:#080c18;border-color:var(--gold);}
-body.light{--bg:#f0f2f8;--s1:#ffffff;--s2:#e8ecf5;--s3:#dde2ef;
-  --txt:#1a1c2e;--muted:#5a6080;--brd:rgba(0,0,0,.1);--brd2:rgba(201,146,42,.4);}
-
 </style>
 
-<!-- Firebase Auth + Firestore -->
+<!-- Firebase Auth Guard + Freemium -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const cfg = {
-  apiKey:"AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
-  authDomain:"studyboard-ffc3c.firebaseapp.com",
-  projectId:"studyboard-ffc3c",
-  storageBucket:"studyboard-ffc3c.firebasestorage.app",
-  messagingSenderId:"539310334923",
-  appId:"1:539310334923:web:0db4eef8b49cd93d440c4e"
+const firebaseConfig = {
+  apiKey: "AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
+  authDomain: "studyboard-ffc3c.firebaseapp.com",
+  projectId: "studyboard-ffc3c",
+  storageBucket: "studyboard-ffc3c.firebasestorage.app",
+  messagingSenderId: "539310334923",
+  appId: "1:539310334923:web:0db4eef8b49cd93d440c4e"
 };
-const app = initializeApp(cfg);
+
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+// ═══════════════════════════════════════════════
+// 👑 LISTE DES EMAILS PREMIUM
+// Pour ajouter un client : ajoute son email ici
+// ═══════════════════════════════════════════════
+const PREMIUM_EMAILS = [
+  "ndjanpaalex@gmail.com",
+  "sergebelibi05@icloud.com"
+  // Ajoute les emails des clients qui ont payé ici :
+  // "client1@gmail.com",
+  // "client2@gmail.com",
+];
+// ═══════════════════════════════════════════════
 
 document.getElementById('auth-loading').style.display = 'flex';
 document.getElementById('app-content').style.display = 'none';
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.replace('login.html');
+    window.location.href = 'login.html';
     return;
   }
 
-  // Check premium in Firestore
-  let plan = 'free';
-  try {
-    const snap = await getDoc(doc(db, 'premium_users', user.email));
-    if (snap.exists() && snap.data().active === true) plan = 'premium';
-  } catch(e) { plan = 'free'; }
+  const name = user.displayName || user.email.split('@')[0];
+  const email = user.email;
+  const photoURL = user.photoURL;
 
+  // ── Vérifier si Premium ──
+  const plan = PREMIUM_EMAILS.includes(email.toLowerCase()) ? 'premium' : 'free';
   window.USER_PLAN = plan;
-  window._userEmail = user.email;
-  window._userName = user.displayName || user.email.split('@')[0];
+  console.log('Plan:', plan, 'pour', email);
 
-  // Show app
+  // ── Afficher l'app ──
   document.getElementById('auth-loading').style.display = 'none';
   document.getElementById('app-content').style.display = 'flex';
 
-  // Update name + avatar
-  const name = window._userName;
-  const photo = user.photoURL;
+  // ── Nom et avatar ──
   document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
-  document.querySelectorAll('.user-email').forEach(el => el.textContent = user.email);
-  if (photo) {
+  document.querySelectorAll('.user-email').forEach(el => el.textContent = email);
+  if (photoURL) {
     document.querySelectorAll('.user-avatar').forEach(el => {
-      el.style.backgroundImage = 'url('+photo+')';
+      el.style.backgroundImage = 'url(' + photoURL + ')';
       el.style.backgroundSize = 'cover';
       el.style.backgroundPosition = 'center';
       el.textContent = '';
     });
   } else {
-    const ini = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = ini);
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
   }
 
-  // Plan badge
+  // ── Badge plan ──
   const badge = document.getElementById('plan-badge');
   if (badge) {
     if (plan === 'premium') {
       badge.textContent = '👑 Premium';
-      badge.style.cssText = 'display:inline-flex;align-items:center;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:#080c18;background:linear-gradient(135deg,#e8b84b,#c9922a);border-radius:99px;padding:3px 10px;font-weight:700;margin-top:4px;';
+      badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#080c18;background:linear-gradient(135deg,#e8b84b,#c9922a);border-radius:99px;padding:3px 10px;font-weight:700;margin-top:4px;';
     } else {
       badge.textContent = '🆓 Gratuit';
-      badge.style.cssText = 'display:inline-flex;align-items:center;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:#6b7299;background:rgba(107,114,153,.15);border:1px solid rgba(107,114,153,.3);border-radius:99px;padding:3px 10px;font-weight:600;margin-top:4px;';
+      badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#6b7299;background:rgba(107,114,153,.15);border:1px solid rgba(107,114,153,.3);border-radius:99px;padding:3px 10px;font-weight:600;margin-top:4px;';
     }
   }
 
-  // Update profile page
-  const profName = document.getElementById('prof-name');
-  const profEmail = document.getElementById('prof-email');
-  const profPlan = document.getElementById('prof-plan');
-  const profDate = document.getElementById('prof-date');
-  if (profName) profName.textContent = name;
-  if (profEmail) profEmail.textContent = user.email;
-  if (profPlan) profPlan.textContent = plan === 'premium' ? '👑 Premium' : '🆓 Gratuit';
-  if (profDate) profDate.textContent = new Date().toLocaleDateString('fr-FR');
+  // ── Débloquer si Premium ──
+  if (plan === 'premium') {
+    const tryUnlock = (attempts) => {
+      if (typeof window.unlockPremium === 'function') {
+        window.unlockPremium();
+        console.log('🔓 Contenu Premium débloqué !');
+      } else if (attempts > 0) {
+        setTimeout(() => tryUnlock(attempts - 1), 300);
+      }
+    };
+    setTimeout(() => tryUnlock(10), 200);
+  }
 
-  // Apply freemium locks
-  applyLocks(plan);
-
-  // SignOut
-  window.doSignOut = async () => {
+  // ── Déconnexion ──
+  window.doSignOut = async function() {
     await signOut(auth);
-    localStorage.clear(); sessionStorage.clear();
-    window.location.replace('login.html');
+    window.location.href = 'login.html';
   };
 });
 </script>
 </head>
 <body>
 
-<!-- AUTH LOADING -->
+<!-- AUTH LOADING SCREEN -->
 <div id="auth-loading" style="display:none;position:fixed;inset:0;z-index:9999;
-  background:#080c18;align-items:center;justify-content:center;flex-direction:column;gap:14px;">
-  <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#c9922a,#4f8ef7);
+  background:#080c18;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(135deg,#c9922a,#4f8ef7);
     display:flex;align-items:center;justify-content:center;font-size:1.4rem;
-    animation:spin 2s linear infinite;">📚</div>
+    animation:authPulse 1.5s ease-in-out infinite;">📚</div>
   <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#e8b84b;">STUDYBOARD</div>
-  <div style="font-size:.75rem;color:#6b7299;letter-spacing:1px;">Vérification en cours...</div>
+  <div style="font-size:.78rem;color:#6b7299;letter-spacing:1px;">Vérification en cours...</div>
 </div>
 <style>
-@keyframes spin{0%{transform:rotate(0)}50%{transform:rotate(15deg)}100%{transform:rotate(0)}}
+@keyframes authPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,146,42,.4);}50%{box-shadow:0 0 0 14px rgba(201,146,42,0);}}
 </style>
 
 <!-- APP CONTENT -->
 <div id="app-content" style="display:none;flex-direction:column;min-height:100vh;width:100%;">
 
-<!-- SIDEBAR (desktop) -->
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-prof">
     <div class="sb-av user-avatar">N.A</div>
     <div>
       <div class="sb-name user-name">NDJANPA ALEX</div>
-      <div class="sb-role">⚛ STUDYBOARD · 1ère</div>
+      <div class="sb-role">⚛ StudyFirst · 1ère</div>
       <div id="plan-badge"></div>
     </div>
   </div>
   <nav class="sb-nav">
-    <span class="sb-lbl">Physique (Gratuit)</span>
+    <span class="sb-lbl">Matières</span>
     <button class="sb-btn active" id="snav-home" onclick="showSubj('phys')"><span class="sb-num">🏠</span>Accueil</button>
     <button class="sb-btn" id="snav-1" onclick="openLesson(1,'phys')"><span class="sb-num">1</span>Travail d'une force</button>
-    <button class="sb-btn" id="snav-2" onclick="openLesson(2,'phys')"><span class="sb-num">2</span>Énergie cinétique</button>
-    <button class="sb-btn" id="snav-3" onclick="openLesson(3,'phys')"><span class="sb-num">3</span>Énergie mécanique</button>
-    <button class="sb-btn" id="snav-4" onclick="openLesson(4,'phys')"><span class="sb-num">4</span>Transfert d'énergie</button>
-    <button class="sb-btn" id="snav-5" onclick="openLesson(5,'phys')"><span class="sb-num">5</span>Optique géométrique</button>
-    <button class="sb-btn" id="snav-6" onclick="openLesson(6,'phys')"><span class="sb-num">6</span>L'œil & instruments</button>
-    <span class="sb-lbl" style="margin-top:8px">Premium 👑</span>
-    <button class="sb-btn" onclick="showSubj('elec')"><span class="sb-num" style="font-size:.6rem">⚡</span>Circuit Électrique</button>
-    <button class="sb-btn" onclick="showSubj('math')"><span class="sb-num" style="font-size:.6rem">📐</span>Mathématiques</button>
-    <button class="sb-btn" onclick="showSubj('chim')"><span class="sb-num" style="font-size:.6rem">🧪</span>Chimie</button>
-    <button class="sb-btn" onclick="showSubj('info')"><span class="sb-num" style="font-size:.6rem">💻</span>Informatique</button>
-    <button class="sb-btn" onclick="showSubj('sav')"><span class="sb-num" style="font-size:.6rem">🔧</span>SAV</button>
-    <button class="sb-btn" onclick="showSubj('sas')"><span class="sb-num" style="font-size:.6rem">⚙️</span>SAS</button>
-    <button class="sb-btn" onclick="showSubj('irt')"><span class="sb-num" style="font-size:.6rem">📡</span>IRT</button>
-    <button class="sb-btn" onclick="showSubj('srt')"><span class="sb-num" style="font-size:.6rem">📻</span>SRT</button>
+    <button class="sb-btn locked" id="snav-2" onclick="showUpgrade()"><span class="sb-num">2</span>Énergie cinétique</button>
+    <button class="sb-btn locked" id="snav-3" onclick="showUpgrade()"><span class="sb-num">3</span>Énergie mécanique</button>
+    <button class="sb-btn locked" id="snav-4" onclick="showUpgrade()"><span class="sb-num">4</span>Transfert d'énergie</button>
+    <button class="sb-btn locked" id="snav-5" onclick="showUpgrade()"><span class="sb-num">5</span>Optique géométrique</button>
+    <button class="sb-btn locked" id="snav-6" onclick="showUpgrade()"><span class="sb-num">6</span>L'œil & instruments</button>
+    <span class="sb-lbl" style="margin-top:10px">Circuit Électrique</span>
+    <button class="sb-btn locked" id="snav-e1" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E1</span>Lois & Théorèmes</button>
+    <button class="sb-btn locked" id="snav-e2" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E2</span>Aimants & Matériaux</button>
+    <button class="sb-btn locked" id="snav-e3" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E3</span>Lois de Laplace</button>
+    <button class="sb-btn locked" id="snav-e4" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E4</span>Faraday & Induction</button>
+    <button class="sb-btn locked" id="snav-e5" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E5</span>Moteur CC</button>
+    <button class="sb-btn locked" id="snav-e6" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E6</span>Génératrice CC</button>
+    <button class="sb-btn locked" id="snav-e7" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E7</span>Moteur Synchrone</button>
+    <button class="sb-btn locked" id="snav-e8" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E8</span>Alternateur</button>
+    <button class="sb-btn locked" id="snav-e9" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E9</span>Moteur Pas à Pas</button>
+    <button class="sb-btn locked" id="snav-e10" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E10</span>Démarrage</button>
+    <button class="sb-btn locked" id="snav-e11" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E11</span>Protection</button>
   </nav>
   <div style="padding:0 10px 8px;">
-    <button onclick="window.doSignOut&&window.doSignOut()" style="width:100%;padding:9px 12px;border-radius:8px;
-      background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);
-      color:#f87171;font-family:'DM Sans',sans-serif;font-size:.82rem;
-      cursor:pointer;display:flex;align-items:center;gap:8px;">
-      🚪 Se déconnecter
-    </button>
-  </div>
-  <div class="sb-prog">
+  <button onclick="window.doSignOut && window.doSignOut()" style="
+    width:100%;padding:9px 12px;border-radius:8px;
+    background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);
+    color:#f87171;font-family:'DM Sans',sans-serif;font-size:.82rem;
+    cursor:pointer;text-align:left;transition:all .2s;display:flex;align-items:center;gap:8px;">
+    🚪 Se déconnecter
+  </button>
+</div>
+<div class="sb-prog">
     <div class="sp-row"><span>Progression</span><span id="prog-pct">0%</span></div>
     <div class="sp-bg"><div class="sp-fill" id="prog-fill"></div></div>
   </div>
@@ -682,77 +608,39 @@ onAuthStateChanged(auth, async (user) => {
 <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <button class="dr-close" onclick="closeDrawer()">✕</button>
-  <!-- Profile header in drawer -->
-  <div style="padding:50px 18px 16px;border-bottom:1px solid var(--brd);background:var(--s2);">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div class="sb-av user-avatar" style="width:44px;height:44px;">N.A</div>
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:.9rem;" class="user-name">NDJANPA ALEX</div>
-        <div style="font-size:.7rem;color:var(--muted);" class="user-email">email@gmail.com</div>
-        <div id="plan-badge-drawer"></div>
-      </div>
-    </div>
+  <div class="sb-prof" style="margin-top:14px">
+    <div class="sb-av user-avatar">N.A</div>
+    <div><div class="sb-name user-name">NDJANPA ALEX</div><div class="sb-role">⚛ StudyFirst</div></div>
   </div>
-  <!-- Drawer menu items -->
-  <div class="dr-section">
-    <span class="dr-section-lbl">Mon compte</span>
-    <button class="dr-item" onclick="showIPage('profile');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(201,146,42,.15);">👤</div>
-      <div><div class="dr-lbl">Mon Profil</div><div class="dr-sub">Voir mes informations</div></div>
-    </button>
-    <button class="dr-item" onclick="showIPage('parrainage');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(52,211,153,.15);">🎁</div>
-      <div><div class="dr-lbl">Parrainage</div><div class="dr-sub">Inviter des amis, gagner des réductions</div></div>
-    </button>
-    <button class="dr-item" onclick="showIPage('settings');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(79,142,247,.15);">⚙️</div>
-      <div><div class="dr-lbl">Options de lecture</div><div class="dr-sub">Mode nuit, taille du texte</div></div>
-    </button>
-  </div>
-  <div class="dr-section" style="border-top:1px solid var(--brd);">
-    <span class="dr-section-lbl">Matières</span>
-    <button class="dr-item" onclick="showSubj('phys');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(201,146,42,.15);">⚛️</div>
-      <div><div class="dr-lbl">Physique</div><div class="dr-sub">6 leçons · Gratuit</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('elec');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(244,114,182,.15);">⚡</div>
-      <div><div class="dr-lbl">Circuit Électrique</div><div class="dr-sub">11 chapitres · Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('math');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(52,211,153,.15);">📐</div>
-      <div><div class="dr-lbl">Mathématiques</div><div class="dr-sub">Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('chim');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(167,139,250,.15);">🧪</div>
-      <div><div class="dr-lbl">Chimie</div><div class="dr-sub">Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('info');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(34,211,238,.15);">💻</div>
-      <div><div class="dr-lbl">Informatique</div><div class="dr-sub">Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('sav');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(251,146,60,.15);">🔧</div>
-      <div><div class="dr-lbl">SAV</div><div class="dr-sub">Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('sas');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(248,113,113,.15);">⚙️</div>
-      <div><div class="dr-lbl">SAS</div><div class="dr-sub">Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('irt');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(79,142,247,.15);">📡</div>
-      <div><div class="dr-lbl">IRT</div><div class="dr-sub">Premium</div></div>
-    </button>
-    <button class="dr-item" onclick="showSubj('srt');closeDrawer()">
-      <div class="dr-icon" style="background:rgba(250,204,21,.15);">📻</div>
-      <div><div class="dr-lbl">SRT</div><div class="dr-sub">Premium</div></div>
-    </button>
-  </div>
-  <div style="padding:14px 18px;border-top:1px solid var(--brd);">
-    <button onclick="window.doSignOut&&window.doSignOut()" style="width:100%;padding:10px;border-radius:8px;
+  <nav class="sb-nav">
+    <span class="sb-lbl">⚛ Physique</span>
+    <button class="sb-btn" onclick="showSubj('phys');closeDrawer()"><span class="sb-num">🏠</span>Accueil Physique</button>
+    <button class="sb-btn" onclick="openLesson(1,'phys');closeDrawer()"><span class="sb-num">1</span>Travail d'une force</button>
+    <button class="sb-btn" onclick="openLesson(2,'phys');closeDrawer()"><span class="sb-num">2</span>Énergie cinétique</button>
+    <button class="sb-btn" onclick="openLesson(3,'phys');closeDrawer()"><span class="sb-num">3</span>Énergie mécanique</button>
+    <button class="sb-btn" onclick="openLesson(4,'phys');closeDrawer()"><span class="sb-num">4</span>Transfert d'énergie</button>
+    <button class="sb-btn" onclick="openLesson(5,'phys');closeDrawer()"><span class="sb-num">5</span>Optique</button>
+    <button class="sb-btn" onclick="openLesson(6,'phys');closeDrawer()"><span class="sb-num">6</span>L'œil & Lentilles</button>
+    <span class="sb-lbl" style="margin-top:10px">⚡ Circuit Électrique</span>
+    <button class="sb-btn" onclick="showSubj('elec');closeDrawer()"><span class="sb-num">🏠</span>Accueil Élec</button>
+    <button class="sb-btn" onclick="openLesson(1,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E1</span>Lois & Théorèmes</button>
+    <button class="sb-btn" onclick="openLesson(2,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E2</span>Magnétisme</button>
+    <button class="sb-btn" onclick="openLesson(3,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E3</span>Laplace</button>
+    <button class="sb-btn" onclick="openLesson(4,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E4</span>Faraday</button>
+    <button class="sb-btn" onclick="openLesson(5,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E5</span>Moteur CC</button>
+    <button class="sb-btn" onclick="openLesson(6,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E6</span>Génératrice CC</button>
+    <button class="sb-btn" onclick="openLesson(7,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E7</span>Moteur Sync.</button>
+    <button class="sb-btn" onclick="openLesson(8,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E8</span>Alternateur</button>
+    <button class="sb-btn" onclick="openLesson(9,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E9</span>Moteur Pas à Pas</button>
+    <button class="sb-btn" onclick="openLesson(10,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E10</span>Démarrage</button>
+    <button class="sb-btn" onclick="openLesson(11,'elec');closeDrawer()"><span class="sb-num" style="font-size:.55rem">E11</span>Protection</button>
+  </nav>
+  <div style="padding:10px;">
+    <button onclick="window.doSignOut && window.doSignOut()" style="
+      width:100%;padding:9px 12px;border-radius:8px;
       background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);
-      color:#f87171;font-family:'DM Sans',sans-serif;font-size:.83rem;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+      color:#f87171;font-family:'DM Sans',sans-serif;font-size:.82rem;
+      cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;">
       🚪 Se déconnecter
     </button>
   </div>
@@ -760,35 +648,29 @@ onAuthStateChanged(auth, async (user) => {
 
 <!-- MAIN -->
 <div class="main">
+
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="tb-left">
       <div class="tb-av user-avatar">N.A</div>
-      <div class="tb-name"><span class="user-name">NDJANPA</span></div>
+      <div class="tb-name"><span class="user-name">NDJANPA Alex</span></div>
     </div>
     <button class="tb-menu" onclick="openDrawer()">☰ Menu</button>
   </div>
 
-  <!-- SUBJECT BAR -->
-  <div class="subj-bar" id="subj-bar">
+  <!-- SUBJECT SWITCHER -->
+  <div class="subj-bar">
     <button class="sj-btn active" id="sj-phys" onclick="showSubj('phys')">⚛ Physique</button>
-    <button class="sj-btn" id="sj-elec" onclick="showSubj('elec')">⚡ Élec</button>
-    <button class="sj-btn" id="sj-math" onclick="showSubj('math')">📐 Maths</button>
-    <button class="sj-btn" id="sj-chim" onclick="showSubj('chim')">🧪 Chimie</button>
-    <button class="sj-btn" id="sj-info" onclick="showSubj('info')">💻 Info</button>
-    <button class="sj-btn" id="sj-sav" onclick="showSubj('sav')">🔧 SAV</button>
-    <button class="sj-btn" id="sj-sas" onclick="showSubj('sas')">⚙️ SAS</button>
-    <button class="sj-btn" id="sj-irt" onclick="showSubj('irt')">📡 IRT</button>
-    <button class="sj-btn" id="sj-srt" onclick="showSubj('srt')">📻 SRT</button>
+    <button class="sj-btn" id="sj-elec" onclick="showSubj('elec')">⚡ Circuit Électrique</button>
   </div>
 
-  <!-- PHYSIQUE PAGE -->
+  <!-- ═══ PHYSIQUE PAGE ═══ -->
   <div class="spage on" id="spage-phys">
     <div class="hpage" id="home-phys">
       <div class="greet-card fu">
         <div class="gr-av user-avatar">N.A</div>
         <div>
-          <div class="gr-hello">Bienvenue sur STUDYBOARD</div>
+          <div class="gr-hello">Bienvenue sur StudyFirst</div>
           <div class="gr-name"><span class="user-name">NDJANPA</span> <em>Alex</em></div>
           <div class="gr-sub">Première · 2025–2026</div>
         </div>
@@ -796,7 +678,7 @@ onAuthStateChanged(auth, async (user) => {
       <div class="hero fu">
         <div class="hero-tag">⚛ Physique · Classe de Première</div>
         <div class="hero-h1">Programme Annuel<br><em>de Physique</em></div>
-        <div class="hero-desc">6 leçons complètes — cours animés, quiz et exercices corrigés. <strong style="color:var(--gold)">Gratuit !</strong></div>
+        <div class="hero-desc">6 leçons complètes — cours animés, quiz et exercices corrigés.</div>
       </div>
       <div class="stats fu">
         <div class="stat"><div class="stat-n" style="color:var(--gold)">6</div><div class="stat-l">Leçons</div></div>
@@ -804,22 +686,22 @@ onAuthStateChanged(auth, async (user) => {
         <div class="stat"><div class="stat-n" style="color:var(--blue)">30</div><div class="stat-l">Quiz</div></div>
       </div>
       <div class="sec-lbl">📚 Les 6 leçons</div>
-      <div class="grid" id="phys-grid">
-        <div class="lcard fu" onclick="openLesson(1,'phys')"><div class="lc-n">Leçon 1</div><div class="lc-t">Le Travail d'une Force</div><div class="lc-tags"><span class="lc-tag">Mécanique</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard fu" onclick="openLesson(2,'phys')"><div class="lc-n">Leçon 2</div><div class="lc-t">Énergie Cinétique</div><div class="lc-tags"><span class="lc-tag">Ec · TEC</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard fu" onclick="openLesson(3,'phys')"><div class="lc-n">Leçon 3</div><div class="lc-t">Énergie Mécanique</div><div class="lc-tags"><span class="lc-tag">Conservation</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard fu" onclick="openLesson(4,'phys')"><div class="lc-n">Leçon 4</div><div class="lc-t">Transfert d'Énergie</div><div class="lc-tags"><span class="lc-tag">Chaleur</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard fu" onclick="openLesson(5,'phys')"><div class="lc-n">Leçon 5</div><div class="lc-t">Optique Géométrique</div><div class="lc-tags"><span class="lc-tag">Réfraction</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard fu" onclick="openLesson(6,'phys')"><div class="lc-n">Leçon 6</div><div class="lc-t">L'Œil & Lentilles</div><div class="lc-tags"><span class="lc-tag">Vision</span></div><span class="lc-arr">›</span></div>
+      <div class="grid">
+        <div class="lcard fu" onclick="openLesson(1,'phys')"><div class="lc-n">Leçon 1</div><div class="lc-t">Le Travail d'une Force</div><div class="lc-tags"><span class="lc-tag">Mécanique</span><span class="lc-tag">Puissance</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard fu locked" onclick="showUpgrade()"><div class="lc-n">Leçon 2</div><div class="lc-t">Énergie Cinétique</div><div class="lc-tags"><span class="lc-tag">Ec</span><span class="lc-tag">TEC</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard fu locked" onclick="showUpgrade()"><div class="lc-n">Leçon 3</div><div class="lc-t">Énergie Mécanique</div><div class="lc-tags"><span class="lc-tag">Conservation</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard fu locked" onclick="showUpgrade()"><div class="lc-n">Leçon 4</div><div class="lc-t">Transfert d'Énergie</div><div class="lc-tags"><span class="lc-tag">Chaleur</span><span class="lc-tag">Calorimètre</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard fu locked" onclick="showUpgrade()"><div class="lc-n">Leçon 5</div><div class="lc-t">Optique Géométrique</div><div class="lc-tags"><span class="lc-tag">Réfraction</span><span class="lc-tag">Snell</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard fu locked" onclick="showUpgrade()"><div class="lc-n">Leçon 6</div><div class="lc-t">L'Œil & Lentilles</div><div class="lc-tags"><span class="lc-tag">Vision</span><span class="lc-tag">Microscope</span></div><span class="lc-arr">›</span></div>
       </div>
       <div class="contact-card" style="margin-top:20px">
         <div class="cc-head">
           <div class="cc-av user-avatar">N.A</div>
           <div><div class="cc-name">NDJANPA Alex</div><div class="cc-title">🎓 Développeur · Étudiant Première</div></div>
         </div>
-        <div class="cc-desc">Tu veux une <strong>plateforme similaire</strong> pour ta classe ou ton école ?</div>
+        <div class="cc-desc">Tu veux une <strong>plateforme similaire</strong> pour ta classe ou ton école ? Je peux créer un site adapté à ton programme.</div>
         <a class="wa-btn" href="https://wa.me/237679091320" target="_blank">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Écrire sur WhatsApp
         </a>
         <div class="cc-num">📱 <span>+237 679 091 320</span></div>
@@ -828,16 +710,21 @@ onAuthStateChanged(auth, async (user) => {
     <div class="lpage" id="lpage-phys"></div>
   </div>
 
-  <!-- CIRCUIT ÉLECTRIQUE PAGE -->
+  <!-- ═══ CIRCUIT ÉLECTRIQUE PAGE ═══ -->
   <div class="spage" id="spage-elec">
     <div class="hpage" id="home-elec">
-      <div class="greet-card fu" style="border-color:rgba(244,114,182,.3)">
+      <div class="greet-card fu">
         <div class="gr-av" style="background:linear-gradient(135deg,var(--pink),var(--blue))">⚡</div>
         <div>
-          <div class="gr-hello" style="color:var(--pink)">Circuit Électrique · Premium</div>
-          <div class="gr-name">11 <em style="color:var(--pink)">Chapitres</em></div>
-          <div class="gr-sub">Machines électriques, moteurs, alternateurs</div>
+          <div class="gr-hello" style="color:var(--pink)">Circuit Électrique</div>
+          <div class="gr-name">NDJANPA <em style="color:var(--pink)">Alex</em></div>
+          <div class="gr-sub">11 Chapitres · 2025–2026</div>
         </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(244,114,182,.3)">
+        <div class="hero-tag" style="color:var(--pink)">⚡ Circuit Électrique · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:var(--pink)">Circuit Électrique</em></div>
+        <div class="hero-desc">11 chapitres — machines électriques, moteurs, alternateurs.</div>
       </div>
       <div class="stats fu">
         <div class="stat"><div class="stat-n" style="color:var(--pink)">11</div><div class="stat-l">Chapitres</div></div>
@@ -846,154 +733,23 @@ onAuthStateChanged(auth, async (user) => {
       </div>
       <div class="sec-lbl" style="color:var(--pink)">⚡ Les 11 chapitres</div>
       <div class="grid">
-        <div class="lcard elec fu" onclick="openLesson(1,'elec')"><div class="lc-n">Chap. 1</div><div class="lc-t">Lois & Théorèmes des circuits</div><div class="lc-tags"><span class="lc-tag">Kirchhoff</span><span class="lc-tag">Thévenin</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(2,'elec')"><div class="lc-n">Chap. 2</div><div class="lc-t">Aimants & Magnétisme</div><div class="lc-tags"><span class="lc-tag">Champ B</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(3,'elec')"><div class="lc-n">Chap. 3</div><div class="lc-t">Lois de Laplace</div><div class="lc-tags"><span class="lc-tag">F=BIL</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(4,'elec')"><div class="lc-n">Chap. 4</div><div class="lc-t">Faraday & Induction</div><div class="lc-tags"><span class="lc-tag">FEM</span><span class="lc-tag">Lenz</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(5,'elec')"><div class="lc-n">Chap. 5</div><div class="lc-t">Moteur à courant continu</div><div class="lc-tags"><span class="lc-tag">MCC</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(6,'elec')"><div class="lc-n">Chap. 6</div><div class="lc-t">Génératrice CC</div><div class="lc-tags"><span class="lc-tag">GCC</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(7,'elec')"><div class="lc-n">Chap. 7</div><div class="lc-t">Moteur Synchrone</div><div class="lc-tags"><span class="lc-tag">MS</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(8,'elec')"><div class="lc-n">Chap. 8</div><div class="lc-t">Alternateur</div><div class="lc-tags"><span class="lc-tag">AC</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(9,'elec')"><div class="lc-n">Chap. 9</div><div class="lc-t">Moteur Pas à Pas</div><div class="lc-tags"><span class="lc-tag">MPP</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(10,'elec')"><div class="lc-n">Chap. 10</div><div class="lc-t">Démarrage des moteurs</div><div class="lc-tags"><span class="lc-tag">Y-Δ</span></div><span class="lc-arr">›</span></div>
-        <div class="lcard elec fu" onclick="openLesson(11,'elec')"><div class="lc-n">Chap. 11</div><div class="lc-t">Protection & Automatisme</div><div class="lc-tags"><span class="lc-tag">Relais</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 1</div><div class="lc-t">Lois & Théorèmes des circuits</div><div class="lc-tags"><span class="lc-tag">Kirchhoff</span><span class="lc-tag">Thévenin</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 2</div><div class="lc-t">Aimants & Matériaux magnétiques</div><div class="lc-tags"><span class="lc-tag">Champ B</span><span class="lc-tag">Flux</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 3</div><div class="lc-t">Lois de Laplace</div><div class="lc-tags"><span class="lc-tag">F=BIL</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 4</div><div class="lc-t">Faraday & Induction</div><div class="lc-tags"><span class="lc-tag">FEM</span><span class="lc-tag">Lenz</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 5</div><div class="lc-t">Moteur à courant continu</div><div class="lc-tags"><span class="lc-tag">MCC</span><span class="lc-tag">FCEM</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 6</div><div class="lc-t">Génératrice CC</div><div class="lc-tags"><span class="lc-tag">GCC</span><span class="lc-tag">FEM</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 7</div><div class="lc-t">Moteur Synchrone</div><div class="lc-tags"><span class="lc-tag">Vitesse</span><span class="lc-tag">Puissance</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 8</div><div class="lc-t">Alternateur</div><div class="lc-tags"><span class="lc-tag">AC</span><span class="lc-tag">Régulation</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 9</div><div class="lc-t">Moteur Pas à Pas</div><div class="lc-tags"><span class="lc-tag">MPP</span><span class="lc-tag">CNC</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 10</div><div class="lc-t">Démarrage des moteurs</div><div class="lc-tags"><span class="lc-tag">Y-Δ</span><span class="lc-tag">VFD</span></div><span class="lc-arr">›</span></div>
+        <div class="lcard elec fu locked" onclick="showUpgrade()"><div class="lc-n">Chapitre 11</div><div class="lc-t">Protection & Automatisme</div><div class="lc-tags"><span class="lc-tag">Contacteur</span><span class="lc-tag">Relais</span></div><span class="lc-arr">›</span></div>
       </div>
     </div>
     <div class="lpage" id="lpage-elec"></div>
   </div>
 
-  <!-- MATIÈRES PREMIUM (Maths, Chimie, Info, SAV, SAS, IRT, SRT) -->
-  <div class="spage" id="spage-math"><div class="hpage" id="home-math"></div><div class="lpage" id="lpage-math"></div></div>
-  <div class="spage" id="spage-chim"><div class="hpage" id="home-chim"></div><div class="lpage" id="lpage-chim"></div></div>
-  <div class="spage" id="spage-info"><div class="hpage" id="home-info"></div><div class="lpage" id="lpage-info"></div></div>
-  <div class="spage" id="spage-sav"><div class="hpage" id="home-sav"></div><div class="lpage" id="lpage-sav"></div></div>
-  <div class="spage" id="spage-sas"><div class="hpage" id="home-sas"></div><div class="lpage" id="lpage-sas"></div></div>
-  <div class="spage" id="spage-irt"><div class="hpage" id="home-irt"></div><div class="lpage" id="lpage-irt"></div></div>
-  <div class="spage" id="spage-srt"><div class="hpage" id="home-srt"></div><div class="lpage" id="lpage-srt"></div></div>
-
-  <!-- INNER PAGES (Profile, Parrainage, Settings) -->
-  <div class="ipage" id="ipage-profile">
-    <button class="ipage-back" onclick="hideIPage()">← Retour</button>
-    <div class="prof-hero">
-      <div class="prof-av user-avatar">N.A</div>
-      <div class="prof-name-big user-name">NDJANPA ALEX</div>
-      <div class="prof-email-sm user-email">email@gmail.com</div>
-      <div id="plan-badge-prof"></div>
-    </div>
-    <div class="info-card">
-      <div class="ic-title">📋 Informations du compte</div>
-      <div class="ic-row"><span>Nom</span><span class="user-name">NDJANPA ALEX</span></div>
-      <div class="ic-row"><span>Email</span><span class="user-email">—</span></div>
-      <div class="ic-row"><span>Abonnement</span><span id="prof-plan">—</span></div>
-      <div class="ic-row"><span>Membre depuis</span><span id="prof-date">—</span></div>
-    </div>
-    <div class="info-card">
-      <div class="ic-title">👑 Passer en Premium</div>
-      <div style="font-size:.84rem;color:var(--muted);line-height:1.7;margin-bottom:14px;">
-        Accède à <strong style="color:var(--txt)">toutes les matières</strong> : Circuit Électrique, Mathématiques, Chimie, Informatique, SAV, SAS, IRT, SRT.
-      </div>
-      <div style="background:var(--s2);border:1px solid var(--brd2);border-radius:8px;padding:16px;text-align:center;margin-bottom:14px;">
-        <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.6rem;color:var(--gold);">2 500 FCFA</div>
-        <div style="font-size:.72rem;color:var(--muted);margin-top:3px;">par mois · Toutes les matières</div>
-      </div>
-      <a href="https://wa.me/237679091320?text=Bonjour%20STUDYBOARD%2C%20je%20veux%20souscrire%20au%20Premium." target="_blank" class="wa-btn" style="display:inline-flex;width:100%;justify-content:center;">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Souscrire sur WhatsApp
-      </a>
-    </div>
-  </div>
-
-  <div class="ipage" id="ipage-parrainage">
-    <button class="ipage-back" onclick="hideIPage()">← Retour</button>
-    <div class="parr-hero">
-      <div style="font-size:2.5rem;margin-bottom:10px;">🎁</div>
-      <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.3rem;margin-bottom:6px;">Parraine tes amis</div>
-      <div style="font-size:.84rem;color:var(--muted);">Gagne des réductions sur ton abonnement</div>
-    </div>
-    <div class="gain-grid">
-      <div class="gain-card"><div class="gain-n">500 F</div><div class="gain-l">par parrainage validé</div></div>
-      <div class="gain-card"><div class="gain-n">Gratuit</div><div class="gain-l">en cumulant les parrainages</div></div>
-    </div>
-    <div class="parr-step">
-      <div class="step-n">1</div>
-      <div class="step-t"><strong>Partage STUDYBOARD</strong><br>Envoie le lien à un(e) ami(e) qui n'est pas encore inscrit(e).</div>
-    </div>
-    <div class="parr-step">
-      <div class="step-n">2</div>
-      <div class="step-t"><strong>Il/elle souscrit au Premium</strong><br>Ton ami(e) s'abonne à 2 500 FCFA/mois en mentionnant ton nom.</div>
-    </div>
-    <div class="parr-step">
-      <div class="step-n">3</div>
-      <div class="step-t"><strong>Tu gagnes 500 FCFA</strong><br>La réduction est appliquée sur ton prochain abonnement automatiquement.</div>
-    </div>
-    <div class="parr-step">
-      <div class="step-n">🏆</div>
-      <div class="step-t"><strong>Cumule jusqu'au gratuit !</strong><br>5 parrainages = abonnement entièrement gratuit ce mois-ci.</div>
-    </div>
-    <a href="https://wa.me/237679091320?text=Bonjour%2C%20je%20veux%20obtenir%20mon%20code%20de%20parrainage%20STUDYBOARD." target="_blank" class="wa-btn" style="display:inline-flex;width:100%;justify-content:center;margin-top:16px;">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Obtenir mon code de parrainage
-    </a>
-  </div>
-
-  <div class="ipage" id="ipage-settings">
-    <button class="ipage-back" onclick="hideIPage()">← Retour</button>
-    <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.3rem;margin-bottom:18px;">⚙️ Options de lecture</div>
-    <div class="sg">
-      <div class="sg-title">🌙 Affichage</div>
-      <div class="sg-row">
-        <div><div class="sg-lbl">Mode nuit</div><div class="sg-sub">Fond sombre (actuel)</div></div>
-        <button class="toggle on" id="toggle-dark" onclick="toggleDark(this)"></button>
-      </div>
-    </div>
-    <div class="sg">
-      <div class="sg-title">📝 Taille du texte</div>
-      <div class="sg-row">
-        <div><div class="sg-lbl">Taille des caractères</div></div>
-        <div class="fs-btns">
-          <button class="fsb" onclick="setFont(14,this)">A-</button>
-          <button class="fsb on" onclick="setFont(15,this)">A</button>
-          <button class="fsb" onclick="setFont(17,this)">A+</button>
-          <button class="fsb" onclick="setFont(19,this)">A++</button>
-        </div>
-      </div>
-    </div>
-    <div class="sg">
-      <div class="sg-title">ℹ️ À propos</div>
-      <div class="sg-row">
-        <div><div class="sg-lbl">STUDYBOARD</div><div class="sg-sub">Version 1.0 · Première 2025–2026</div></div>
-      </div>
-      <div class="sg-row">
-        <div><div class="sg-lbl">Développeur</div><div class="sg-sub">NDJANPA Alex</div></div>
-      </div>
-    </div>
-  </div>
-
 </div><!-- /main -->
-</div><!-- /app-content -->
-
-<!-- PREMIUM UPGRADE MODAL -->
-<div class="upgrade-overlay" id="upgrade-overlay" onclick="closeUpgrade(event)">
-  <div class="upgrade-modal">
-    <button onclick="closeUpgrade()" style="position:absolute;top:14px;right:14px;background:var(--s2);
-      border:1px solid var(--brd);border-radius:6px;padding:5px 10px;
-      color:var(--muted);cursor:pointer;font-size:.85rem;">✕</button>
-    <div style="font-size:2.5rem;margin-bottom:14px;">👑</div>
-    <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.3rem;margin-bottom:8px;">Contenu Premium</div>
-    <div style="font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:20px;">
-      Cette matière est réservée aux abonnés Premium.<br>Souscris pour accéder à <strong style="color:var(--txt)">toutes les matières</strong>.
-    </div>
-    <div style="background:var(--s2);border:1px solid var(--brd2);border-radius:8px;padding:16px;text-align:center;margin-bottom:18px;">
-      <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.6rem;color:var(--gold);">2 500 FCFA / mois</div>
-      <div style="font-size:.72rem;color:var(--muted);margin-top:3px;">Toutes les matières débloquées</div>
-    </div>
-    <a href="https://wa.me/237679091320?text=Bonjour%20STUDYBOARD%2C%20je%20veux%20souscrire%20au%20Premium." target="_blank" class="wa-btn" style="display:inline-flex;width:100%;justify-content:center;margin-bottom:10px;">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Souscrire via WhatsApp
-    </a>
-    <div style="font-size:.72rem;color:var(--muted);">Accès activé en moins de 5 minutes après paiement.</div>
-  </div>
-</div>
 
 <!-- BOTTOM NAV -->
 <nav class="botnav">
@@ -1002,6 +758,31 @@ onAuthStateChanged(auth, async (user) => {
   <button class="bn" id="bn-quiz" onclick="bnTab('quiz')"><span class="bni">🧠</span><span class="bnl">Quiz</span></button>
   <button class="bn" id="bn-exo" onclick="bnTab('exercices')"><span class="bni">✏️</span><span class="bnl">Exercices</span></button>
 </nav>
+
+<!-- UPGRADE MODAL -->
+<div class="upgrade-overlay" id="upgrade-overlay" onclick="closeUpgrade(event)">
+  <div class="upgrade-modal">
+    <button class="upgrade-close" onclick="closeUpgrade()">✕</button>
+    <div class="upgrade-crown">👑</div>
+    <div class="upgrade-title">Passe en <em>Premium</em></div>
+    <div class="upgrade-price">🎓 Accès complet · Paiement unique</div>
+    <div class="upgrade-desc">
+      Débloque <strong>tous les cours, quiz et exercices</strong> du programme Première Cameroun.
+    </div>
+    <div class="upgrade-features">
+      <div class="upgrade-feat"><span>✅</span> Leçons Physique 1 à 6 complètes</div>
+      <div class="upgrade-feat"><span>✅</span> Circuit Électrique — 11 chapitres</div>
+      <div class="upgrade-feat"><span>✅</span> 85 quiz + corrections détaillées</div>
+      <div class="upgrade-feat"><span>✅</span> 34 exercices corrigés pas à pas</div>
+      <div class="upgrade-feat"><span>✅</span> Accès illimité à vie</div>
+    </div>
+    <a class="upgrade-wa" href="https://wa.me/237679091320?text=Bonjour%20Alex%2C%20je%20veux%20passer%20en%20Premium%20sur%20STUDYBOARD%20%F0%9F%91%91" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Contacter sur WhatsApp
+    </a>
+    <div style="margin-top:10px;font-size:.72rem;color:var(--muted)">📱 +237 679 091 320 · Réponse rapide</div>
+  </div>
+</div>
 
 <script>
 const LESSONS = {
@@ -2452,7 +2233,6 @@ const LESSONS = {
 }
 
 }; // fin LESSONS
-
 const ELEC_LESSONS = {
 
 1:{
@@ -3567,129 +3347,80 @@ const ELEC_LESSONS = {
 
 }; // fin ELEC_LESSONS
 
-
 /* ═══ STATE ═══ */
-let curSubj = 'phys', curLesson = null, curIPage = null;
-let seen = new Set(), seenE = new Set(), qState = {};
+let curSubj = 'phys';
+let curLesson = null;
+let seen = new Set();
+let seenE = new Set();
+let qState = {};
 
-/* ═══ PREMIUM SUBJECTS ═══ */
-const PREMIUM_SUBJ = ['elec','math','chim','info','sav','sas','irt','srt'];
-const SUBJ_NAMES = {
-  elec:'Circuit Électrique',math:'Mathématiques',chim:'Chimie',
-  info:'Informatique',sav:'SAV',sas:'SAS',irt:'IRT',srt:'SRT'
-};
-const SUBJ_ICONS = {
-  elec:'⚡',math:'📐',chim:'🧪',info:'💻',sav:'🔧',sas:'⚙️',irt:'📡',srt:'📻'
-};
-
-/* ═══ FREEMIUM LOCKS ═══ */
-function applyLocks(plan) {
-  window.USER_PLAN = plan;
-  if (plan === 'premium') return; // everything open
-  // For free users — premium subjects show upgrade on click (handled in showSubj)
-}
-
-/* ═══ SHOW SUBJECT ═══ */
+/* ═══ SUBJECT ═══ */
 function showSubj(s) {
-  // Check premium
-  if (PREMIUM_SUBJ.includes(s) && window.USER_PLAN !== 'premium') {
-    showUpgrade(s); return;
-  }
-  // Hide inner pages
-  hideIPage();
-  curSubj = s; curLesson = null;
+  curSubj = s;
+  curLesson = null;
   document.querySelectorAll('.spage').forEach(p => p.classList.remove('on'));
+  document.getElementById('spage-' + s).classList.add('on');
   document.querySelectorAll('.sj-btn').forEach(b => b.classList.remove('active','active-elec'));
-  const pg = document.getElementById('spage-' + s);
-  if (pg) {
-    // For new premium subjects, build home page on first visit
-    if (PREMIUM_SUBJ.includes(s) && s !== 'elec') {
-      buildPremiumHome(s);
-    }
-    pg.classList.add('on');
-    document.getElementById('home-'+s) && (document.getElementById('home-'+s).style.display = 'block');
-    const lp = document.getElementById('lpage-'+s);
-    if (lp) { lp.classList.remove('on'); lp.innerHTML = ''; }
-  }
-  const btn = document.getElementById('sj-'+s);
-  if (btn) btn.classList.add(s === 'elec' ? 'active-elec' : 'active');
-  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('snav-home') && document.getElementById('snav-home').classList.add('active');
+  const btn = document.getElementById('sj-' + s);
+  btn.classList.add(s === 'elec' ? 'active-elec' : 'active');
+  // show home, hide lpage
+  document.getElementById('home-' + s).style.display = 'block';
+  document.getElementById('lpage-' + s).classList.remove('on');
+  document.getElementById('lpage-' + s).innerHTML = '';
+  // bottom nav
   document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
   document.getElementById('bn-home').classList.add('active');
-  updateProg(); window.scrollTo(0,0);
-}
-
-function buildPremiumHome(s) {
-  const home = document.getElementById('home-'+s);
-  if (!home || home.dataset.built) return;
-  home.dataset.built = '1';
-  const icon = SUBJ_ICONS[s] || '📚';
-  const name = SUBJ_NAMES[s] || s;
-  home.innerHTML = `
-    <div class="hpage">
-      <div class="greet-card fu" style="border-color:rgba(201,146,42,.3)">
-        <div class="gr-av" style="background:linear-gradient(135deg,var(--gold),var(--blue))">${icon}</div>
-        <div>
-          <div class="gr-hello" style="color:var(--gold)">${name} · Premium 👑</div>
-          <div class="gr-name">Cours <em>complets</em></div>
-          <div class="gr-sub">Bientôt disponibles · 2025–2026</div>
-        </div>
-      </div>
-      <div class="hero fu">
-        <div class="hero-tag">${icon} ${name}</div>
-        <div class="hero-h1">${name}<br><em>en cours de préparation</em></div>
-        <div class="hero-desc">Les cours de <strong>${name}</strong> sont en cours de rédaction et seront disponibles très prochainement. Merci pour ta patience ! 🙏</div>
-      </div>
-      <div style="background:var(--s2);border:1px solid var(--brd2);border-radius:10px;padding:20px;text-align:center;margin-top:16px;">
-        <div style="font-size:2rem;margin-bottom:10px;">🔔</div>
-        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;margin-bottom:8px;">Sois notifié dès la sortie</div>
-        <div style="font-size:.83rem;color:var(--muted);margin-bottom:14px;">Envoie-nous un message WhatsApp pour être averti dès que ${name} sera disponible.</div>
-        <a href="https://wa.me/237679091320?text=Bonjour%20STUDYBOARD%2C%20je%20veux%20être%20notifié%20pour%20${encodeURIComponent(name)}." target="_blank" class="wa-btn" style="display:inline-flex;">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Me notifier sur WhatsApp
-        </a>
-      </div>
-    </div>`;
-}
-
-/* ═══ OPEN LESSON ═══ */
-function openLesson(n, subj) {
-  if (PREMIUM_SUBJ.includes(subj) && window.USER_PLAN !== 'premium') {
-    showUpgrade(subj); return;
-  }
-  hideIPage();
-  curSubj = subj; curLesson = n;
-  const DB = subj === 'elec' ? ELEC_LESSONS : LESSONS;
-  const lp = document.getElementById('lpage-'+subj);
-  const hp = document.getElementById('home-'+subj);
-  if (hp) hp.style.display = 'none';
-  if (lp) { lp.innerHTML = buildLesson(n, DB, subj); lp.classList.add('on'); }
-  if (subj === 'phys') seen.add(n); else seenE.add(n);
-  document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
-  document.getElementById('bn-cours').classList.add('active');
-  updateProg(); window.scrollTo(0,0);
+  // sidebar
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('snav-home').classList.add('active');
+  updateProg();
+  window.scrollTo(0, 0);
 }
 
 function goHome() {
-  hideIPage();
   showSubj(curSubj);
 }
 
-/* ═══ BUILD LESSON ═══ */
+/* ═══ LESSON ═══ */
+function openLesson(n, subj) {
+  curSubj = subj;
+  curLesson = n;
+  // activate subject tab
+  document.querySelectorAll('.spage').forEach(p => p.classList.remove('on'));
+  document.getElementById('spage-' + subj).classList.add('on');
+  document.querySelectorAll('.sj-btn').forEach(b => b.classList.remove('active','active-elec'));
+  document.getElementById('sj-' + subj).classList.add(subj === 'elec' ? 'active-elec' : 'active');
+  // hide home, show lesson
+  document.getElementById('home-' + subj).style.display = 'none';
+  const DB = subj === 'elec' ? ELEC_LESSONS : LESSONS;
+  const lp = document.getElementById('lpage-' + subj);
+  lp.innerHTML = buildLesson(n, DB, subj);
+  lp.classList.add('on');
+  // track
+  if (subj === 'phys') seen.add(n); else seenE.add(n);
+  // sidebar
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
+  const sb = document.getElementById('snav-' + (subj === 'elec' ? 'e' : '') + n);
+  if (sb) sb.classList.add('active');
+  // botnav
+  document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bn-cours').classList.add('active');
+  updateProg();
+  window.scrollTo(0, 0);
+}
+
+/* ═══ BUILD LESSON HTML ═══ */
 function buildLesson(n, DB, subj) {
   const L = DB[n];
   const k = subj + n;
-  // Store quiz data for apostrophe-safe answering
-  window._qdata = window._qdata || {};
-  window._qdata[k] = L.quiz;
+  if (!qState[k]) qState[k] = { done: 0, ok: 0 };
   return `
-<button class="back-btn" onclick="backToHome()">← Retour</button>
+<button class="back-btn" onclick="showSubj('${subj}')">← Retour</button>
 <div class="lhero">
   <div class="lh-tag">${L.tag}</div>
   <div class="lh-h1">${L.title}</div>
   <div class="lh-desc">${L.desc}</div>
-  <div class="lh-chips">${L.chips.map(c=>'<span class="chip">'+c+'</span>').join('')}</div>
+  <div class="lh-chips">${L.chips.map(c => '<span class="chip">' + c + '</span>').join('')}</div>
 </div>
 <div class="tabs">
   <button class="tab active" id="tab-cours" onclick="swTab('cours')">📖 Cours</button>
@@ -3697,74 +3428,23 @@ function buildLesson(n, DB, subj) {
   <button class="tab" id="tab-exercices" onclick="swTab('exercices')">✏️ Exercices (${L.exos.length})</button>
 </div>
 <div class="tc on" id="tc-cours">${L.cours}</div>
-<div class="tc" id="tc-quiz"><div class="qwrap">${buildQuiz(n,L,subj)}</div></div>
+<div class="tc" id="tc-quiz"><div class="qwrap">${buildQuiz(n, L, subj)}</div></div>
 <div class="tc" id="tc-exercices"><div class="ewrap">${buildExos(L)}</div></div>`;
 }
 
-function backToHome() {
-  const lp = document.getElementById('lpage-'+curSubj);
-  const hp = document.getElementById('home-'+curSubj);
-  if (lp) { lp.classList.remove('on'); lp.innerHTML = ''; }
-  if (hp) hp.style.display = 'block';
-  curLesson = null;
-  document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
-  document.getElementById('bn-home').classList.add('active');
-  window.scrollTo(0,0);
-}
-
-/* ═══ QUIZ - FIXED (no apostrophe bug) ═══ */
 function buildQuiz(n, L, subj) {
   const k = subj + n;
-  window._qdata = window._qdata || {};
-  window._qdata[k] = L.quiz;
-  if (!qState[k]) qState[k] = {done:0, ok:0};
-  return L.quiz.map((q,i) => `
+  return L.quiz.map((q, i) => `
 <div class="qcard">
   <div class="qnum">Question ${i+1} / ${L.quiz.length}</div>
   <div class="qtxt">${q.q}</div>
-  <div class="qopts">${q.opts.map((o,j) =>
-    `<button class="qopt" onclick="ans(this,${j===q.ans},'${k}',${i})">${o.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</button>`
+  <div class="qopts">${q.opts.map((o, j) =>
+    `<button class="qopt" onclick="ans(this,${j===q.ans},'${k}',${i},'${q.exp.replace(/'/g,"\\'")})">${o}</button>`
   ).join('')}</div>
   <div class="qfb" id="qfb-${k}-${i}"></div>
 </div>`).join('') + `<div class="qscore" id="qsc-${k}">Score : <strong id="qsv-${k}">— / ${L.quiz.length}</strong></div>`;
 }
 
-/* ═══ ANS - FIXED ═══ */
-function ans(btn, correct, k, qi) {
-  const exp = (window._qdata && window._qdata[k] && window._qdata[k][qi]) ? window._qdata[k][qi].exp : '';
-  btn.parentElement.querySelectorAll('.qopt').forEach(o => o.disabled = true);
-  const fb = document.getElementById('qfb-'+k+'-'+qi);
-  if (!qState[k]) qState[k] = {done:0, ok:0};
-  if (correct) {
-    btn.classList.add('ok');
-    fb.className = 'qfb on ok';
-    fb.textContent = '✅ Correct ! ' + exp;
-    qState[k].ok++;
-  } else {
-    btn.classList.add('nok');
-    fb.className = 'qfb on nok';
-    fb.textContent = '❌ ' + exp;
-    if (window._qdata[k] && window._qdata[k][qi]) {
-      const ci = window._qdata[k][qi].ans;
-      const opts = btn.parentElement.querySelectorAll('.qopt');
-      if (opts[ci]) opts[ci].classList.add('ok');
-    }
-  }
-  qState[k].done++;
-  // Check if all answered
-  const allQ = document.querySelectorAll('#tc-quiz .qcard').length;
-  if (qState[k].done >= allQ) {
-    const sc = document.getElementById('qsc-'+k);
-    const sv = document.getElementById('qsv-'+k);
-    if (sc && sv) {
-      sc.classList.add('on');
-      const s = qState[k].ok;
-      sv.textContent = s+' / '+allQ+' '+(s===allQ?'🏆':s>=allQ*.7?'🎉':s>=allQ*.5?'👍':'💪');
-    }
-  }
-}
-
-/* ═══ EXERCISES ═══ */
 function buildExos(L) {
   return L.exos.map(e => `
 <div class="ecard">
@@ -3778,20 +3458,61 @@ function buildExos(L) {
 </div>`).join('');
 }
 
+/* ═══ QUIZ ANSWER ═══ */
+function ans(btn, correct, k, qi) {
+  const exp = (window._qdata && window._qdata[k] && window._qdata[k][qi]) ? window._qdata[k][qi].exp : '';
+  btn.parentElement.querySelectorAll('.qopt').forEach(o => o.disabled = true);
+  const fb = document.getElementById('qfb-' + k + '-' + qi);
+  if (!qState[k]) qState[k] = { done: 0, ok: 0 };
+  if (correct) {
+    btn.classList.add('ok');
+    fb.className = 'qfb on ok';
+    fb.textContent = '✅ Correct ! ' + exp;
+    qState[k].ok++;
+  } else {
+    btn.classList.add('nok');
+    fb.className = 'qfb on nok';
+    fb.textContent = '❌ ' + exp;
+    // highlight correct answer
+    if (window._qdata && window._qdata[k]) {
+      const correctIdx = window._qdata[k][qi].ans;
+      const opts = btn.parentElement.querySelectorAll('.qopt');
+      if (opts[correctIdx]) opts[correctIdx].classList.add('ok');
+    }
+  }
+  qState[k].done++;
+  const allCards = document.querySelectorAll('#tc-quiz .qcard');
+  const tot = allCards.length;
+  if (qState[k].done >= tot) {
+    const sc = document.getElementById('qsc-' + k);
+    const sv = document.getElementById('qsv-' + k);
+    if (sc && sv) {
+      sc.classList.add('on');
+      const s = qState[k].ok;
+      sv.textContent = s + ' / ' + tot + ' ' + (s===tot?'🏆':s>=tot*.7?'🎉':s>=tot*.5?'👍':'💪');
+    }
+  }
+}
+
 /* ═══ TABS ═══ */
-function swTab(n) {
+function swTab(name) {
   ['cours','quiz','exercices'].forEach(t => {
-    document.getElementById('tc-'+t)?.classList.toggle('on',t===n);
-    document.getElementById('tab-'+t)?.classList.toggle('active',t===n);
+    const tc = document.getElementById('tc-' + t);
+    const tb = document.getElementById('tab-' + t);
+    if (tc) tc.classList.toggle('on', t === name);
+    if (tb) tb.classList.toggle('active', t === name);
   });
 }
-function bnTab(n) {
+
+function bnTab(name) {
   if (!curLesson) return;
-  swTab(n);
+  swTab(name);
   document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
-  const m = {cours:'bn-cours',quiz:'bn-quiz',exercices:'bn-exo'};
-  if (m[n]) document.getElementById(m[n]).classList.add('active');
+  const map = { cours: 'bn-cours', quiz: 'bn-quiz', exercices: 'bn-exo' };
+  if (map[name]) document.getElementById(map[name]).classList.add('active');
 }
+
+/* ═══ SOL ═══ */
 function togSol(btn) {
   const box = btn.nextElementSibling;
   box.classList.toggle('on');
@@ -3808,71 +3529,103 @@ function closeDrawer() {
   document.getElementById('overlay').classList.remove('on');
 }
 
-/* ═══ INNER PAGES (Profile/Parrainage/Settings) ═══ */
-function showIPage(name) {
-  curIPage = name;
-  // Hide subject pages and subj-bar
-  document.querySelectorAll('.spage').forEach(p => p.classList.remove('on'));
-  document.getElementById('subj-bar').style.display = 'none';
-  // Show inner page
-  document.querySelectorAll('.ipage').forEach(p => p.classList.remove('on'));
-  document.getElementById('ipage-'+name)?.classList.add('on');
-  // Update profile plan badge in profile page
-  if (name === 'profile') {
-    const pb = document.getElementById('plan-badge-prof');
-    if (pb) {
-      const plan = window.USER_PLAN || 'free';
-      pb.textContent = plan === 'premium' ? '👑 Premium' : '🆓 Gratuit';
-      pb.style.cssText = plan === 'premium'
-        ? 'display:inline-block;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#080c18;background:linear-gradient(135deg,#e8b84b,#c9922a);border-radius:99px;padding:3px 10px;font-weight:700;margin-top:5px;'
-        : 'display:inline-block;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#6b7299;background:rgba(107,114,153,.15);border:1px solid rgba(107,114,153,.3);border-radius:99px;padding:3px 10px;font-weight:600;margin-top:5px;';
-    }
-  }
-  window.scrollTo(0,0);
-}
-function hideIPage() {
-  if (!curIPage) return;
-  curIPage = null;
-  document.querySelectorAll('.ipage').forEach(p => p.classList.remove('on'));
-  document.getElementById('subj-bar').style.display = '';
-  // Restore subject page
-  document.querySelectorAll('.spage').forEach(p => p.classList.remove('on'));
-  const pg = document.getElementById('spage-'+curSubj);
-  if (pg) pg.classList.add('on');
-}
-
-/* ═══ UPGRADE MODAL ═══ */
-function showUpgrade(subj) {
-  document.getElementById('upgrade-overlay').classList.add('show');
-}
-function closeUpgrade(e) {
-  if (!e || e.target === document.getElementById('upgrade-overlay'))
-    document.getElementById('upgrade-overlay').classList.remove('show');
-}
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeUpgrade(); });
-
-/* ═══ SETTINGS ═══ */
-function toggleDark(btn) {
-  btn.classList.toggle('on');
-  btn.classList.toggle('off');
-  document.body.classList.toggle('light');
-}
-function setFont(size, btn) {
-  document.body.style.fontSize = size + 'px';
-  document.querySelectorAll('.fsb').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-}
-
 /* ═══ PROGRESS ═══ */
 function updateProg() {
-  const p = Math.round((seen.size + seenE.size) / 17 * 100);
+  const total = seen.size + seenE.size;
+  const max = 17;
+  const p = Math.round(total / max * 100);
   document.getElementById('prog-pct').textContent = p + '%';
   document.getElementById('prog-fill').style.width = p + '%';
 }
+
 updateProg();
-  const EMAILS_PREMIUM = [
-    "sergebelibi05@icoud.com", 
-    // ↑ Fin de la liste ↑
-];
-</script> 
+
+/* ═══ FREEMIUM SYSTEM ═══ */
+
+// Show upgrade modal
+function showUpgrade() {
+  document.getElementById('upgrade-overlay').classList.add('show');
+}
+
+// Close upgrade modal (click overlay or X)
+function closeUpgrade(e) {
+  if (!e || e.target === document.getElementById('upgrade-overlay')) {
+    document.getElementById('upgrade-overlay').classList.remove('show');
+  }
+}
+
+// Called by Firebase module once plan is known
+// Unlocks all content for premium users
+window.unlockPremium = function() {
+  // Unlock all lcard locked
+  document.querySelectorAll('.lcard.locked').forEach(el => {
+    el.classList.remove('locked');
+    // Restore correct onclick
+    const n = el.querySelector('.lc-n')?.textContent;
+    if (n) {
+      const match = n.match(/(\d+)/);
+      if (match) {
+        const num = parseInt(match[1]);
+        const isElec = el.classList.contains('elec');
+        el.onclick = () => openLesson(num, isElec ? 'elec' : 'phys');
+      }
+    }
+  });
+  // Unlock sidebar buttons
+  document.querySelectorAll('.sb-btn.locked').forEach(el => {
+    el.classList.remove('locked');
+    // Restore correct onclick from text
+    const text = el.textContent.trim();
+    const idAttr = el.id;
+    if (idAttr) {
+      const elecMatch = idAttr.match(/snav-e(\d+)/);
+      const physMatch = idAttr.match(/snav-(\d+)$/);
+      if (elecMatch) {
+        const n = parseInt(elecMatch[1]);
+        el.onclick = () => openLesson(n, 'elec');
+      } else if (physMatch) {
+        const n = parseInt(physMatch[1]);
+        el.onclick = () => openLesson(n, 'phys');
+      }
+    }
+  });
+  // Unlock elec subject bar
+  document.querySelectorAll('.sj-btn').forEach(b => b.style.opacity = '');
+};
+
+// Intercept openLesson for free users
+const _origOpenLesson = openLesson;
+window.openLesson = function(n, subj) {
+  const plan = window.USER_PLAN || 'free';
+  if (plan === 'free') {
+    // Free: only phys lesson 1 is allowed
+    if (subj === 'phys' && n === 1) {
+      _origOpenLesson(n, subj);
+    } else {
+      showUpgrade();
+    }
+    return;
+  }
+  // Premium: all ok
+  _origOpenLesson(n, subj);
+};
+
+// Also override showSubj for elec tab
+const _origShowSubj = showSubj;
+window.showSubj = function(s) {
+  const plan = window.USER_PLAN || 'free';
+  if (plan === 'free' && s === 'elec') {
+    showUpgrade();
+    return;
+  }
+  _origShowSubj(s);
+};
+
+// Keyboard close modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeUpgrade();
+});
+// When premium plan confirmed from Firebase → unlock everything
+// (handled by the Firebase module above)
+</script></div><!-- /app-content -->
 </body></html>

@@ -442,7 +442,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
@@ -454,7 +453,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-  // ═══════════════════════════════════════════════
+const auth = getAuth(app);
+
+// ═══════════════════════════════════════════════
 // 👑 LISTE DES EMAILS PREMIUM
 // Pour ajouter un client : ajoute son email ici
 // ═══════════════════════════════════════════════
@@ -466,30 +467,9 @@ const PREMIUM_EMAILS = [
   // "client2@gmail.com",
 ];
 // ═══════════════════════════════════════════════
-const auth = getAuth(app);
-const db = getFirestore(app);
 
-// ── Show loading screen ──
 document.getElementById('auth-loading').style.display = 'flex';
 document.getElementById('app-content').style.display = 'none';
-
-// ── Fetch user plan from Firestore ──
-async function getUserPlan(uid, email) {
-  try {
-    const ref = doc(db, 'users', uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      return snap.data().plan || 'free';
-    } else {
-      // New user → create free account in Firestore
-      await setDoc(ref, { email: email, plan: 'free', createdAt: new Date().toISOString() });
-      return 'free';
-    }
-  } catch(e) {
-    console.warn('Firestore unavailable, defaulting to free', e);
-    return 'free';
-  }
-}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -501,18 +481,18 @@ onAuthStateChanged(auth, async (user) => {
   const email = user.email;
   const photoURL = user.photoURL;
 
-  // ── Get plan ──
-  const plan = await getUserPlan(user.uid, email);
-  window.USER_PLAN = plan; // 'free' or 'premium'
+  // ── Vérifier si Premium ──
+  const plan = PREMIUM_EMAILS.includes(email.toLowerCase()) ? 'premium' : 'free';
+  window.USER_PLAN = plan;
+  console.log('Plan:', plan, 'pour', email);
 
-  // ── Show app ──
+  // ── Afficher l'app ──
   document.getElementById('auth-loading').style.display = 'none';
   document.getElementById('app-content').style.display = 'flex';
 
-  // Update name/avatar
+  // ── Nom et avatar ──
   document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
   document.querySelectorAll('.user-email').forEach(el => el.textContent = email);
-
   if (photoURL) {
     document.querySelectorAll('.user-avatar').forEach(el => {
       el.style.backgroundImage = 'url(' + photoURL + ')';
@@ -525,7 +505,7 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
   }
 
-  // ── Show plan badge ──
+  // ── Badge plan ──
   const badge = document.getElementById('plan-badge');
   if (badge) {
     if (plan === 'premium') {
@@ -537,35 +517,25 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  // ── Apply lock for free users ──
-  applyFreemiumLocks(plan);
-
-  // ── Unlock if premium (call after DOM is fully available) ──
+  // ── Débloquer si Premium ──
   if (plan === 'premium') {
-    // Use setTimeout to ensure the JS openLesson override runs first
-    setTimeout(() => {
-      if (window.unlockPremium) window.unlockPremium();
-    }, 100);
+    const tryUnlock = (attempts) => {
+      if (typeof window.unlockPremium === 'function') {
+        window.unlockPremium();
+        console.log('🔓 Contenu Premium débloqué !');
+      } else if (attempts > 0) {
+        setTimeout(() => tryUnlock(attempts - 1), 300);
+      }
+    };
+    setTimeout(() => tryUnlock(10), 200);
   }
 
-  // ── Sign out ──
+  // ── Déconnexion ──
   window.doSignOut = async function() {
     await signOut(auth);
     window.location.href = 'login.html';
   };
 });
-
-// ── FREEMIUM LOCK SYSTEM ──
-function applyFreemiumLocks(plan) {
-  if (plan === 'premium') {
-    // Unlock everything
-    document.querySelectorAll('.premium-lock').forEach(el => el.classList.remove('premium-lock'));
-    return;
-  }
-  // Free plan: lock phys lessons 2-6 and all elec lessons
-  // Lock overlay is added via CSS class, click intercepted
-}
-window.applyFreemiumLocks = applyFreemiumLocks;
 </script>
 </head>
 <body>
@@ -3888,42 +3858,6 @@ window.showSubj = function(s) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeUpgrade();
 });
-// --- CONNEXION FIREBASE & DÉBLOCAGE PREMIUM ---
-auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        console.log("Utilisateur connecté :", user.email);
-        
-        // On va lire ton document dans Firestore
-        const docRef = doc(db, "premium_users", user.email);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists() && docSnap.data().active === true) {
-            console.log("Statut : PREMIUM détecté !");
-            
-            // On définit la variable que Claude utilise pour débloquer les cours
-            window.USER_PLAN = 'premium';
-            
-            // On appelle la fonction de déblocage visuel
-            if (typeof unlockPremium === "function") {
-                unlockPremium(); 
-            }
-            
-            // Petit bonus : Mise à jour du badge utilisateur
-            const statusBadge = document.querySelector('.badge-statut, .user-plan-badge');
-            if (statusBadge) {
-                statusBadge.textContent = 'PREMIUM';
-                statusBadge.style.background = 'gold';
-            }
-        } else {
-            window.USER_PLAN = 'free';
-            console.log("Statut : GRATUIT");
-        }
-    }
-});
-// When premium plan confirmed from Firebase → unlock everything
-document.addEventListener('DOMContentLoaded', () => {
-  // We'll check window.USER_PLAN once Firebase sets it
-  // Firebase module calls unlockPremium directly when plan='premium'
-});
+// Système Premium géré par PREMIUM_EMAILS ci-dessus
 </script></div><!-- /app-content -->
 </body></html>

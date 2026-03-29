@@ -442,6 +442,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
@@ -454,22 +455,29 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// ═══════════════════════════════════════════════
-// 👑 LISTE DES EMAILS PREMIUM
-// Pour ajouter un client : ajoute son email ici
-// ═══════════════════════════════════════════════
-const PREMIUM_EMAILS = [
-  "ndjanpaalex@gmail.com",
-  "sergebelibi05@icloud.com",
-  // Ajoute les emails des clients qui ont payé ici :
-  // "client1@gmail.com",
-  // "client2@gmail.com",
-];
-// ═══════════════════════════════════════════════
-
+// ── Show loading screen ──
 document.getElementById('auth-loading').style.display = 'flex';
 document.getElementById('app-content').style.display = 'none';
+
+// ── Fetch user plan from Firestore ──
+async function getUserPlan(uid, email) {
+  try {
+    const ref = doc(db, 'users', uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      return snap.data().plan || 'free';
+    } else {
+      // New user → create free account in Firestore
+      await setDoc(ref, { email: email, plan: 'free', createdAt: new Date().toISOString() });
+      return 'free';
+    }
+  } catch(e) {
+    console.warn('Firestore unavailable, defaulting to free', e);
+    return 'free';
+  }
+}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -481,18 +489,18 @@ onAuthStateChanged(auth, async (user) => {
   const email = user.email;
   const photoURL = user.photoURL;
 
-  // ── Vérifier si Premium ──
-  const plan = PREMIUM_EMAILS.includes(email.toLowerCase()) ? 'premium' : 'free';
-  window.USER_PLAN = plan;
-  console.log('Plan:', plan, 'pour', email);
+  // ── Get plan ──
+  const plan = await getUserPlan(user.uid, email);
+  window.USER_PLAN = plan; // 'free' or 'premium'
 
-  // ── Afficher l'app ──
+  // ── Show app ──
   document.getElementById('auth-loading').style.display = 'none';
   document.getElementById('app-content').style.display = 'flex';
 
-  // ── Nom et avatar ──
+  // Update name/avatar
   document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
   document.querySelectorAll('.user-email').forEach(el => el.textContent = email);
+
   if (photoURL) {
     document.querySelectorAll('.user-avatar').forEach(el => {
       el.style.backgroundImage = 'url(' + photoURL + ')';
@@ -505,7 +513,7 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
   }
 
-  // ── Badge plan ──
+  // ── Show plan badge ──
   const badge = document.getElementById('plan-badge');
   if (badge) {
     if (plan === 'premium') {
@@ -517,25 +525,35 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  // ── Débloquer si Premium ──
+  // ── Apply lock for free users ──
+  applyFreemiumLocks(plan);
+
+  // ── Unlock if premium (call after DOM is fully available) ──
   if (plan === 'premium') {
-    const tryUnlock = (attempts) => {
-      if (typeof window.unlockPremium === 'function') {
-        window.unlockPremium();
-        console.log('🔓 Contenu Premium débloqué !');
-      } else if (attempts > 0) {
-        setTimeout(() => tryUnlock(attempts - 1), 300);
-      }
-    };
-    setTimeout(() => tryUnlock(10), 200);
+    // Use setTimeout to ensure the JS openLesson override runs first
+    setTimeout(() => {
+      if (window.unlockPremium) window.unlockPremium();
+    }, 100);
   }
 
-  // ── Déconnexion ──
+  // ── Sign out ──
   window.doSignOut = async function() {
     await signOut(auth);
     window.location.href = 'login.html';
   };
 });
+
+// ── FREEMIUM LOCK SYSTEM ──
+function applyFreemiumLocks(plan) {
+  if (plan === 'premium') {
+    // Unlock everything
+    document.querySelectorAll('.premium-lock').forEach(el => el.classList.remove('premium-lock'));
+    return;
+  }
+  // Free plan: lock phys lessons 2-6 and all elec lessons
+  // Lock overlay is added via CSS class, click intercepted
+}
+window.applyFreemiumLocks = applyFreemiumLocks;
 </script>
 </head>
 <body>
@@ -588,6 +606,17 @@ onAuthStateChanged(auth, async (user) => {
     <button class="sb-btn locked" id="snav-e9" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E9</span>Moteur Pas à Pas</button>
     <button class="sb-btn locked" id="snav-e10" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E10</span>Démarrage</button>
     <button class="sb-btn locked" id="snav-e11" onclick="showUpgrade()"><span class="sb-num" style="font-size:.55rem">E11</span>Protection</button>
+    <span class="sb-lbl" style="margin-top:10px">Autres Matières</span>
+    <button class="sb-btn locked" id="snav-math" onclick="showUpgrade()"><span class="sb-num">📐</span>Mathématiques</button>
+    <button class="sb-btn locked" id="snav-chim" onclick="showUpgrade()"><span class="sb-num">🧪</span>Chimie</button>
+    <button class="sb-btn locked" id="snav-fran" onclick="showUpgrade()"><span class="sb-num">📝</span>Français</button>
+    <button class="sb-btn locked" id="snav-srt" onclick="showUpgrade()"><span class="sb-num">🎨</span>SRT</button>
+    <button class="sb-btn locked" id="snav-irt" onclick="showUpgrade()"><span class="sb-num">💻</span>IRT</button>
+    <button class="sb-btn locked" id="snav-sav" onclick="showUpgrade()"><span class="sb-num">🔧</span>SAV</button>
+    <button class="sb-btn locked" id="snav-celn" onclick="showUpgrade()"><span class="sb-num">⚡</span>Circuit Électronique</button>
+    <button class="sb-btn locked" id="snav-info" onclick="showUpgrade()"><span class="sb-num">🖥️</span>Informatique</button>
+    <button class="sb-btn locked" id="snav-sas" onclick="showUpgrade()"><span class="sb-num">📊</span>SAS</button>
+    <button class="sb-btn locked" id="snav-gm" onclick="showUpgrade()"><span class="sb-num">⚙️</span>GM</button>
   </nav>
   <div style="padding:0 10px 8px;">
   <button onclick="window.doSignOut && window.doSignOut()" style="
@@ -662,6 +691,16 @@ onAuthStateChanged(auth, async (user) => {
   <div class="subj-bar">
     <button class="sj-btn active" id="sj-phys" onclick="showSubj('phys')">⚛ Physique</button>
     <button class="sj-btn" id="sj-elec" onclick="showSubj('elec')">⚡ Circuit Électrique</button>
+    <button class="sj-btn" id="sj-math" onclick="showSubj('math')">📐 Maths</button>
+    <button class="sj-btn" id="sj-chim" onclick="showSubj('chim')">🧪 Chimie</button>
+    <button class="sj-btn" id="sj-fran" onclick="showSubj('fran')">📝 Français</button>
+    <button class="sj-btn" id="sj-srt" onclick="showSubj('srt')">🎨 SRT</button>
+    <button class="sj-btn" id="sj-irt" onclick="showSubj('irt')">💻 IRT</button>
+    <button class="sj-btn" id="sj-sav" onclick="showSubj('sav')">🔧 SAV</button>
+    <button class="sj-btn" id="sj-celn" onclick="showSubj('celn')">⚡ Électronique</button>
+    <button class="sj-btn" id="sj-info" onclick="showSubj('info')">🖥️ Info</button>
+    <button class="sj-btn" id="sj-sas" onclick="showSubj('sas')">📊 SAS</button>
+    <button class="sj-btn" id="sj-gm" onclick="showSubj('gm')">⚙️ GM</button>
   </div>
 
   <!-- ═══ PHYSIQUE PAGE ═══ -->
@@ -747,6 +786,217 @@ onAuthStateChanged(auth, async (user) => {
       </div>
     </div>
     <div class="lpage" id="lpage-elec"></div>
+  </div>
+
+
+  <!-- ═══ MATHÉMATIQUES ═══ -->
+  <div class="spage" id="spage-math">
+    <div class="hpage" id="home-math">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#6366f1,#4f8ef7)">📐</div>
+        <div>
+          <div class="gr-hello" style="color:#6366f1">Mathématiques</div>
+          <div class="gr-name">Programme <em style="color:#6366f1">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(99,102,241,.3)">
+        <div class="hero-tag" style="color:#6366f1">📐 Mathématiques · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#6366f1">de Mathématiques</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de Mathématiques sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-math"></div>
+  </div>
+
+  <!-- ═══ CHIMIE ═══ -->
+  <div class="spage" id="spage-chim">
+    <div class="hpage" id="home-chim">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#10b981,#059669)">🧪</div>
+        <div>
+          <div class="gr-hello" style="color:#10b981">Chimie</div>
+          <div class="gr-name">Programme <em style="color:#10b981">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(16,185,129,.3)">
+        <div class="hero-tag" style="color:#10b981">🧪 Chimie · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#10b981">de Chimie</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de Chimie sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-chim"></div>
+  </div>
+
+  <!-- ═══ FRANÇAIS ═══ -->
+  <div class="spage" id="spage-fran">
+    <div class="hpage" id="home-fran">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📝</div>
+        <div>
+          <div class="gr-hello" style="color:#f59e0b">Français</div>
+          <div class="gr-name">Programme <em style="color:#f59e0b">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(245,158,11,.3)">
+        <div class="hero-tag" style="color:#f59e0b">📝 Français · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#f59e0b">de Français</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de Français sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-fran"></div>
+  </div>
+
+  <!-- ═══ SRT ═══ -->
+  <div class="spage" id="spage-srt">
+    <div class="hpage" id="home-srt">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#ec4899,#db2777)">🎨</div>
+        <div>
+          <div class="gr-hello" style="color:#ec4899">SRT</div>
+          <div class="gr-name">Programme <em style="color:#ec4899">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(236,72,153,.3)">
+        <div class="hero-tag" style="color:#ec4899">🎨 SRT · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#ec4899">de SRT</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de SRT sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-srt"></div>
+  </div>
+
+  <!-- ═══ IRT ═══ -->
+  <div class="spage" id="spage-irt">
+    <div class="hpage" id="home-irt">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">💻</div>
+        <div>
+          <div class="gr-hello" style="color:#8b5cf6">IRT</div>
+          <div class="gr-name">Programme <em style="color:#8b5cf6">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(139,92,246,.3)">
+        <div class="hero-tag" style="color:#8b5cf6">💻 IRT · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#8b5cf6">d'IRT</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours d'IRT sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-irt"></div>
+  </div>
+
+  <!-- ═══ SAV ═══ -->
+  <div class="spage" id="spage-sav">
+    <div class="hpage" id="home-sav">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#f97316,#ea580c)">🔧</div>
+        <div>
+          <div class="gr-hello" style="color:#f97316">SAV</div>
+          <div class="gr-name">Programme <em style="color:#f97316">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(249,115,22,.3)">
+        <div class="hero-tag" style="color:#f97316">🔧 SAV · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#f97316">de SAV</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de SAV sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-sav"></div>
+  </div>
+
+  <!-- ═══ CIRCUIT ÉLECTRONIQUE ═══ -->
+  <div class="spage" id="spage-celn">
+    <div class="hpage" id="home-celn">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">⚡</div>
+        <div>
+          <div class="gr-hello" style="color:#06b6d4">Circuit Électronique</div>
+          <div class="gr-name">Programme <em style="color:#06b6d4">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(6,182,212,.3)">
+        <div class="hero-tag" style="color:#06b6d4">⚡ Circuit Électronique · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#06b6d4">Circuit Électronique</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de Circuit Électronique sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-celn"></div>
+  </div>
+
+  <!-- ═══ INFORMATIQUE ═══ -->
+  <div class="spage" id="spage-info">
+    <div class="hpage" id="home-info">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">🖥️</div>
+        <div>
+          <div class="gr-hello" style="color:#3b82f6">Informatique</div>
+          <div class="gr-name">Programme <em style="color:#3b82f6">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(59,130,246,.3)">
+        <div class="hero-tag" style="color:#3b82f6">🖥️ Informatique · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#3b82f6">d'Informatique</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours d'Informatique sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-info"></div>
+  </div>
+
+  <!-- ═══ SAS ═══ -->
+  <div class="spage" id="spage-sas">
+    <div class="hpage" id="home-sas">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#14b8a6,#0d9488)">📊</div>
+        <div>
+          <div class="gr-hello" style="color:#14b8a6">SAS</div>
+          <div class="gr-name">Programme <em style="color:#14b8a6">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(20,184,166,.3)">
+        <div class="hero-tag" style="color:#14b8a6">📊 SAS · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#14b8a6">de SAS</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de SAS sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-sas"></div>
+  </div>
+
+  <!-- ═══ GM ═══ -->
+  <div class="spage" id="spage-gm">
+    <div class="hpage" id="home-gm">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#64748b,#475569)">⚙️</div>
+        <div>
+          <div class="gr-hello" style="color:#94a3b8">GM</div>
+          <div class="gr-name">Programme <em style="color:#94a3b8">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(100,116,139,.3)">
+        <div class="hero-tag" style="color:#94a3b8">⚙️ GM · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#94a3b8">de GM</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de GM sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+    </div>
+    <div class="lpage" id="lpage-gm"></div>
   </div>
 
 </div><!-- /main -->
@@ -3614,7 +3864,8 @@ window.openLesson = function(n, subj) {
 const _origShowSubj = showSubj;
 window.showSubj = function(s) {
   const plan = window.USER_PLAN || 'free';
-  if (plan === 'free' && s === 'elec') {
+  const premiumSubjects = ['elec','math','chim','fran','srt','irt','sav','celn','info','sas','gm'];
+  if (plan === 'free' && premiumSubjects.includes(s)) {
     showUpgrade();
     return;
   }
@@ -3625,7 +3876,42 @@ window.showSubj = function(s) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeUpgrade();
 });
+// --- CONNEXION FIREBASE & DÉBLOCAGE PREMIUM ---
+auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        console.log("Utilisateur connecté :", user.email);
+        
+        // On va lire ton document dans Firestore
+        const docRef = doc(db, "premium_users", user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists() && docSnap.data().active === true) {
+            console.log("Statut : PREMIUM détecté !");
+            
+            // On définit la variable que Claude utilise pour débloquer les cours
+            window.USER_PLAN = 'premium';
+            
+            // On appelle la fonction de déblocage visuel
+            if (typeof unlockPremium === "function") {
+                unlockPremium(); 
+            }
+            
+            // Petit bonus : Mise à jour du badge utilisateur
+            const statusBadge = document.querySelector('.badge-statut, .user-plan-badge');
+            if (statusBadge) {
+                statusBadge.textContent = 'PREMIUM';
+                statusBadge.style.background = 'gold';
+            }
+        } else {
+            window.USER_PLAN = 'free';
+            console.log("Statut : GRATUIT");
+        }
+    }
+});
 // When premium plan confirmed from Firebase → unlock everything
-// (handled by the Firebase module above)
+document.addEventListener('DOMContentLoaded', () => {
+  // We'll check window.USER_PLAN once Firebase sets it
+  // Firebase module calls unlockPremium directly when plan='premium'
+});
 </script></div><!-- /app-content -->
 </body></html>

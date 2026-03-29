@@ -454,6 +454,18 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+  // ═══════════════════════════════════════════════
+// 👑 LISTE DES EMAILS PREMIUM
+// Pour ajouter un client : ajoute son email ici
+// ═══════════════════════════════════════════════
+const PREMIUM_EMAILS = [
+  "ndjanpaalex@gmail.com",
+  "sergebelibi05@icloud.com",
+  // Ajoute les emails des clients qui ont payé ici :
+  // "client1@gmail.com",
+  // "client2@gmail.com",
+];
+// ═══════════════════════════════════════════════
 const auth = getAuth(app);
 const db = getFirestore(app);
 

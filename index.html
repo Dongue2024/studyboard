@@ -462,7 +462,6 @@ const auth = getAuth(app);
 const PREMIUM_EMAILS = [
   "ndjanpaalex@gmail.com",
   "sergebelibi05@icloud.com",
-  "asdinondjanpaa@gmail.com",
   // Ajoute les emails des clients qui ont payé ici :
   // "client1@gmail.com",
   // "client2@gmail.com",
@@ -538,6 +537,149 @@ onAuthStateChanged(auth, async (user) => {
   };
 });
 </script>
+<style>
+.srt-course-wrapper {
+
+  :root {
+    --srt-bg: #0f1117;
+    --srt-surface: #1a1d27;
+    --srt-surface2: #22263a;
+    --srt-border: #2e3350;
+    --srt-accent: #6c63ff;
+    --srt-accent2: #ff6584;
+    --srt-accent3: #43e97b;
+    --srt-text: #e8eaf6;
+    --srt-text2: #9fa8da;
+    --srt-text3: #616a9e;
+    --srt-gold: #ffd700;
+    --srt-card-radius: 16px;
+    --srt-shadow: 0 4px 32px rgba(108,99,255,0.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--srt-bg);color:var(--srt-text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  
+  /* ── HEADER ── */
+  .site-header{background:var(--srt-surface);border-bottom:1px solid var(--srt-border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+  .site-header .logo{font-size:1.3rem;font-weight:800;color:var(--srt-accent);letter-spacing:-1px}
+  .site-header .breadcrumb{color:var(--srt-text3);font-size:.85rem}
+  .site-header .breadcrumb span{color:var(--srt-accent2)}
+  .badge-premium{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto}
+
+  /* ── HERO ── */
+  .hero{background:linear-gradient(135deg,#1a1d27 0%,#12162b 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(108,99,255,.18) 0%,transparent 70%);pointer-events:none}
+  .hero-icon{font-size:3.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .hero h1{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#a78bfa,#6c63ff,#43e97b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+  .hero p{color:var(--srt-text2);font-size:1rem;max-width:600px;margin:0 auto 20px}
+  .hero-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+  .stat{background:var(--srt-surface2);border:1px solid var(--srt-border);border-radius:12px;padding:12px 24px;text-align:center}
+  .stat .num{font-size:1.6rem;font-weight:800;color:var(--srt-accent)}
+  .stat .lbl{font-size:.75rem;color:var(--srt-text3);text-transform:uppercase;letter-spacing:.5px}
+
+  /* ── LAYOUT ── */
+  .container{max-width:1100px;margin:0 auto;padding:0 16px}
+  
+  /* ── NAV PILLS ── */
+  .lesson-nav{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 8px;justify-content:center}
+  .pill{background:var(--srt-surface2);border:1px solid var(--srt-border);color:var(--srt-text2);padding:7px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap}
+  .pill:hover,.pill.active{background:var(--srt-accent);border-color:var(--srt-accent);color:#fff}
+
+  /* ── SECTION TITLE ── */
+  .section-title{font-size:1.5rem;font-weight:800;color:var(--srt-text);margin:36px 0 20px;padding-left:16px;border-left:4px solid var(--srt-accent)}
+
+  /* ── LESSON CARD ── */
+  .lesson-card{background:var(--srt-surface);border:1px solid var(--srt-border);border-radius:var(--srt-card-radius);margin-bottom:20px;overflow:hidden;box-shadow:var(--srt-shadow);transition:box-shadow .2s}
+  .lesson-card:hover{box-shadow:0 8px 40px rgba(108,99,255,.22)}
+  .lesson-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
+  .lesson-num{background:linear-gradient(135deg,var(--srt-accent),var(--srt-accent2));color:#fff;font-weight:900;font-size:.85rem;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lesson-meta{flex:1}
+  .lesson-meta h3{font-size:1.05rem;font-weight:700;color:var(--srt-text);margin-bottom:4px}
+  .lesson-meta .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{background:var(--srt-surface2);border:1px solid var(--srt-border);color:var(--srt-text3);font-size:.7rem;padding:2px 8px;border-radius:10px}
+  .toggle-icon{color:var(--srt-text3);font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+  .lesson-body{display:none;padding:0 24px 24px;border-top:1px solid var(--srt-border)}
+  .lesson-body.open{display:block}
+
+  /* ── SUBTITLES / SECTIONS ── */
+  .sub-section{margin-top:20px}
+  .sub-title{font-size:.95rem;font-weight:700;color:var(--srt-accent2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .sub-title::before{content:'';display:block;width:3px;height:16px;background:var(--srt-accent2);border-radius:2px}
+  .content-block{color:var(--srt-text2);font-size:.9rem;line-height:1.75;margin-bottom:12px}
+  .content-block strong{color:var(--srt-text)}
+
+  /* ── DEFINITION BOX ── */
+  .def-box{background:var(--srt-surface2);border-left:4px solid var(--srt-accent3);border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0;font-size:.88rem;color:var(--srt-text2)}
+  .def-box .def-title{color:var(--srt-accent3);font-weight:700;margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+
+  /* ── EXAMPLE BOX ── */
+  .example-box{background:rgba(67,233,123,.07);border:1px solid rgba(67,233,123,.2);border-radius:12px;padding:16px;margin:12px 0}
+  .example-box .ex-title{color:var(--srt-accent3);font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase}
+  .example-box p{color:var(--srt-text2);font-size:.88rem;line-height:1.7}
+
+  /* ── TABLE ── */
+  .styled-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+  .styled-table th{background:var(--srt-surface2);color:var(--srt-accent);padding:10px 14px;text-align:left;border-bottom:2px solid var(--srt-border)}
+  .styled-table td{padding:9px 14px;border-bottom:1px solid var(--srt-border);color:var(--srt-text2)}
+  .styled-table tr:hover td{background:var(--srt-surface2)}
+
+  /* ── CODE ── */
+  .code-block{background:#0d1117;border:1px solid var(--srt-border);border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#79c0ff;overflow-x:auto;margin:12px 0}
+  .code-block .comment{color:#6a737d}
+  .code-block .keyword{color:#ff7b72}
+  .code-block .string{color:#a5d6ff}
+
+  /* ── QUIZ ── */
+  .quiz-section{margin-top:28px}
+  .quiz-title{font-size:1rem;font-weight:800;color:var(--srt-gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .quiz-item{background:var(--srt-surface2);border:1px solid var(--srt-border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .quiz-item .q-text{color:var(--srt-text);font-size:.9rem;font-weight:600;margin-bottom:12px}
+  .quiz-options{display:flex;flex-direction:column;gap:8px}
+  .quiz-opt{background:var(--srt-bg);border:1px solid var(--srt-border);border-radius:8px;padding:10px 14px;color:var(--srt-text2);font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+  .quiz-opt:hover{border-color:var(--srt-accent);color:var(--srt-text)}
+  .quiz-opt.correct{background:rgba(67,233,123,.15);border-color:var(--srt-accent3);color:var(--srt-accent3)}
+  .quiz-opt.wrong{background:rgba(255,101,132,.12);border-color:var(--srt-accent2);color:var(--srt-accent2)}
+  .quiz-opt .opt-letter{background:var(--srt-surface2);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+  .quiz-feedback{margin-top:10px;font-size:.83rem;padding:8px 12px;border-radius:8px;display:none}
+  .quiz-feedback.show{display:block}
+  .quiz-feedback.correct{background:rgba(67,233,123,.1);color:var(--srt-accent3);border:1px solid rgba(67,233,123,.25)}
+  .quiz-feedback.wrong{background:rgba(255,101,132,.1);color:var(--srt-accent2);border:1px solid rgba(255,101,132,.25)}
+
+  /* ── EXERCICES ── */
+  .exo-section{margin-top:28px}
+  .exo-title{font-size:1rem;font-weight:800;color:var(--srt-accent2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .exo-item{background:var(--srt-surface2);border:1px solid var(--srt-border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .exo-item .exo-num{color:var(--srt-accent);font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .exo-item .exo-q{color:var(--srt-text);font-size:.88rem;margin-bottom:10px;line-height:1.6}
+  .show-answer-btn{background:var(--srt-surface);border:1px solid var(--srt-border);color:var(--srt-accent);padding:7px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s}
+  .show-answer-btn:hover{background:var(--srt-accent);color:#fff}
+  .answer-block{display:none;margin-top:12px;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:12px;color:var(--srt-text2);font-size:.85rem;line-height:1.7}
+  .answer-block.show{display:block}
+  .answer-block strong{color:var(--srt-accent3)}
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap{background:var(--srt-surface);border-bottom:1px solid var(--srt-border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .progress-label{font-size:.8rem;color:var(--srt-text3);white-space:nowrap}
+  .progress-bar{flex:1;min-width:120px;height:6px;background:var(--srt-border);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--srt-accent),var(--srt-accent3));border-radius:3px;transition:width .4s}
+  .progress-pct{font-size:.8rem;color:var(--srt-accent);font-weight:700;white-space:nowrap}
+
+  /* ── BACK BUTTON ── */
+  .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--srt-text2);font-size:.85rem;text-decoration:none;padding:8px 16px;border:1px solid var(--srt-border);border-radius:8px;margin:16px 0;transition:all .2s}
+  .back-btn:hover{color:var(--srt-accent);border-color:var(--srt-accent)}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:600px){
+    .hero h1{font-size:1.4rem}
+    .lesson-header{padding:14px 16px;gap:10px}
+    .lesson-body{padding:0 14px 16px}
+    .hero-stats{gap:12px}
+    .stat{padding:8px 16px}
+  }
+
+}
+.srt-course-wrapper body { background: none; }
+</style>
 </head>
 <body>
 
@@ -837,23 +979,1668 @@ onAuthStateChanged(auth, async (user) => {
 
   <!-- ═══ SRT ═══ -->
   <div class="spage" id="spage-srt">
-    <div class="hpage" id="home-srt">
-      <div class="greet-card fu">
-        <div class="gr-av" style="background:linear-gradient(135deg,#ec4899,#db2777)">🎨</div>
-        <div>
-          <div class="gr-hello" style="color:#ec4899">SRT</div>
-          <div class="gr-name">Programme <em style="color:#ec4899">Première</em></div>
-          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+<div class="srt-course-wrapper">
+<div class="container">
+  <a href="#" class="back-btn">← Retour à l'accueil</a>
+
+  <!-- NAV PILLS -->
+  <div class="lesson-nav" id="lessonNav">
+    <a class="pill active" href="#l1">L1</a>
+    <a class="pill" href="#l2">L2</a>
+    <a class="pill" href="#l3">L3</a>
+    <a class="pill" href="#l4">L4</a>
+    <a class="pill" href="#l5">L5</a>
+    <a class="pill" href="#l6">L6</a>
+    <a class="pill" href="#l7">L7</a>
+    <a class="pill" href="#l8">L8</a>
+    <a class="pill" href="#l9">L9</a>
+    <a class="pill" href="#l10">L10</a>
+    <a class="pill" href="#l11">L11</a>
+    <a class="pill" href="#l12">L12</a>
+    <a class="pill" href="#l13">L13</a>
+    <a class="pill" href="#l14">L14</a>
+  </div>
+
+  <div class="section-title">📖 Les 14 Leçons du Programme</div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 1 — Notion de base des réseaux
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l1">
+    <div class="lesson-header" onclick="srtToggleLesson('body1',this)">
+      <div class="lesson-num">L1</div>
+      <div class="lesson-meta">
+        <h3>Notion de base des réseaux informatiques</h3>
+        <div class="tags"><span class="tag">Réseau</span><span class="tag">LAN/WAN</span><span class="tag">Topologie</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body1">
+      
+      <div class="sub-section">
+        <div class="sub-title">1.1 — Définition d'un réseau informatique</div>
+        <div class="content-block">Un <strong>réseau informatique</strong> est un ensemble d'équipements (ordinateurs, imprimantes, serveurs, routeurs…) interconnectés entre eux, capables de communiquer et de partager des ressources (fichiers, imprimantes, connexion Internet, etc.).</div>
+        <div class="def-box"><div class="def-title">💡 Définition clé</div>Un réseau informatique = plusieurs machines reliées pour échanger des données et partager des ressources.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.2 — Pourquoi créer un réseau ?</div>
+        <div class="content-block">Les principaux avantages d'un réseau :<br>
+        • <strong>Partage de ressources</strong> : une seule imprimante pour tous<br>
+        • <strong>Partage de fichiers</strong> : accès aux documents depuis n'importe quel poste<br>
+        • <strong>Communication</strong> : messagerie interne, appels VoIP<br>
+        • <strong>Sécurité centralisée</strong> : gestion des droits d'accès<br>
+        • <strong>Réduction des coûts</strong> : moins de matériel nécessaire</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.3 — Types de réseaux par étendue géographique</div>
+        <table class="styled-table">
+          <thead><tr><th>Sigle</th><th>Nom complet</th><th>Étendue</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PAN</strong></td><td>Personal Area Network</td><td>~ 10 m</td><td>Bluetooth entre PC et téléphone</td></tr>
+            <tr><td><strong>LAN</strong></td><td>Local Area Network</td><td>Bâtiment / campus</td><td>Réseau d'une école</td></tr>
+            <tr><td><strong>MAN</strong></td><td>Metropolitan Area Network</td><td>Ville</td><td>Réseau d'une université répartie</td></tr>
+            <tr><td><strong>WAN</strong></td><td>Wide Area Network</td><td>Pays / mondial</td><td>Internet</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.4 — Topologies de réseau</div>
+        <div class="content-block">La <strong>topologie</strong> décrit la manière dont les machines sont reliées entre elles.</div>
+        <table class="styled-table">
+          <thead><tr><th>Topologie</th><th>Description</th><th>Avantage</th><th>Inconvénient</th></tr></thead>
+          <tbody>
+            <tr><td>Bus</td><td>Toutes les machines sur un seul câble</td><td>Peu de câble</td><td>Panne = tout tombe</td></tr>
+            <tr><td>Étoile</td><td>Toutes reliées à un switch central</td><td>Facile à gérer</td><td>Switch = point critique</td></tr>
+            <tr><td>Anneau</td><td>Machines en cercle</td><td>Débit constant</td><td>Rupture = panne réseau</td></tr>
+            <tr><td>Maillée</td><td>Chaque machine reliée à plusieurs autres</td><td>Très fiable</td><td>Coût élevé</td></tr>
+          </tbody>
+        </table>
+        <div class="example-box">
+          <div class="ex-title">🌍 Exemple concret</div>
+          <p>Le réseau de ton lycée utilise une <strong>topologie en étoile</strong> : tous les ordinateurs de la salle informatique sont branchés à un switch central. Si un PC tombe en panne, les autres continuent à fonctionner normalement.</p>
         </div>
       </div>
-      <div class="hero fu" style="border-color:rgba(236,72,153,.3)">
-        <div class="hero-tag" style="color:#ec4899">🎨 SRT · Classe de Première</div>
-        <div class="hero-h1">Programme Annuel<br><em style="color:#ec4899">de SRT</em></div>
-        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.5 — Composants matériels d'un réseau</div>
+        <div class="content-block">
+        • <strong>Carte réseau (NIC)</strong> : interface matérielle d'un ordinateur pour se connecter<br>
+        • <strong>Câble RJ45 (Ethernet)</strong> : support de transmission filaire<br>
+        • <strong>Hub</strong> : diffuse les données à tous les ports (obsolète)<br>
+        • <strong>Switch (commutateur)</strong> : envoie les données uniquement au destinataire ciblé<br>
+        • <strong>Routeur</strong> : connecte plusieurs réseaux différents et route les paquets<br>
+        • <strong>Modem</strong> : convertit le signal numérique en signal analogique (et inversement)</div>
       </div>
-      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de SRT sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+
+      <!-- QUIZ L1 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 1</div>
+
+        <div class="quiz-item">
+          <div class="q-text">1. Quel type de réseau couvre toute une ville ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> LAN</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> MAN</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> PAN</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> WAN</div>
+          </div>
+          <div class="quiz-feedback">MAN (Metropolitan Area Network) couvre une ville ou une agglomération.</div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="q-text">2. Dans une topologie en étoile, quel est l'équipement central ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Routeur</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Modem</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Switch</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Hub</div>
+          </div>
+          <div class="quiz-feedback">Dans une topologie en étoile, le switch (ou hub) est l'équipement central auquel toutes les machines sont connectées.</div>
+        </div>
+
+        <div class="quiz-item">
+          <div class="q-text">3. Quel est l'avantage principal d'un réseau informatique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Augmenter la vitesse du processeur</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Partager des ressources et communiquer</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Protéger contre les virus</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Augmenter la mémoire RAM</div>
+          </div>
+          <div class="quiz-feedback">Le principal avantage d'un réseau est le partage de ressources (fichiers, imprimantes, connexion) et la communication entre utilisateurs.</div>
+        </div>
+      </div>
+
+      <!-- EXERCICES L1 -->
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 1</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.1</div>
+          <div class="exo-q">Un lycée dispose de 3 bâtiments séparés de 200 mètres. Chaque bâtiment possède une salle informatique avec 20 ordinateurs. Quel type de réseau faut-il mettre en place ? Justifiez votre réponse et nommez la topologie recommandée.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block"><strong>Type de réseau :</strong> LAN (Local Area Network) car l'étendue est limitée à un campus scolaire.<br><br><strong>Topologie recommandée :</strong> Étoile. On place un switch dans chaque bâtiment, puis on relie les 3 switches entre eux (topologie étoile hiérarchique ou backbone). Avantage : si un poste tombe en panne, les autres continuent de fonctionner. La gestion est centralisée et facile.</div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.2</div>
+          <div class="exo-q">Donnez 4 composants matériels nécessaires pour créer un réseau LAN en étoile avec 10 ordinateurs. Expliquez le rôle de chacun.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. 10 cartes réseau (NIC)</strong> : une par ordinateur, permet la connexion physique au réseau.<br>
+            <strong>2. 1 switch 16 ports</strong> : équipement central qui reçoit et redirige les données vers le bon destinataire.<br>
+            <strong>3. 10 câbles RJ45 (Ethernet)</strong> : un par ordinateur pour relier chaque poste au switch.<br>
+            <strong>4. 1 routeur</strong> : pour connecter le réseau local à Internet (optionnel selon besoin).</div>
+        </div>
+      </div>
     </div>
-    <div class="lpage" id="lpage-srt"></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 2 — Modèle OSI et DOD
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l2">
+    <div class="lesson-header" onclick="srtToggleLesson('body2',this)">
+      <div class="lesson-num">L2</div>
+      <div class="lesson-meta">
+        <h3>Modèle OSI et DOD (TCP/IP)</h3>
+        <div class="tags"><span class="tag">OSI</span><span class="tag">DOD</span><span class="tag">Couches réseau</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body2">
+
+      <div class="sub-section">
+        <div class="sub-title">2.1 — Le modèle OSI (7 couches)</div>
+        <div class="content-block">Le modèle <strong>OSI (Open Systems Interconnection)</strong> est un modèle théorique créé par l'ISO pour standardiser les communications réseau. Il divise la communication en <strong>7 couches</strong>, chacune ayant un rôle précis.</div>
+        <table class="styled-table">
+          <thead><tr><th>N°</th><th>Couche</th><th>Rôle</th><th>Exemple de protocole</th></tr></thead>
+          <tbody>
+            <tr><td>7</td><td><strong>Application</strong></td><td>Interface avec l'utilisateur</td><td>HTTP, FTP, DNS, SMTP</td></tr>
+            <tr><td>6</td><td><strong>Présentation</strong></td><td>Encodage, chiffrement, compression</td><td>SSL/TLS, JPEG, ASCII</td></tr>
+            <tr><td>5</td><td><strong>Session</strong></td><td>Établissement et gestion des sessions</td><td>NetBIOS, RPC</td></tr>
+            <tr><td>4</td><td><strong>Transport</strong></td><td>Découpage des données, fiabilité</td><td>TCP, UDP</td></tr>
+            <tr><td>3</td><td><strong>Réseau</strong></td><td>Routage, adressage IP</td><td>IP, ICMP, ARP</td></tr>
+            <tr><td>2</td><td><strong>Liaison de données</strong></td><td>Accès au support, adresse MAC</td><td>Ethernet, Wi-Fi</td></tr>
+            <tr><td>1</td><td><strong>Physique</strong></td><td>Transmission des bits</td><td>Câble RJ45, fibre optique</td></tr>
+          </tbody>
+        </table>
+        <div class="def-box"><div class="def-title">🧠 Moyen mnémotechnique</div>Pour retenir les couches OSI de bas en haut : <strong>"Physique — Liaison — Réseau — Transport — Session — Présentation — Application"</strong><br>→ <em>"<strong>P</strong>our <strong>L</strong>es <strong>R</strong>éseaux <strong>T</strong>out <strong>S</strong>'organise <strong>P</strong>ar <strong>A</strong>ction"</em></div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">2.2 — Le modèle DOD / TCP-IP (4 couches)</div>
+        <div class="content-block">Le modèle <strong>DOD (Department Of Defense)</strong>, aussi appelé modèle TCP/IP, est le modèle pratique utilisé sur Internet. Il regroupe les 7 couches OSI en <strong>4 couches</strong>.</div>
+        <table class="styled-table">
+          <thead><tr><th>Couche DOD</th><th>Correspondance OSI</th><th>Protocoles</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Application</strong></td><td>7 + 6 + 5 (OSI)</td><td>HTTP, FTP, DNS, SMTP, SSH</td></tr>
+            <tr><td><strong>Transport</strong></td><td>4 (OSI)</td><td>TCP, UDP</td></tr>
+            <tr><td><strong>Internet</strong></td><td>3 (OSI)</td><td>IP, ICMP, ARP, RARP</td></tr>
+            <tr><td><strong>Accès réseau</strong></td><td>2 + 1 (OSI)</td><td>Ethernet, Wi-Fi, PPP</td></tr>
+          </tbody>
+        </table>
+        <div class="example-box">
+          <div class="ex-title">🌐 Exemple : Envoyer un e-mail avec Gmail</div>
+          <p>• <strong>Application (Gmail)</strong> → utilise SMTP pour composer et envoyer l'e-mail<br>
+          • <strong>Transport (TCP)</strong> → découpe l'e-mail en paquets numérotés<br>
+          • <strong>Internet (IP)</strong> → chaque paquet est étiqueté avec l'adresse IP destination<br>
+          • <strong>Accès réseau (Ethernet/Wi-Fi)</strong> → les paquets sont convertis en signaux électriques ou radio</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">2.3 — Encapsulation des données</div>
+        <div class="content-block">Lors de l'envoi, chaque couche <strong>ajoute un en-tête (header)</strong> aux données — c'est l'<strong>encapsulation</strong>. À la réception, chaque couche <strong>retire son en-tête</strong> — c'est la <strong>désencapsulation</strong>.</div>
+        <div class="code-block"><span class="comment">// Encapsulation descendante (émetteur)</span><br>
+Données utilisateur<br>
+→ [Segment TCP] : en-tête TCP + données<br>
+→ [Paquet IP]  : en-tête IP + segment<br>
+→ [Trame Eth]  : en-tête Ethernet + paquet + FCS<br>
+→ [Bits]       : 0101110001...</div>
+      </div>
+
+      <!-- QUIZ L2 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 2</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Combien de couches possède le modèle OSI ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 4</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 5</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> 7</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 10</div>
+          </div>
+          <div class="quiz-feedback">Le modèle OSI comporte 7 couches : Physique, Liaison, Réseau, Transport, Session, Présentation, Application.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel protocole appartient à la couche Transport du modèle OSI ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> HTTP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> IP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> TCP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Ethernet</div>
+          </div>
+          <div class="quiz-feedback">TCP (Transmission Control Protocol) opère à la couche 4 (Transport) du modèle OSI.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Le modèle DOD correspond à quel autre modèle ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> OSI</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> TCP/IP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Ethernet</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> DNS</div>
+          </div>
+          <div class="quiz-feedback">Le modèle DOD (Department of Defense) est l'équivalent pratique du modèle TCP/IP utilisé sur Internet.</div>
+        </div>
+      </div>
+
+      <!-- EXERCICES L2 -->
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 2</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 2.1</div>
+          <div class="exo-q">Placez les protocoles suivants dans la bonne couche du modèle OSI : FTP, IP, TCP, Ethernet, SSL, NetBIOS, SMTP.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            • Couche 7 (Application) : <strong>FTP, SMTP</strong><br>
+            • Couche 6 (Présentation) : <strong>SSL</strong><br>
+            • Couche 5 (Session) : <strong>NetBIOS</strong><br>
+            • Couche 4 (Transport) : <strong>TCP</strong><br>
+            • Couche 3 (Réseau) : <strong>IP</strong><br>
+            • Couche 2 (Liaison) : <strong>Ethernet</strong>
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 2.2</div>
+          <div class="exo-q">Expliquez le processus d'encapsulation lors de l'envoi d'une page web (HTTP) depuis votre navigateur.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            1. <strong>Application (HTTP)</strong> : le navigateur crée une requête HTTP GET.<br>
+            2. <strong>Transport (TCP)</strong> : la requête est découpée en segments TCP avec numéros de séquence.<br>
+            3. <strong>Réseau (IP)</strong> : chaque segment est encapsulé dans un paquet IP avec adresse IP source et destination.<br>
+            4. <strong>Liaison (Ethernet)</strong> : chaque paquet devient une trame avec adresses MAC.<br>
+            5. <strong>Physique</strong> : les trames sont converties en bits (0 et 1) envoyés sur le câble ou en Wi-Fi.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 3 — Protocoles de communication
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l3">
+    <div class="lesson-header" onclick="srtToggleLesson('body3',this)">
+      <div class="lesson-num">L3</div>
+      <div class="lesson-meta">
+        <h3>Protocoles de communication</h3>
+        <div class="tags"><span class="tag">HTTP</span><span class="tag">FTP</span><span class="tag">DNS</span><span class="tag">SMTP</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body3">
+
+      <div class="sub-section">
+        <div class="sub-title">3.1 — Définition d'un protocole</div>
+        <div class="def-box"><div class="def-title">💡 Définition</div>Un <strong>protocole de communication</strong> est un ensemble de règles et de conventions qui définissent la manière dont les données sont échangées entre deux équipements réseau. Sans protocole, les machines ne pourraient pas se comprendre.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.2 — Principaux protocoles applicatifs</div>
+        <table class="styled-table">
+          <thead><tr><th>Protocole</th><th>Rôle</th><th>Port</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>HTTP</strong></td><td>Navigation web (HyperText Transfer Protocol)</td><td>80</td><td>Accéder à un site web</td></tr>
+            <tr><td><strong>HTTPS</strong></td><td>HTTP sécurisé (chiffré avec TLS)</td><td>443</td><td>Gmail, banque en ligne</td></tr>
+            <tr><td><strong>FTP</strong></td><td>Transfert de fichiers</td><td>21</td><td>Télécharger un fichier depuis un serveur</td></tr>
+            <tr><td><strong>SMTP</strong></td><td>Envoi d'e-mails</td><td>25/587</td><td>Envoyer un e-mail</td></tr>
+            <tr><td><strong>POP3</strong></td><td>Réception d'e-mails (télécharge)</td><td>110</td><td>Recevoir emails sur Outlook</td></tr>
+            <tr><td><strong>IMAP</strong></td><td>Réception d'e-mails (synchronise)</td><td>143</td><td>Emails sur smartphone</td></tr>
+            <tr><td><strong>DNS</strong></td><td>Résolution de noms de domaine en IP</td><td>53</td><td>google.com → 142.250.74.78</td></tr>
+            <tr><td><strong>DHCP</strong></td><td>Attribution automatique d'adresses IP</td><td>67/68</td><td>PC obtient une IP en rejoignant un réseau</td></tr>
+            <tr><td><strong>SSH</strong></td><td>Accès distant sécurisé</td><td>22</td><td>Administrer un serveur Linux</td></tr>
+            <tr><td><strong>Telnet</strong></td><td>Accès distant non sécurisé</td><td>23</td><td>Obsolète, remplacé par SSH</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.3 — Comment fonctionne DNS ?</div>
+        <div class="content-block">Le DNS (Domain Name System) est le "bottin téléphonique" d'Internet. Quand vous tapez <em>www.google.com</em>, votre ordinateur ne comprend pas ce nom : il a besoin de l'adresse IP correspondante.</div>
+        <div class="example-box">
+          <div class="ex-title">🔍 Étapes de résolution DNS</div>
+          <p>1. Votre PC demande au <strong>serveur DNS local</strong> (fourni par votre FAI ou DHCP)<br>
+          2. Si inconnu, le DNS local demande à un <strong>serveur DNS racine</strong> (.)<br>
+          3. Le serveur racine répond : "demande au serveur .com"<br>
+          4. Le serveur .com répond : "demande au serveur de google.com"<br>
+          5. Le serveur de google.com répond avec l'IP : 142.250.74.78<br>
+          6. Votre navigateur utilise cette IP pour se connecter</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.4 — Comment fonctionne DHCP ?</div>
+        <div class="content-block">DHCP (Dynamic Host Configuration Protocol) attribue automatiquement une adresse IP à chaque machine qui rejoint le réseau. Processus en 4 étapes : <strong>DORA</strong></div>
+        <div class="def-box"><div class="def-title">📋 Processus DORA</div>
+        <strong>D</strong>iscover → le client cherche un serveur DHCP<br>
+        <strong>O</strong>ffer → le serveur propose une adresse IP<br>
+        <strong>R</strong>equest → le client accepte l'offre<br>
+        <strong>A</strong>cknowledge → le serveur confirme l'attribution</div>
+      </div>
+
+      <!-- QUIZ L3 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 3</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Sur quel port fonctionne HTTPS ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 80</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 443</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 21</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 22</div>
+          </div>
+          <div class="quiz-feedback">HTTPS utilise le port 443. HTTP utilise le port 80. La différence : HTTPS chiffre les données avec TLS.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel protocole permet de convertir un nom de domaine en adresse IP ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> DHCP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> DNS</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> FTP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> HTTP</div>
+          </div>
+          <div class="quiz-feedback">DNS (Domain Name System) traduit les noms de domaine (google.com) en adresses IP (142.250.74.78).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Que signifie l'acronyme DORA dans le protocole DHCP ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Data, Order, Route, Access</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Discover, Offer, Request, Acknowledge</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Domain, Origin, Relay, Answer</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Dynamic, Open, Read, Assign</div>
+          </div>
+          <div class="quiz-feedback">DORA = Discover → Offer → Request → Acknowledge. C'est le processus d'attribution automatique d'une adresse IP par DHCP.</div>
+        </div>
+      </div>
+
+      <!-- EXERCICES L3 -->
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 3</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 3.1</div>
+          <div class="exo-q">Un utilisateur veut envoyer et recevoir des e-mails. Quels protocoles doit-il utiliser ? Précisez les ports correspondants.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block"><strong>Pour envoyer :</strong> SMTP (port 587 recommandé, ou 25)<br><strong>Pour recevoir :</strong><br>• POP3 (port 110) : télécharge les e-mails et les supprime du serveur<br>• IMAP (port 143) : synchronise les e-mails entre le serveur et les appareils → recommandé si on accède depuis plusieurs appareils</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 4 — Protocole TCP/IP
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l4">
+    <div class="lesson-header" onclick="srtToggleLesson('body4',this)">
+      <div class="lesson-num">L4</div>
+      <div class="lesson-meta">
+        <h3>Protocole TCP/IP et adressage IP</h3>
+        <div class="tags"><span class="tag">TCP</span><span class="tag">UDP</span><span class="tag">IPv4</span><span class="tag">Masque</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body4">
+
+      <div class="sub-section">
+        <div class="sub-title">4.1 — TCP vs UDP</div>
+        <table class="styled-table">
+          <thead><tr><th>Critère</th><th>TCP</th><th>UDP</th></tr></thead>
+          <tbody>
+            <tr><td>Connexion</td><td>Orienté connexion (3-way handshake)</td><td>Sans connexion</td></tr>
+            <tr><td>Fiabilité</td><td>✅ Garantit la livraison</td><td>❌ Pas de garantie</td></tr>
+            <tr><td>Ordre</td><td>✅ Données dans l'ordre</td><td>❌ Ordre non garanti</td></tr>
+            <tr><td>Vitesse</td><td>Plus lent (vérifications)</td><td>Plus rapide</td></tr>
+            <tr><td>Utilisation</td><td>Web, e-mail, FTP</td><td>Streaming, VoIP, jeux</td></tr>
+          </tbody>
+        </table>
+        <div class="def-box"><div class="def-title">🤝 3-Way Handshake TCP</div>
+        1. Client → Serveur : <strong>SYN</strong> (je veux me connecter)<br>
+        2. Serveur → Client : <strong>SYN-ACK</strong> (ok, je suis prêt)<br>
+        3. Client → Serveur : <strong>ACK</strong> (connexion établie)</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">4.2 — Adressage IPv4</div>
+        <div class="content-block">Une adresse <strong>IPv4</strong> est composée de <strong>32 bits</strong>, écrite en 4 octets séparés par des points. Exemple : <strong>192.168.1.10</strong></div>
+        <div class="content-block">Chaque adresse IP a deux parties :<br>
+        • <strong>Partie réseau</strong> : identifie le réseau<br>
+        • <strong>Partie hôte</strong> : identifie la machine dans le réseau</div>
+        <table class="styled-table">
+          <thead><tr><th>Classe</th><th>Plage</th><th>Masque par défaut</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td>A</td><td>1.0.0.0 – 126.255.255.255</td><td>255.0.0.0 /8</td><td>Très grands réseaux</td></tr>
+            <tr><td>B</td><td>128.0.0.0 – 191.255.255.255</td><td>255.255.0.0 /16</td><td>Moyens réseaux</td></tr>
+            <tr><td>C</td><td>192.0.0.0 – 223.255.255.255</td><td>255.255.255.0 /24</td><td>Petits réseaux</td></tr>
+          </tbody>
+        </table>
+        <div class="example-box">
+          <div class="ex-title">🔢 Exemple de calcul réseau</div>
+          <p>IP : <strong>192.168.1.45</strong> — Masque : <strong>255.255.255.0</strong><br>
+          → Adresse réseau : 192.168.1.0<br>
+          → Adresse de broadcast : 192.168.1.255<br>
+          → Plage d'hôtes : 192.168.1.1 à 192.168.1.254 (254 hôtes)</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">4.3 — Adresses IP privées (RFC 1918)</div>
+        <div class="content-block">Ces adresses sont utilisées dans les réseaux locaux et ne sont pas routables sur Internet :<br>
+        • Classe A privée : <strong>10.0.0.0/8</strong><br>
+        • Classe B privée : <strong>172.16.0.0/12</strong><br>
+        • Classe C privée : <strong>192.168.0.0/16</strong></div>
+      </div>
+
+      <!-- QUIZ L4 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 4</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Combien de bits comporte une adresse IPv4 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 16 bits</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 32 bits</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 64 bits</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 128 bits</div>
+          </div>
+          <div class="quiz-feedback">IPv4 utilise 32 bits, écrits sous forme de 4 octets (4×8 bits) séparés par des points.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel protocole est préféré pour le streaming vidéo en direct ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> TCP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> UDP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> FTP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> SMTP</div>
+          </div>
+          <div class="quiz-feedback">UDP est préféré pour le streaming car il est plus rapide. Quelques paquets perdus = légère pixelisation, acceptable. TCP serait trop lent à cause des retransmissions.</div>
+        </div>
+      </div>
+
+      <!-- EXERCICES L4 -->
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 4</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 4.1</div>
+          <div class="exo-q">Pour l'adresse IP 172.16.5.20 avec le masque 255.255.0.0, calculez : l'adresse réseau, l'adresse de broadcast, le nombre maximum d'hôtes.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Adresse réseau :</strong> 172.16.0.0<br>
+            <strong>Adresse broadcast :</strong> 172.16.255.255<br>
+            <strong>Plage d'hôtes :</strong> 172.16.0.1 à 172.16.255.254<br>
+            <strong>Nombre d'hôtes :</strong> 2^16 - 2 = 65 534 hôtes<br>
+            (On soustrait 2 : l'adresse réseau et le broadcast ne sont pas attribuables à des hôtes)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 5 — Technologie des serveurs réseaux
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l5">
+    <div class="lesson-header" onclick="srtToggleLesson('body5',this)">
+      <div class="lesson-num">L5</div>
+      <div class="lesson-meta">
+        <h3>Technologie des serveurs réseaux</h3>
+        <div class="tags"><span class="tag">Serveur</span><span class="tag">Client/Serveur</span><span class="tag">Types</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body5">
+
+      <div class="sub-section">
+        <div class="sub-title">5.1 — Définition d'un serveur</div>
+        <div class="def-box"><div class="def-title">💡 Définition</div>Un <strong>serveur</strong> est un ordinateur (ou programme) qui fournit des services ou des ressources à d'autres ordinateurs appelés <strong>clients</strong>. Il est généralement allumé en permanence, plus puissant qu'un poste client, et optimisé pour traiter de nombreuses requêtes simultanément.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">5.2 — Types de serveurs</div>
+        <table class="styled-table">
+          <thead><tr><th>Type de serveur</th><th>Rôle</th><th>Exemples de logiciels</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Serveur de fichiers</strong></td><td>Stockage et partage de fichiers</td><td>Windows Server, Samba</td></tr>
+            <tr><td><strong>Serveur web</strong></td><td>Héberge les sites web</td><td>Apache, Nginx, IIS</td></tr>
+            <tr><td><strong>Serveur de messagerie</strong></td><td>Gestion des e-mails</td><td>Exchange, Postfix</td></tr>
+            <tr><td><strong>Serveur DNS</strong></td><td>Résolution de noms</td><td>BIND, Windows DNS</td></tr>
+            <tr><td><strong>Serveur DHCP</strong></td><td>Attribution d'adresses IP</td><td>ISC DHCP, Windows DHCP</td></tr>
+            <tr><td><strong>Serveur FTP</strong></td><td>Transfert de fichiers</td><td>ProFTPd, FileZilla Server</td></tr>
+            <tr><td><strong>Serveur proxy</strong></td><td>Intermédiaire client-Internet</td><td>Squid, pfSense</td></tr>
+            <tr><td><strong>Serveur de base de données</strong></td><td>Gestion des bases de données</td><td>MySQL, PostgreSQL, Oracle</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">5.3 — Architecture Client/Serveur vs Pair-à-Pair (P2P)</div>
+        <table class="styled-table">
+          <thead><tr><th>Critère</th><th>Client/Serveur</th><th>Pair-à-Pair (P2P)</th></tr></thead>
+          <tbody>
+            <tr><td>Organisation</td><td>Centralisée</td><td>Décentralisée</td></tr>
+            <tr><td>Sécurité</td><td>✅ Contrôle centralisé</td><td>❌ Difficile à sécuriser</td></tr>
+            <tr><td>Performance</td><td>Dépend du serveur</td><td>Croît avec le nombre d'utilisateurs</td></tr>
+            <tr><td>Coût</td><td>Élevé (serveur dédié)</td><td>Faible</td></tr>
+            <tr><td>Utilisation</td><td>Entreprises, lycées</td><td>Partage de fichiers, blockchain</td></tr>
+          </tbody>
+        </table>
+        <div class="example-box">
+          <div class="ex-title">🏫 Exemple concret</div>
+          <p>Le réseau de ton lycée fonctionne en <strong>architecture Client/Serveur</strong> : tous les élèves (clients) accèdent aux ressources (fichiers, Internet, imprimantes) via un serveur central. L'administrateur réseau contrôle qui peut accéder à quoi.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L5 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 5</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel serveur permet d'héberger des sites web ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Serveur DNS</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Serveur DHCP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Serveur web</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Serveur FTP</div>
+          </div>
+          <div class="quiz-feedback">Le serveur web (Apache, Nginx, IIS) héberge les sites web et répond aux requêtes HTTP/HTTPS des navigateurs.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel est l'avantage principal de l'architecture Client/Serveur par rapport au P2P ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Coût plus faible</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Sécurité centralisée</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Plus de vitesse</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Pas besoin de serveur</div>
+          </div>
+          <div class="quiz-feedback">L'architecture Client/Serveur offre une sécurité centralisée : l'administrateur contrôle tous les accès depuis le serveur.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 5</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 5.1</div>
+          <div class="exo-q">Une entreprise a besoin des services suivants : site web interne, attribution automatique d'IP, résolution de noms, stockage de fichiers partagés. Listez les serveurs nécessaires et leur rôle.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Serveur web (Apache/IIS)</strong> → héberge le site intranet de l'entreprise<br>
+            <strong>2. Serveur DHCP</strong> → attribue automatiquement des adresses IP à chaque machine qui rejoint le réseau<br>
+            <strong>3. Serveur DNS</strong> → résout les noms de domaine internes (ex: intranet.entreprise.local → 192.168.1.10)<br>
+            <strong>4. Serveur de fichiers</strong> → stocke les documents partagés, gère les droits d'accès par utilisateur/groupe
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 6 — Préparation du disque dur serveur
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l6">
+    <div class="lesson-header" onclick="srtToggleLesson('body6',this)">
+      <div class="lesson-num">L6</div>
+      <div class="lesson-meta">
+        <h3>Préparation du disque dur du serveur</h3>
+        <div class="tags"><span class="tag">Disque dur</span><span class="tag">RAID</span><span class="tag">Partition</span><span class="tag">Formatage</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body6">
+
+      <div class="sub-section">
+        <div class="sub-title">6.1 — Types de disques durs</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Technologie</th><th>Vitesse</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>HDD</strong></td><td>Mécanique (plateaux magnétiques)</td><td>Lente (70-150 MB/s)</td><td>Stockage de masse, sauvegarde</td></tr>
+            <tr><td><strong>SSD</strong></td><td>Flash NAND</td><td>Rapide (500 MB/s+)</td><td>Système d'exploitation, applications</td></tr>
+            <tr><td><strong>SAS</strong></td><td>SCSI (pour serveurs)</td><td>Très rapide, fiable</td><td>Serveurs d'entreprise</td></tr>
+            <tr><td><strong>NVMe</strong></td><td>PCIe Flash</td><td>Très rapide (3500 MB/s+)</td><td>Serveurs haute performance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">6.2 — La technologie RAID</div>
+        <div class="def-box"><div class="def-title">💡 RAID</div><strong>RAID = Redundant Array of Independent Disks</strong> : technique qui combine plusieurs disques physiques pour améliorer la performance, la sécurité ou les deux.</div>
+        <table class="styled-table">
+          <thead><tr><th>Niveau</th><th>Description</th><th>Avantage</th><th>Inconvénient</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RAID 0</strong></td><td>Répartition (striping) sur 2 disques</td><td>Double vitesse de lecture/écriture</td><td>Aucune redondance</td></tr>
+            <tr><td><strong>RAID 1</strong></td><td>Miroir : copie identique sur 2 disques</td><td>Survie si 1 disque tombe</td><td>50% de l'espace utilisé</td></tr>
+            <tr><td><strong>RAID 5</strong></td><td>Striping + parité (3 disques min.)</td><td>Bon équilibre perf/sécurité</td><td>Complexe à reconstruire</td></tr>
+            <tr><td><strong>RAID 10</strong></td><td>RAID 1 + RAID 0 (4 disques)</td><td>Rapide ET redondant</td><td>Coût élevé</td></tr>
+          </tbody>
+        </table>
+        <div class="example-box">
+          <div class="ex-title">🏦 Exemple : Serveur d'une banque</div>
+          <p>Une banque utilise <strong>RAID 10</strong> pour ses serveurs : elle a besoin de haute performance (RAID 0) ET de sécurité des données (RAID 1). Si un disque tombe en panne, les données sont intactes sur le miroir.</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">6.3 — Partitionnement et formatage</div>
+        <div class="content-block">
+        <strong>Partitionnement</strong> : division d'un disque dur en plusieurs zones indépendantes (partitions).<br><br>
+        <strong>Systèmes de partitionnement :</strong><br>
+        • <strong>MBR</strong> (Master Boot Record) : ancien, max 4 partitions primaires, max 2 To<br>
+        • <strong>GPT</strong> (GUID Partition Table) : moderne, 128 partitions, disques > 2 To<br><br>
+        <strong>Systèmes de fichiers (formatage) :</strong><br>
+        • <strong>NTFS</strong> : Windows (permissions, journalisation)<br>
+        • <strong>ext4</strong> : Linux (rapide, journalisé)<br>
+        • <strong>FAT32</strong> : compatible tous OS, max 4 Go par fichier<br>
+        • <strong>exFAT</strong> : clés USB, cartes SD, grands fichiers
+        </div>
+      </div>
+
+      <!-- QUIZ L6 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 6</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel niveau RAID offre à la fois performance et redondance ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> RAID 0</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> RAID 1</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> RAID 5</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">D</span> RAID 10</div>
+          </div>
+          <div class="quiz-feedback">RAID 10 combine le striping (RAID 0 → performance) et le mirroring (RAID 1 → redondance). C'est le plus robuste mais aussi le plus coûteux.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel système de fichiers est utilisé par défaut sous Windows ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> ext4</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> FAT32</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> NTFS</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> exFAT</div>
+          </div>
+          <div class="quiz-feedback">NTFS (New Technology File System) est le système de fichiers standard de Windows. Il supporte les permissions, la journalisation et les grands fichiers.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 6</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 6.1</div>
+          <div class="exo-q">Un administrateur réseau dispose de 4 disques durs de 1 To chacun. Il veut maximiser à la fois la vitesse et la sécurité des données. Quel niveau RAID choisit-il ? Quelle sera la capacité totale utilisable ?</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Niveau RAID choisi :</strong> RAID 10<br>
+            <strong>Pourquoi :</strong> RAID 10 = miroir (RAID 1) + striping (RAID 0) → haute performance ET redondance<br>
+            <strong>Capacité utilisable :</strong> 4 disques × 1 To = 4 To physiques. RAID 10 utilise 50% → <strong>2 To utilisables</strong><br>
+            <strong>Résistance aux pannes :</strong> peut survivre à la perte de 1 disque dans chaque paire miroir.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 7 — Outils d'administration réseau
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l7">
+    <div class="lesson-header" onclick="srtToggleLesson('body7',this)">
+      <div class="lesson-num">L7</div>
+      <div class="lesson-meta">
+        <h3>Outils d'administration réseau et leurs caractéristiques</h3>
+        <div class="tags"><span class="tag">ping</span><span class="tag">ipconfig</span><span class="tag">tracert</span><span class="tag">netstat</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body7">
+
+      <div class="sub-section">
+        <div class="sub-title">7.1 — Commandes de diagnostic réseau</div>
+        <table class="styled-table">
+          <thead><tr><th>Commande</th><th>OS</th><th>Rôle</th><th>Exemple d'utilisation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ping</strong></td><td>Tous</td><td>Tester la connectivité avec une IP ou un nom</td><td>ping 8.8.8.8</td></tr>
+            <tr><td><strong>ipconfig</strong></td><td>Windows</td><td>Afficher la configuration IP des interfaces</td><td>ipconfig /all</td></tr>
+            <tr><td><strong>ifconfig</strong></td><td>Linux/Mac</td><td>Afficher/configurer les interfaces réseau</td><td>ifconfig eth0</td></tr>
+            <tr><td><strong>tracert</strong></td><td>Windows</td><td>Tracer le chemin des paquets jusqu'à une destination</td><td>tracert google.com</td></tr>
+            <tr><td><strong>traceroute</strong></td><td>Linux</td><td>Équivalent Linux de tracert</td><td>traceroute google.com</td></tr>
+            <tr><td><strong>netstat</strong></td><td>Tous</td><td>Afficher connexions actives et ports ouverts</td><td>netstat -an</td></tr>
+            <tr><td><strong>nslookup</strong></td><td>Tous</td><td>Interroger un serveur DNS</td><td>nslookup google.com</td></tr>
+            <tr><td><strong>arp</strong></td><td>Tous</td><td>Table de correspondance IP↔MAC</td><td>arp -a</td></tr>
+            <tr><td><strong>route</strong></td><td>Tous</td><td>Afficher/modifier la table de routage</td><td>route print</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">7.2 — Détail des commandes clés</div>
+        <div class="code-block">
+<span class="comment">// PING — Test de connectivité</span><br>
+<span class="keyword">C:\></span> ping 192.168.1.1<br>
+Envoi d'une requête Ping sur 192.168.1.1 :<br>
+Réponse de 192.168.1.1 : octets=32 durée=1ms TTL=128<br>
+<span class="comment">// Si "Délai d'attente de la demande" → machine inaccessible</span>
+        </div>
+        <div class="code-block">
+<span class="comment">// IPCONFIG /ALL — Configuration réseau complète</span><br>
+<span class="keyword">C:\></span> ipconfig /all<br>
+Adresse IP.........: 192.168.1.45<br>
+Masque de sous-réseau: 255.255.255.0<br>
+Passerelle par défaut: 192.168.1.1<br>
+Serveurs DNS.......: 8.8.8.8
+        </div>
+        <div class="code-block">
+<span class="comment">// TRACERT — Chemin des paquets</span><br>
+<span class="keyword">C:\></span> tracert google.com<br>
+1   1ms  192.168.1.1  (routeur local)<br>
+2   8ms  10.0.0.1     (FAI - 1er saut)<br>
+3  15ms  72.14.x.x    (routeur Google)<br>
+4  20ms  142.250.74.78 (serveur Google)
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">7.3 — Outils logiciels d'administration</div>
+        <table class="styled-table">
+          <thead><tr><th>Outil</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Wireshark</strong></td><td>Capture et analyse des paquets réseau (sniffer)</td></tr>
+            <tr><td><strong>Nmap</strong></td><td>Scanner de ports et de réseau</td></tr>
+            <tr><td><strong>PuTTY</strong></td><td>Client SSH/Telnet pour administrer des serveurs</td></tr>
+            <tr><td><strong>Cisco Packet Tracer</strong></td><td>Simulateur de réseau pour la formation</td></tr>
+            <tr><td><strong>GNS3</strong></td><td>Simulateur réseau avancé</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- QUIZ L7 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 7</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle commande permet de tracer le chemin des paquets sous Windows ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> ping</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> ipconfig</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> tracert</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> netstat</div>
+          </div>
+          <div class="quiz-feedback">tracert (traceroute sous Linux) trace le chemin des paquets en listant tous les routeurs traversés jusqu'à la destination.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel outil permet d'analyser et capturer les paquets circulant sur un réseau ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Wireshark</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> PuTTY</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Nmap</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> GNS3</div>
+          </div>
+          <div class="quiz-feedback">Wireshark est un analyseur de protocoles réseau (sniffer) qui capture et affiche en temps réel tous les paquets circulant sur le réseau.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 7</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 7.1</div>
+          <div class="exo-q">Un utilisateur ne peut plus accéder à Internet mais son collègue à côté peut. Décrivez étape par étape la procédure de diagnostic que vous suivriez en utilisant les commandes réseau vues en cours.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Étape 1 :</strong> <code>ipconfig /all</code> → vérifier qu'une adresse IP est attribuée. Si 169.254.x.x → problème DHCP.<br>
+            <strong>Étape 2 :</strong> <code>ping 127.0.0.1</code> → tester la pile TCP/IP locale. Si KO → réinstaller les protocoles réseau.<br>
+            <strong>Étape 3 :</strong> <code>ping 192.168.1.1</code> (passerelle) → tester la connexion au routeur local. Si KO → problème câble ou switch.<br>
+            <strong>Étape 4 :</strong> <code>ping 8.8.8.8</code> → tester la connexion Internet via IP. Si OK → problème DNS.<br>
+            <strong>Étape 5 :</strong> <code>nslookup google.com</code> → tester la résolution DNS. Si KO → changer le serveur DNS (ex: 8.8.8.8).<br>
+            <strong>Conclusion :</strong> La panne est isolée à cette machine. Vérifier paramètres réseau, driver carte réseau.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 8 — Installation des serveurs réseaux
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l8">
+    <div class="lesson-header" onclick="srtToggleLesson('body8',this)">
+      <div class="lesson-num">L8</div>
+      <div class="lesson-meta">
+        <h3>Installation des serveurs réseaux</h3>
+        <div class="tags"><span class="tag">Windows Server</span><span class="tag">Linux</span><span class="tag">Rôles</span><span class="tag">Active Directory</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body8">
+
+      <div class="sub-section">
+        <div class="sub-title">8.1 — Systèmes d'exploitation serveur</div>
+        <table class="styled-table">
+          <thead><tr><th>OS Serveur</th><th>Éditeur</th><th>Caractéristiques</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Windows Server</strong></td><td>Microsoft</td><td>Interface graphique, Active Directory, facile à administrer</td></tr>
+            <tr><td><strong>Ubuntu Server</strong></td><td>Canonical</td><td>Gratuit, sécurisé, populaire pour les serveurs web</td></tr>
+            <tr><td><strong>CentOS / Rocky Linux</strong></td><td>Communauté</td><td>Stable, basé sur RHEL, pour entreprises</td></tr>
+            <tr><td><strong>Debian</strong></td><td>Communauté</td><td>Très stable, léger, parfait pour serveurs</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">8.2 — Étapes d'installation d'un serveur Windows</div>
+        <div class="content-block">
+        <strong>1. Vérification matérielle</strong> : processeur 64 bits, RAM min 2 Go (4 Go recommandé), disque min 32 Go<br>
+        <strong>2. Préparation du support</strong> : DVD ou clé USB bootable avec l'ISO<br>
+        <strong>3. Boot depuis le support</strong> : modifier l'ordre de démarrage dans le BIOS/UEFI<br>
+        <strong>4. Installation de l'OS</strong> : choix de la partition, type d'installation (Core ou avec interface)<br>
+        <strong>5. Configuration initiale</strong> : nom du serveur, adresse IP statique, mot de passe administrateur<br>
+        <strong>6. Ajout des rôles et fonctionnalités</strong> : via le Gestionnaire de serveur
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">8.3 — Active Directory (AD DS)</div>
+        <div class="def-box"><div class="def-title">💡 Active Directory</div><strong>Active Directory Domain Services (AD DS)</strong> est un service de Windows Server qui centralise la gestion des utilisateurs, ordinateurs et ressources d'un domaine réseau. C'est l'annuaire de l'entreprise.</div>
+        <div class="content-block">
+        <strong>Concepts clés de l'Active Directory :</strong><br>
+        • <strong>Domaine</strong> : ensemble de machines gérées par un même contrôleur de domaine (ex: entreprise.local)<br>
+        • <strong>Contrôleur de domaine (DC)</strong> : serveur qui gère le domaine<br>
+        • <strong>Unité d'organisation (OU)</strong> : dossier logique pour organiser utilisateurs/machines<br>
+        • <strong>GPO (Group Policy Objects)</strong> : règles appliquées automatiquement à des groupes d'utilisateurs<br>
+        • <strong>LDAP</strong> : protocole d'accès à l'annuaire AD
+        </div>
+        <div class="example-box">
+          <div class="ex-title">🏢 Exemple dans une entreprise</div>
+          <p>Dans la société TechCam, l'AD organise les employés par département :<br>
+          • OU "Direction" → 5 comptes → accès à tous les dossiers<br>
+          • OU "Comptabilité" → 12 comptes → accès aux dossiers financiers uniquement<br>
+          • OU "Informatique" → 3 comptes → droits d'administration<br>
+          Chaque employé se connecte avec ses identifiants depuis n'importe quel PC du domaine.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L8 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 8</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Qu'est-ce qu'un contrôleur de domaine (DC) ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Un routeur qui contrôle le débit</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Un serveur qui gère l'authentification et les ressources d'un domaine</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Un switch administrable</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Un serveur DNS uniquement</div>
+          </div>
+          <div class="quiz-feedback">Le contrôleur de domaine (Domain Controller) est le serveur central d'Active Directory. Il authentifie les utilisateurs et gère les accès aux ressources du domaine.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Que permet de faire une GPO (Group Policy Object) ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Accélérer le réseau</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Appliquer des règles automatiquement à des groupes d'utilisateurs</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Partager des fichiers en P2P</td></tr></div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Configurer les adresses IP</div>
+          </div>
+          <div class="quiz-feedback">Les GPO permettent d'appliquer automatiquement des politiques (règles) à des groupes d'utilisateurs ou d'ordinateurs : fond d'écran imposé, restrictions d'accès, scripts de démarrage, etc.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 8</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 8.1</div>
+          <div class="exo-q">Un lycée de 400 élèves et 40 professeurs veut mettre en place un réseau avec Active Directory. Proposez une structure d'Unités d'Organisation (OU) logique et expliquez votre choix.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Structure proposée :</strong><br>
+            • OU <strong>Eleves</strong><br>
+            &nbsp;&nbsp;└─ OU Classe_1ere_A, OU Classe_1ere_B, OU Classe_Terminale...<br>
+            • OU <strong>Professeurs</strong><br>
+            &nbsp;&nbsp;└─ OU Profs_Sciences, OU Profs_Lettres, OU Administration<br>
+            • OU <strong>Informatique</strong> (équipe IT)<br><br>
+            <strong>GPO appliquées :</strong><br>
+            • Élèves : désactiver installation logiciels, fond d'écran fixe, accès limité au dossier personnel<br>
+            • Professeurs : accès aux dossiers pédagogiques, impression en réseau<br>
+            • IT : droits d'administration complète
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 9 — Outils de vérification TCP/IP
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l9">
+    <div class="lesson-header" onclick="srtToggleLesson('body9',this)">
+      <div class="lesson-num">L9</div>
+      <div class="lesson-meta">
+        <h3>Outils de vérification de l'installation — Commandes TCP/IP</h3>
+        <div class="tags"><span class="tag">ping</span><span class="tag">ipconfig</span><span class="tag">Diagnostic</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body9">
+
+      <div class="sub-section">
+        <div class="sub-title">9.1 — Vérification après installation réseau</div>
+        <div class="content-block">Après l'installation d'un serveur ou d'un poste réseau, il est indispensable de <strong>vérifier que tout fonctionne correctement</strong> grâce à des commandes de test.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.2 — Procédure de vérification étape par étape</div>
+        <div class="code-block">
+<span class="comment">// ÉTAPE 1 : Tester la carte réseau locale</span><br>
+<span class="keyword">ping 127.0.0.1</span><br>
+<span class="comment">// 127.0.0.1 = loopback (adresse de la machine elle-même)</span><br>
+<span class="comment">// Si OK → la carte réseau et TCP/IP fonctionnent</span><br><br>
+<span class="comment">// ÉTAPE 2 : Vérifier l'adresse IP attribuée</span><br>
+<span class="keyword">ipconfig</span><br>
+<span class="comment">// Vérifier : IP, masque, passerelle</span><br><br>
+<span class="comment">// ÉTAPE 3 : Tester la passerelle (routeur)</span><br>
+<span class="keyword">ping 192.168.1.1</span><br>
+<span class="comment">// Si OK → connexion au réseau local fonctionnelle</span><br><br>
+<span class="comment">// ÉTAPE 4 : Tester Internet via IP</span><br>
+<span class="keyword">ping 8.8.8.8</span><br>
+<span class="comment">// Si OK → connexion Internet OK (mais DNS peut être KO)</span><br><br>
+<span class="comment">// ÉTAPE 5 : Tester la résolution DNS</span><br>
+<span class="keyword">ping google.com</span><br>
+<span class="comment">// Si OK → DNS fonctionne, connexion complète !</span>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.3 — Interprétation des résultats ping</div>
+        <table class="styled-table">
+          <thead><tr><th>Résultat ping</th><th>Signification</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Réponse normale (< 50ms)</td><td>✅ Connexion OK</td><td>Rien à faire</td></tr>
+            <tr><td>Délai élevé (> 200ms)</td><td>⚠️ Réseau congestionné</td><td>Vérifier la charge du réseau</td></tr>
+            <tr><td>Délai d'attente dépassé</td><td>❌ Machine inaccessible ou firewall</td><td>Vérifier câble, IP, firewall</td></tr>
+            <tr><td>Hôte de destination inaccessible</td><td>❌ Problème de routage</td><td>Vérifier la table de routage</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.4 — Commande ipconfig avancée</div>
+        <div class="code-block">
+<span class="keyword">ipconfig /all</span>     <span class="comment">// Affiche toutes les infos (dont adresse MAC)</span><br>
+<span class="keyword">ipconfig /release</span>  <span class="comment">// Libère l'adresse IP DHCP</span><br>
+<span class="keyword">ipconfig /renew</span>    <span class="comment">// Demande une nouvelle adresse IP au serveur DHCP</span><br>
+<span class="keyword">ipconfig /flushdns</span> <span class="comment">// Vide le cache DNS local</span>
+        </div>
+      </div>
+
+      <!-- QUIZ L9 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 9</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Que teste la commande "ping 127.0.0.1" ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> La connexion Internet</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> La passerelle réseau</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> La pile TCP/IP de la machine locale</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Le serveur DNS</div>
+          </div>
+          <div class="quiz-feedback">127.0.0.1 est l'adresse de loopback. Pinger cette adresse teste uniquement la pile TCP/IP de la machine locale, sans aucun trafic réseau réel.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle commande permet de renouveler l'adresse IP obtenue via DHCP ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> ipconfig /all</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> ipconfig /release</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> ipconfig /renew</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> ipconfig /flushdns</div>
+          </div>
+          <div class="quiz-feedback">ipconfig /renew envoie une nouvelle requête DHCP pour obtenir une adresse IP. On l'utilise souvent après un ipconfig /release.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 9</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 9.1</div>
+          <div class="exo-q">Un technicien installe un nouveau PC dans le réseau. Il effectue les tests suivants :<br>• ping 127.0.0.1 → OK<br>• ping 192.168.0.1 → Délai d'attente dépassé<br>• ping 8.8.8.8 → Délai d'attente dépassé<br>Identifiez le problème et proposez une solution.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Analyse :</strong><br>
+            • ping 127.0.0.1 OK → la carte réseau et TCP/IP fonctionnent bien<br>
+            • ping passerelle KO → le PC ne peut pas atteindre le routeur local<br><br>
+            <strong>Causes probables :</strong><br>
+            1. Câble réseau non branché ou défectueux<br>
+            2. Mauvaise adresse IP configurée (ne correspond pas au réseau 192.168.0.x)<br>
+            3. Mauvais masque de sous-réseau<br><br>
+            <strong>Solution :</strong> Vérifier le câble RJ45, puis exécuter <code>ipconfig /all</code> pour vérifier que l'IP est dans la plage 192.168.0.x avec masque 255.255.255.0.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 10 — Projet de conception d'un réseau
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l10">
+    <div class="lesson-header" onclick="srtToggleLesson('body10',this)">
+      <div class="lesson-num">L10</div>
+      <div class="lesson-meta">
+        <h3>Projet de conception d'un réseau informatique</h3>
+        <div class="tags"><span class="tag">Conception</span><span class="tag">Plan réseau</span><span class="tag">Adressage</span><span class="tag">Cahier des charges</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body10">
+
+      <div class="sub-section">
+        <div class="sub-title">10.1 — Étapes de conception d'un réseau</div>
+        <div class="content-block">La conception d'un réseau informatique suit un processus méthodique en plusieurs phases :</div>
+        <div class="content-block">
+        <strong>Phase 1 : Analyse des besoins</strong><br>
+        • Nombre d'utilisateurs et de postes<br>
+        • Services nécessaires (web, messagerie, fichiers…)<br>
+        • Budget disponible<br>
+        • Niveau de sécurité requis<br><br>
+        <strong>Phase 2 : Choix de la topologie</strong><br>
+        • Topologie physique (câblage)<br>
+        • Topologie logique (flux de données)<br><br>
+        <strong>Phase 3 : Plan d'adressage IP</strong><br>
+        • Choix de la plage d'adresses<br>
+        • Attribution des IPs statiques aux serveurs<br>
+        • Plage DHCP pour les postes clients<br><br>
+        <strong>Phase 4 : Choix des équipements</strong><br>
+        • Serveurs, switches, routeurs, câbles<br><br>
+        <strong>Phase 5 : Documentation</strong><br>
+        • Schéma réseau, plan d'adressage, procédures
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">10.2 — Plan d'adressage IP</div>
+        <div class="example-box">
+          <div class="ex-title">📋 Exemple : Réseau d'un lycée (50 postes)</div>
+          <p><strong>Réseau :</strong> 192.168.10.0/24<br>
+          <strong>Masque :</strong> 255.255.255.0<br><br>
+          • Serveur AD/DNS : 192.168.10.1<br>
+          • Serveur DHCP : 192.168.10.2<br>
+          • Serveur Web : 192.168.10.3<br>
+          • Routeur (passerelle) : 192.168.10.254<br>
+          • Plage DHCP pour élèves : 192.168.10.10 – 192.168.10.100<br>
+          • Plage DHCP pour profs : 192.168.10.101 – 192.168.10.150</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">10.3 — Schéma réseau logique</div>
+        <div class="content-block">Un schéma réseau représente graphiquement :<br>
+        • Les équipements (serveurs, switches, routeurs, PCs)<br>
+        • Les connexions entre eux<br>
+        • Les adresses IP de chaque équipement<br>
+        • Les VLAN s'il y en a<br><br>
+        Outils pour créer des schémas réseau : <strong>Cisco Packet Tracer</strong>, <strong>Draw.io</strong>, <strong>Visio</strong>, <strong>GNS3</strong></div>
+      </div>
+
+      <!-- QUIZ L10 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 10</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la première étape d'un projet de conception réseau ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Acheter les équipements</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Analyser les besoins</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Configurer les serveurs</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Tirer les câbles</div>
+          </div>
+          <div class="quiz-feedback">Avant tout achat ou installation, il faut analyser les besoins : combien d'utilisateurs, quels services, quel budget, quelle sécurité.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Pourquoi attribue-t-on des IP statiques aux serveurs ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Pour économiser des adresses IP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Parce que les serveurs ne supportent pas DHCP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Pour que les clients les trouvent toujours à la même adresse</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Pour augmenter la vitesse</div>
+          </div>
+          <div class="quiz-feedback">Les serveurs ont des IPs statiques car les clients (et les autres serveurs) doivent les contacter à une adresse fixe et prévisible. Si l'IP change, le service devient inaccessible.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 10</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 10.1 — Projet complet</div>
+          <div class="exo-q">Une PME de 20 employés souhaite créer son réseau informatique. Elle a besoin : d'un accès Internet partagé, d'un serveur de fichiers, de l'impression réseau et de messagerie interne. Proposez un plan d'adressage complet et listez les équipements nécessaires.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Plan d'adressage (réseau 192.168.1.0/24) :</strong><br>
+            • Routeur/Passerelle : 192.168.1.1<br>
+            • Serveur fichiers + DHCP + DNS : 192.168.1.2<br>
+            • Serveur messagerie : 192.168.1.3<br>
+            • Imprimante réseau : 192.168.1.4<br>
+            • Postes clients : 192.168.1.10 – 192.168.1.30 (via DHCP)<br><br>
+            <strong>Équipements nécessaires :</strong><br>
+            • 1 routeur (connexion Internet)<br>
+            • 1 switch 24 ports<br>
+            • 1 serveur (fichiers + DHCP + DNS)<br>
+            • 1 serveur messagerie (ou logiciel sur le même serveur)<br>
+            • 1 imprimante réseau<br>
+            • 20 postes de travail + câbles RJ45<br>
+            • 1 UPS (onduleur) pour protéger les serveurs
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 11 — Lecture des schémas fonctionnels
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l11">
+    <div class="lesson-header" onclick="srtToggleLesson('body11',this)">
+      <div class="lesson-num">L11</div>
+      <div class="lesson-meta">
+        <h3>Lecture des schémas fonctionnels d'installation des réseaux</h3>
+        <div class="tags"><span class="tag">Schéma réseau</span><span class="tag">Symboles</span><span class="tag">Lecture</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body11">
+
+      <div class="sub-section">
+        <div class="sub-title">11.1 — Symboles et icônes réseau standards</div>
+        <table class="styled-table">
+          <thead><tr><th>Symbole</th><th>Équipement</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>🖥️ Rectangle avec écran</td><td>Ordinateur / Poste client</td><td>Machine utilisateur standard</td></tr>
+            <tr><td>🗄️ Rectangle avec disques</td><td>Serveur</td><td>Machine fournissant des services</td></tr>
+            <tr><td>⬛ Rectangle avec ports</td><td>Switch</td><td>Commutateur de réseau local</td></tr>
+            <tr><td>🔶 Cylindre avec flèches</td><td>Routeur</td><td>Interconnexion de réseaux</td></tr>
+            <tr><td>📶 Ondes</td><td>Point d'accès Wi-Fi</td><td>Réseau sans fil</td></tr>
+            <tr><td>☁️ Nuage</td><td>Internet / Cloud</td><td>Réseau externe non détaillé</td></tr>
+            <tr><td>🔒 Cadenas / Mur</td><td>Firewall</td><td>Pare-feu de sécurité</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">11.2 — Comment lire un schéma réseau</div>
+        <div class="content-block">Pour lire un schéma fonctionnel réseau :<br><br>
+        <strong>1. Identifier les zones</strong> : réseau local (LAN), DMZ, Internet<br>
+        <strong>2. Repérer les équipements actifs</strong> : routeurs, switches, serveurs<br>
+        <strong>3. Lire les connexions</strong> : chaque ligne = un câble ou lien réseau<br>
+        <strong>4. Identifier les adresses IP</strong> notées sur chaque interface<br>
+        <strong>5. Comprendre le flux</strong> : sens des données entre les équipements<br>
+        <strong>6. Repérer les zones de sécurité</strong> : firewall, DMZ</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">11.3 — Zones d'un réseau d'entreprise</div>
+        <div class="def-box"><div class="def-title">🏢 Architecture typique d'un réseau d'entreprise</div>
+        • <strong>Zone LAN</strong> : réseau interne des postes clients<br>
+        • <strong>Zone Serveurs</strong> : serveurs internes (AD, fichiers, messagerie)<br>
+        • <strong>Zone DMZ</strong> (DeMilitarized Zone) : serveurs accessibles depuis Internet (web, mail public)<br>
+        • <strong>Zone Internet</strong> : réseau externe via routeur/FAI<br>
+        • <strong>Firewall</strong> : sépare et protège chaque zone</div>
+      </div>
+
+      <!-- QUIZ L11 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 11</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Dans un schéma réseau, que représente le symbole "nuage" ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Un serveur de stockage</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Internet ou un réseau externe</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Un routeur Wi-Fi</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Un switch administrable</div>
+          </div>
+          <div class="quiz-feedback">Le nuage représente Internet ou tout réseau externe dont les détails internes ne sont pas représentés dans le schéma.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Qu'est-ce qu'une DMZ dans un réseau d'entreprise ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Un type de câble réseau</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Un protocole de sécurité</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Une zone réseau intermédiaire pour les serveurs accessibles depuis Internet</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Un réseau sans fil sécurisé</div>
+          </div>
+          <div class="quiz-feedback">La DMZ (DeMilitarized Zone) est une zone réseau séparée où sont placés les serveurs accessibles depuis Internet (web, mail). Elle isole ces serveurs du réseau interne pour plus de sécurité.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 11</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 11.1</div>
+          <div class="exo-q">Décrivez verbalement le schéma réseau suivant : Internet → Routeur (IP publique: 196.x.x.1) → Firewall → [Switch principal (192.168.1.0/24)] relié à 3 serveurs (AD:1, DHCP:2, Web:3) et 20 PCs clients (DHCP: .10-.30).</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Description :</strong> Ce schéma représente le réseau interne d'une petite entreprise connectée à Internet.<br><br>
+            Le trafic Internet arrive au <strong>routeur</strong> (adresse publique 196.x.x.1) qui fait la liaison entre l'Internet et le réseau local. Un <strong>firewall</strong> filtre le trafic entrant/sortant pour protéger le réseau interne.<br><br>
+            En interne, un <strong>switch principal</strong> connecte tous les équipements du réseau 192.168.1.0/24 :<br>
+            • Le serveur Active Directory/DNS (.1) gère les utilisateurs<br>
+            • Le serveur DHCP (.2) attribue automatiquement les IPs aux clients<br>
+            • Le serveur Web (.3) héberge l'intranet<br>
+            • Les 20 postes clients reçoivent des IPs dynamiques de .10 à .30
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 12 — Stratégie de dépannage des réseaux
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l12">
+    <div class="lesson-header" onclick="srtToggleLesson('body12',this)">
+      <div class="lesson-num">L12</div>
+      <div class="lesson-meta">
+        <h3>La stratégie de dépannage des réseaux</h3>
+        <div class="tags"><span class="tag">Dépannage</span><span class="tag">Troubleshooting</span><span class="tag">Méthode</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body12">
+
+      <div class="sub-section">
+        <div class="sub-title">12.1 — Méthodologie de dépannage réseau</div>
+        <div class="content-block">Le dépannage réseau suit une méthode rigoureuse. Il existe deux approches principales :</div>
+        <table class="styled-table">
+          <thead><tr><th>Approche</th><th>Description</th><th>Avantage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bottom-Up (bas vers haut)</strong></td><td>Commencer par la couche 1 (physique) et remonter</td><td>Efficace pour pannes matérielles</td></tr>
+            <tr><td><strong>Top-Down (haut vers bas)</strong></td><td>Commencer par la couche 7 (application) et descendre</td><td>Efficace si l'application est en cause</td></tr>
+            <tr><td><strong>Divide & Conquer</strong></td><td>Tester au milieu et éliminer par moitiés</td><td>Rapide sur grands réseaux</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">12.2 — Problèmes courants et solutions</div>
+        <table class="styled-table">
+          <thead><tr><th>Symptôme</th><th>Cause probable</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>Pas d'accès réseau</td><td>Câble débranché / NIC défaillante</td><td>Vérifier câble, voyant switch, driver</td></tr>
+            <tr><td>IP 169.254.x.x</td><td>Serveur DHCP inaccessible (APIPA)</td><td>Vérifier serveur DHCP, ipconfig /renew</td></tr>
+            <tr><td>Ping KO, navigation KO</td><td>Mauvaise passerelle ou pare-feu</td><td>Vérifier passerelle, règles firewall</td></tr>
+            <tr><td>Ping IP OK, URL KO</td><td>Problème DNS</td><td>Changer DNS, ipconfig /flushdns</td></tr>
+            <tr><td>Réseau lent</td><td>Boucle réseau, saturation</td><td>Vérifier STP, analyser avec Wireshark</td></tr>
+            <tr><td>Accès partiel aux ressources</td><td>Problème de droits/permissions</td><td>Vérifier l'AD, les partages, les GPO</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">12.3 — Processus de dépannage en 6 étapes (CompTIA)</div>
+        <div class="content-block">
+        <strong>1. Identifier le problème</strong> : que se passe-t-il exactement ? Depuis quand ?<br>
+        <strong>2. Établir une théorie</strong> : quelle est la cause la plus probable ?<br>
+        <strong>3. Tester la théorie</strong> : vérifier si la cause supposée est confirmée<br>
+        <strong>4. Établir un plan d'action</strong> : comment résoudre le problème ?<br>
+        <strong>5. Implémenter la solution</strong> : appliquer le correctif<br>
+        <strong>6. Vérifier et documenter</strong> : s'assurer que tout fonctionne et noter les actions
+        </div>
+      </div>
+
+      <!-- QUIZ L12 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 12</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Un PC a l'adresse 169.254.5.10. Quel est le problème probable ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Câble défectueux</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Serveur DHCP inaccessible (APIPA)</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Problème DNS</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Firewall bloquant</div>
+          </div>
+          <div class="quiz-feedback">169.254.x.x est une adresse APIPA (Automatic Private IP Addressing). Le PC s'est auto-attribué cette adresse parce qu'il n'a pas pu contacter le serveur DHCP.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. "ping 8.8.8.8 fonctionne mais ping google.com échoue." Quel est le problème ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> La connexion Internet est coupée</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> La passerelle est mal configurée</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Le serveur DNS ne fonctionne pas</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Le câble est débranché</div>
+          </div>
+          <div class="quiz-feedback">Si ping IP fonctionne mais ping nom de domaine échoue → la connexion Internet est OK mais la résolution DNS est défaillante. Solution : changer le serveur DNS (ex: 8.8.8.8) ou ipconfig /flushdns.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 12</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.1</div>
+          <div class="exo-q">Appliquez la méthode de dépannage en 6 étapes au cas suivant : "Depuis ce matin, 5 postes de la salle informatique ne peuvent plus accéder aux dossiers partagés sur le serveur. Les autres 15 postes fonctionnent normalement. Les 5 postes ont Internet."</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Identifier :</strong> 5 postes spécifiques, dossiers partagés inaccessibles, Internet OK. Depuis ce matin.<br>
+            <strong>2. Théorie :</strong> Comme Internet fonctionne (TCP/IP OK), le problème est au niveau des droits d'accès ou de la session Active Directory.<br>
+            <strong>3. Test :</strong> Vérifier si les 5 utilisateurs peuvent se connecter à l'AD. Vérifier les permissions sur les dossiers partagés.<br>
+            <strong>4. Plan :</strong> Réinitialiser les sessions AD des 5 utilisateurs. Vérifier que leurs comptes sont actifs et membres des groupes corrects.<br>
+            <strong>5. Solution :</strong> Un administrateur a modifié les GPO ou les groupes AD ce matin. Restaurer les droits des 5 comptes dans l'AD.<br>
+            <strong>6. Vérification :</strong> Tester l'accès aux dossiers. Documenter la modification AD effectuée par erreur.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 13 — Technologie des réseaux CPL
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l13">
+    <div class="lesson-header" onclick="srtToggleLesson('body13',this)">
+      <div class="lesson-num">L13</div>
+      <div class="lesson-meta">
+        <h3>Principe et fonctionnement des réseaux CPL</h3>
+        <div class="tags"><span class="tag">CPL</span><span class="tag">Courant porteur</span><span class="tag">Réseau électrique</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body13">
+
+      <div class="sub-section">
+        <div class="sub-title">13.1 — Définition et principe du CPL</div>
+        <div class="def-box"><div class="def-title">💡 CPL = Courant Porteur en Ligne</div>Le <strong>CPL (Courant Porteur en Ligne)</strong>, aussi appelé <strong>PLC (Power Line Communication)</strong> en anglais, est une technologie réseau qui utilise le <strong>réseau électrique existant</strong> pour transmettre des données numériques.</div>
+        <div class="content-block">Le principe est simple : <strong>superposer un signal numérique haute fréquence</strong> au signal électrique basse fréquence (50 Hz) qui alimente normalement les appareils électriques. Un adaptateur CPL branché dans une prise électrique détecte ce signal et en extrait les données réseau.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">13.2 — Comment fonctionne le CPL ?</div>
+        <div class="example-box">
+          <div class="ex-title">🔌 Fonctionnement étape par étape</div>
+          <p><strong>1. Émission :</strong> L'adaptateur CPL n°1 (branché au routeur via câble RJ45) reçoit les données réseau et les convertit en signal haute fréquence (1–30 MHz)<br>
+          <strong>2. Transmission :</strong> Ce signal voyage sur le câble électrique de la maison/bâtiment<br>
+          <strong>3. Réception :</strong> L'adaptateur CPL n°2 (dans une autre pièce) capte le signal haute fréquence<br>
+          <strong>4. Conversion :</strong> Il convertit ce signal en données réseau et les envoie via câble RJ45 au PC</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">13.3 — Caractéristiques techniques du CPL</div>
+        <table class="styled-table">
+          <thead><tr><th>Critère</th><th>CPL</th><th>Wi-Fi</th><th>Ethernet (câble)</th></tr></thead>
+          <tbody>
+            <tr><td>Support</td><td>Câble électrique</td><td>Ondes radio</td><td>Câble RJ45</td></tr>
+            <tr><td>Débit max théorique</td><td>1 Gbps (CPL 1000)</td><td>jusqu'à 10 Gbps (Wi-Fi 6)</td><td>jusqu'à 10 Gbps</td></tr>
+            <tr><td>Débit réel typique</td><td>100–300 Mbps</td><td>50–500 Mbps</td><td>100 Mbps–1 Gbps</td></tr>
+            <tr><td>Installation</td><td>Très facile (prise secteur)</td><td>Facile</td><td>Câblage nécessaire</td></tr>
+            <tr><td>Perturbations</td><td>Appareils électriques, multiprises</td><td>Murs, interférences</td><td>Quasi aucune</td></tr>
+            <tr><td>Sécurité</td><td>Chiffrement AES 128 bits</td><td>WPA2/WPA3</td><td>Élevée (physique)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">13.4 — Avantages et inconvénients du CPL</div>
+        <div class="content-block">
+        <strong>✅ Avantages :</strong><br>
+        • Utilise l'installation électrique existante — pas de câblage réseau à tirer<br>
+        • Stable et moins sensible aux interférences que le Wi-Fi<br>
+        • Bonne portée (jusqu'à 300 m en théorie)<br>
+        • Sécurisé (chiffrement AES)<br><br>
+        <strong>❌ Inconvénients :</strong><br>
+        • Ne traverse pas les compteurs électriques différents<br>
+        • Les multiprises parasites (filtres) bloquent le signal<br>
+        • Débit réel souvent inférieur au débit théorique<br>
+        • Perturbations possibles par les appareils électriques
+        </div>
+      </div>
+
+      <!-- QUIZ L13 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 13</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Sur quel support physique le CPL transmet-il les données ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Câble RJ45</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Fibre optique</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Câble électrique</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Ondes radio</div>
+          </div>
+          <div class="quiz-feedback">Le CPL utilise le réseau électrique (câbles d'alimentation) pour transmettre des données réseau, en superposant un signal haute fréquence au courant alternatif.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel est le principal inconvénient des multiprises avec parasurtenseur pour le CPL ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Elles consomment trop d'électricité</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Elles filtrent le signal CPL et bloquent la connexion</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Elles grillent les adaptateurs CPL</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Elles doublent la vitesse</div>
+          </div>
+          <div class="quiz-feedback">Les multiprises avec filtre parasurtenseur (parafoudre) filtrent les hautes fréquences pour protéger les appareils électriques — mais ces hautes fréquences sont précisément le signal CPL. Elles bloquent donc la connexion CPL.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 13</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 13.1</div>
+          <div class="exo-q">Un habitant veut connecter sa TV et sa console de jeux au réseau Internet depuis le salon, mais le routeur est dans le bureau (pièce différente). Il hésite entre Wi-Fi, CPL et tirer un câble Ethernet. Conseillez-le en comparant les 3 solutions.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Option 1 — Wi-Fi :</strong> Simple à mettre en place, mais le débit peut être instable selon les murs entre le salon et le bureau. Peut suffire pour la TV mais risqué pour les jeux (latence).<br><br>
+            <strong>Option 2 — CPL :</strong> Recommandé ici. Il branche un adaptateur CPL dans le bureau près du routeur (câble RJ45 routeur→CPL), et un autre dans le salon (CPL→TV/console). Le signal passe par les câbles électriques. Stable, sans travaux de câblage.<br><br>
+            <strong>Option 3 — Ethernet :</strong> Solution la plus performante mais nécessite de tirer des câbles dans les murs (travaux). Idéal pour performance maximale.<br><br>
+            <strong>Conseil final :</strong> <strong>CPL</strong> est le meilleur compromis : pas de travaux, meilleure stabilité que le Wi-Fi, suffisamment rapide pour la TV 4K et les jeux en ligne.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       LEÇON 14 — Technologie des réseaux sans fils
+  ═════════════════════════════════════════════ -->
+  <div class="lesson-card" id="l14">
+    <div class="lesson-header" onclick="srtToggleLesson('body14',this)">
+      <div class="lesson-num">L14</div>
+      <div class="lesson-meta">
+        <h3>Technologie des réseaux sans fils (Wi-Fi)</h3>
+        <div class="tags"><span class="tag">Wi-Fi</span><span class="tag">802.11</span><span class="tag">WPA</span><span class="tag">Bluetooth</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body14">
+
+      <div class="sub-section">
+        <div class="sub-title">14.1 — Technologies sans fil</div>
+        <table class="styled-table">
+          <thead><tr><th>Technologie</th><th>Norme</th><th>Portée</th><th>Débit max</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Wi-Fi</strong></td><td>IEEE 802.11</td><td>50–100 m</td><td>jusqu'à 10 Gbps</td><td>Réseau local sans fil</td></tr>
+            <tr><td><strong>Bluetooth</strong></td><td>IEEE 802.15</td><td>1–100 m</td><td>3 Mbps</td><td>Périphériques personnels</td></tr>
+            <tr><td><strong>ZigBee</strong></td><td>IEEE 802.15.4</td><td>10–100 m</td><td>250 Kbps</td><td>IoT, domotique</td></tr>
+            <tr><td><strong>4G/5G</strong></td><td>LTE</td><td>Km</td><td>1 Gbps (5G)</td><td>Mobile, haut débit mobile</td></tr>
+            <tr><td><strong>NFC</strong></td><td>ISO 14443</td><td>< 10 cm</td><td>424 Kbps</td><td>Paiement sans contact</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">14.2 — Normes Wi-Fi (IEEE 802.11)</div>
+        <table class="styled-table">
+          <thead><tr><th>Norme</th><th>Génération</th><th>Fréquence</th><th>Débit max</th><th>Année</th></tr></thead>
+          <tbody>
+            <tr><td>802.11b</td><td>Wi-Fi 1</td><td>2.4 GHz</td><td>11 Mbps</td><td>1999</td></tr>
+            <tr><td>802.11g</td><td>Wi-Fi 3</td><td>2.4 GHz</td><td>54 Mbps</td><td>2003</td></tr>
+            <tr><td>802.11n</td><td>Wi-Fi 4</td><td>2.4/5 GHz</td><td>600 Mbps</td><td>2009</td></tr>
+            <tr><td>802.11ac</td><td>Wi-Fi 5</td><td>5 GHz</td><td>3.5 Gbps</td><td>2014</td></tr>
+            <tr><td>802.11ax</td><td>Wi-Fi 6</td><td>2.4/5/6 GHz</td><td>9.6 Gbps</td><td>2019</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">14.3 — Sécurité Wi-Fi</div>
+        <table class="styled-table">
+          <thead><tr><th>Protocole</th><th>Sécurité</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td><strong>WEP</strong></td><td>Très faible (cassable en minutes)</td><td>❌ Obsolète, ne pas utiliser</td></tr>
+            <tr><td><strong>WPA</strong></td><td>Moyenne (TKIP)</td><td>⚠️ Déprécié</td></tr>
+            <tr><td><strong>WPA2</strong></td><td>Bonne (AES-CCMP)</td><td>✅ Standard actuel</td></tr>
+            <tr><td><strong>WPA3</strong></td><td>Excellente (SAE)</td><td>✅ Recommandé</td></tr>
+          </tbody>
+        </table>
+        <div class="def-box"><div class="def-title">📡 Concepts Wi-Fi importants</div>
+        • <strong>SSID</strong> : nom du réseau Wi-Fi (Service Set Identifier)<br>
+        • <strong>BSSID</strong> : adresse MAC du point d'accès<br>
+        • <strong>Canal</strong> : fréquence spécifique utilisée (1 à 13 en 2.4 GHz)<br>
+        • <strong>Mode Infrastructure</strong> : via point d'accès (AP)<br>
+        • <strong>Mode Ad-hoc</strong> : connexion directe entre 2 appareils</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">14.4 — Composants d'un réseau Wi-Fi</div>
+        <div class="content-block">
+        • <strong>Point d'accès (AP)</strong> : équipement qui émet le signal Wi-Fi et connecte les appareils sans fil au réseau filaire<br>
+        • <strong>Routeur Wi-Fi</strong> : combinaison routeur + point d'accès (box Internet)<br>
+        • <strong>Carte Wi-Fi</strong> : interface sans fil d'un ordinateur ou tablette<br>
+        • <strong>Répéteur Wi-Fi</strong> : étend la portée du signal Wi-Fi<br>
+        • <strong>Mesh Wi-Fi</strong> : plusieurs points d'accès qui fonctionnent ensemble
+        </div>
+        <div class="example-box">
+          <div class="ex-title">🎓 Exemple : Réseau Wi-Fi d'un lycée</div>
+          <p>Le lycée installe des <strong>points d'accès Wi-Fi 6 (802.11ax)</strong> dans chaque salle, reliés par câble Ethernet à des switches. Les élèves se connectent avec leurs téléphones et tablettes. La sécurité est assurée par <strong>WPA2-Enterprise</strong> avec authentification via Active Directory : chaque élève utilise son identifiant scolaire pour se connecter.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L14 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 14</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle norme Wi-Fi correspond à la 5ème génération ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 802.11n (Wi-Fi 4)</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 802.11ac (Wi-Fi 5)</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 802.11ax (Wi-Fi 6)</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 802.11g (Wi-Fi 3)</div>
+          </div>
+          <div class="quiz-feedback">802.11ac est Wi-Fi 5 (5ème génération), opère sur la bande 5 GHz avec un débit max de 3.5 Gbps. Wi-Fi 6 = 802.11ax.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel protocole de sécurité Wi-Fi est recommandé aujourd'hui ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> WEP</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> WPA</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> WPA2</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">D</span> WPA3</div>
+          </div>
+          <div class="quiz-feedback">WPA3 est le protocole le plus récent et le plus sécurisé. WEP est cassable en quelques minutes. WPA2 reste acceptable mais WPA3 est recommandé sur les nouveaux équipements.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Qu'est-ce que le SSID d'un réseau Wi-Fi ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Le nom du réseau Wi-Fi</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Le mot de passe du réseau</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> L'adresse IP du routeur</div>
+            <div class="quiz-opt" onclick="srtCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> L'adresse MAC du routeur</div>
+          </div>
+          <div class="quiz-feedback">SSID (Service Set Identifier) est simplement le nom du réseau Wi-Fi, celui que vous voyez dans la liste des réseaux disponibles (ex: "Lycée-WIFI", "Orange_5G", etc.).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 14</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 14.1</div>
+          <div class="exo-q">Un responsable informatique doit choisir entre déployer du Wi-Fi 5 (802.11ac) ou du Wi-Fi 6 (802.11ax) dans une école de 500 élèves utilisant simultanément des tablettes. Comparez les deux normes et conseillez-le.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Comparaison :</strong><br><br>
+            <strong>Wi-Fi 5 (802.11ac) :</strong> Bande 5 GHz uniquement, débit max 3.5 Gbps, bonne performance mais peut saturer avec beaucoup d'appareils simultanés.<br><br>
+            <strong>Wi-Fi 6 (802.11ax) :</strong> Bandes 2.4/5/6 GHz, débit max 9.6 Gbps, technologie OFDMA qui gère mieux les connexions simultanées multiples, meilleure efficacité énergétique pour les appareils.<br><br>
+            <strong>Conseil :</strong> <strong>Wi-Fi 6</strong> est fortement recommandé dans ce contexte. Avec 500 élèves connectés simultanément, la technologie OFDMA du Wi-Fi 6 permet de servir plusieurs appareils en même temps sans dégradation notable des performances. C'est spécifiquement pour ce scénario (forte densité d'appareils) que Wi-Fi 6 a été conçu.
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 14.2</div>
+          <div class="exo-q">Listez 4 bonnes pratiques de sécurité pour protéger un réseau Wi-Fi professionnel.</div>
+          <button class="show-answer-btn" onclick="srtToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Utiliser WPA3 ou WPA2-Enterprise</strong> avec authentification via serveur RADIUS pour les réseaux professionnels.<br>
+            <strong>2. Changer le SSID par défaut</strong> : ne pas laisser "Livebox-xxxx" ou "TP-Link_xxxx" qui indique la marque du routeur aux attaquants.<br>
+            <strong>3. Créer un réseau invité séparé</strong> (VLAN) pour les visiteurs, isolé du réseau interne.<br>
+            <strong>4. Mettre à jour régulièrement le firmware</strong> du routeur/point d'accès pour corriger les failles de sécurité.<br>
+            <strong>5. Désactiver le WPS</strong> (Wi-Fi Protected Setup) car il présente des vulnérabilités connues.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:40px 0 60px;color:var(--text3);font-size:.83rem">
+    🎨 SRT · Programme complet · M. GWETH · Classe de Première · 2025–2026<br>
+    <span style="color:var(--accent)">📚 STUDYBOARD</span> · NDJANPA Alex
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── TOGGLE LEÇON ──
+function srtToggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  srtUpdateProgress();
+}
+
+// ── QUIZ ──
+function srtCheckQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  
+  allOpts.forEach(o => o.style.pointerEvents = 'none');
+  opt.classList.add(result);
+  
+  feedback.classList.add('show', result);
+  srtUpdateProgress();
+}
+
+// ── SHOW ANSWER ──
+function srtToggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+
+// ── PROGRESS ──
+function srtUpdateProgress() {
+  const total = document.querySelectorAll('.quiz-item').length;
+  const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('srtProgressFill').style.width = pct + '%';
+  document.getElementById('srtProgressPct').textContent = pct + '%';
+}
+
+// ── SMOOTH SCROLL FOR PILLS ──
+document.querySelectorAll('.srt-course-wrapper .pill').forEach(pill => {
+  pill.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const target = document.querySelector(pill.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      const id = target.querySelector('.lesson-body')?.id;
+      const header = target.querySelector('.lesson-header');
+      if (id && header) {
+        const body = document.getElementById(id);
+        if (!body.classList.contains('open')) toggleLesson(id, header);
+      }
+    }
+  });
+});
+</script>
+</div>
   </div>
 
   <!-- ═══ IRT ═══ -->

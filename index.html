@@ -6034,19 +6034,19 @@ function buildAccordionHome(subj) {
   // pills
   const pills = keys.map(k=>`<button class="acc-pill" onclick="accScrollTo('${subj}',${k})">${label.slice(0,1)}${k}</button>`).join('');
 
-  // cards
+  // cards — lock check is DYNAMIC (at click time) not static
   const cards = keys.map(k => {
     const L = DB[k];
     const chips = (L.chips||[]).map(c=>`<span class="acc-preview-chip">${c}</span>`).join('');
     const tags  = (L.chips||[]).slice(0,3).map(c=>`<span class="acc-card-tag">${c}</span>`).join('');
-    const locked = (!isElec && k===1) ? false : (window.USER_PLAN||'free')==='free';
-    const lockIcon = locked ? ' 🔒' : '';
+    // isFree = always false for lesson 1 physique, otherwise check at runtime
+    const freeLesson = (!isElec && k===1);
     return `
 <div class="acc-card" id="acc-${subj}-${k}">
   <div class="acc-card-header" onclick="accToggle('${subj}',${k},this)">
     <div class="acc-card-num">${label.slice(0,1)}${k}</div>
     <div class="acc-card-meta">
-      <h3>${L.title}${lockIcon}</h3>
+      <h3>${L.title}</h3>
       <div class="acc-card-tags">${tags}</div>
     </div>
     <span class="acc-toggle-icon">▼</span>
@@ -6057,13 +6057,13 @@ function buildAccordionHome(subj) {
       <div class="acc-preview-desc">${L.desc||''}</div>
     </div>
     <div class="acc-actions">
-      <button class="acc-action-btn primary" onclick="${locked?'showUpgrade()':'openLesson('+k+',\''+subj+'\')'}">
+      <button class="acc-action-btn primary" onclick="accOpen(${k},'${subj}',${freeLesson},'cours')">
         📖 Ouvrir le cours
       </button>
-      <button class="acc-action-btn secondary" onclick="${locked?'showUpgrade()':'openLesson('+k+',\''+subj+'\');setTimeout(()=>bnTab(\'quiz\'),200)'}">
+      <button class="acc-action-btn secondary" onclick="accOpen(${k},'${subj}',${freeLesson},'quiz')">
         🧠 Quiz (${(L.quiz||[]).length})
       </button>
-      <button class="acc-action-btn secondary" onclick="${locked?'showUpgrade()':'openLesson('+k+',\''+subj+'\');setTimeout(()=>bnTab(\'exercices\'),200)'}">
+      <button class="acc-action-btn secondary" onclick="accOpen(${k},'${subj}',${freeLesson},'exercices')">
         ✏️ Exercices (${(L.exos||[]).length})
       </button>
     </div>
@@ -6135,6 +6135,19 @@ function accScrollTo(subj, k) {
     const keys = Object.keys((subj==='elec'?ELEC_LESSONS:LESSONS)).map(Number).sort((a,b)=>a-b);
     const idx = keys.indexOf(k);
     if (pills[idx]) pills[idx].classList.add('active');
+  }
+}
+
+/* accOpen — checks plan at click time, never at build time */
+function accOpen(k, subj, isFreeLesson, tab) {
+  const plan = window.USER_PLAN || 'free';
+  if (!isFreeLesson && plan === 'free') {
+    showUpgrade();
+    return;
+  }
+  openLesson(k, subj);
+  if (tab !== 'cours') {
+    setTimeout(() => bnTab(tab), 220);
   }
 }
 

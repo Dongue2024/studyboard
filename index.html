@@ -3183,6 +3183,8 @@ function srtSwitchTab(tab) {
   }
 }
 </script>
+<div class="lpage" id="lpage-srt"></div>
+</div><!-- /spage-srt -->
 
   <!-- ═══ IRT ═══ -->
   <div class="spage" id="spage-irt">
@@ -5933,8 +5935,8 @@ function showSubj(s) {
     if (h) h.style.display = 'none';
   });
   document.getElementById('home-' + s).style.display = 'block';
-  document.getElementById('lpage-' + s).classList.remove('on');
-  document.getElementById('lpage-' + s).innerHTML = '';
+  const lp = document.getElementById('lpage-' + s);
+  if (lp) { lp.classList.remove('on'); lp.innerHTML = ''; }
   // bottom nav
   document.querySelectorAll('.bn').forEach(b => b.classList.remove('active'));
   document.getElementById('bn-home').classList.add('active');

@@ -4657,11 +4657,14 @@ function celnToggleAnswer(btn) {
 
 // ── PROGRESS ──
 function celnUpdateProgress() {
-  const total = document.querySelectorAll('.quiz-item').length;
-  const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
+  const fill = document.getElementById('celnProgressFill');
+  const pctEl = document.getElementById('celnProgressPct');
+  if (!fill || !pctEl) return; // éléments absents, on ignore sans crash
+  const total = document.querySelectorAll('.celn-wrapper .quiz-item').length;
+  const answered = document.querySelectorAll('.celn-wrapper .quiz-item[data-answered]').length;
   const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
-  document.getElementById('celnProgressFill').style.width = pct + '%';
-  document.getElementById('celnProgressPct').textContent = pct + '%';
+  fill.style.width = pct + '%';
+  pctEl.textContent = pct + '%';
 }
 
 // ── SMOOTH SCROLL FOR PILLS ──
@@ -7490,8 +7493,8 @@ function buildExos(L) {
 }
 
 /* ═══ QUIZ ANSWER ═══ */
-function ans(btn, correct, k, qi) {
-  const exp = (window._qdata && window._qdata[k] && window._qdata[k][qi]) ? window._qdata[k][qi].exp : '';
+function ans(btn, correct, k, qi, exp) {
+  exp = exp || '';
   btn.parentElement.querySelectorAll('.qopt').forEach(o => o.disabled = true);
   const fb = document.getElementById('qfb-' + k + '-' + qi);
   if (!qState[k]) qState[k] = { done: 0, ok: 0 };
@@ -7504,12 +7507,13 @@ function ans(btn, correct, k, qi) {
     btn.classList.add('nok');
     fb.className = 'qfb on nok';
     fb.textContent = '❌ ' + exp;
-    // highlight correct answer
-    if (window._qdata && window._qdata[k]) {
-      const correctIdx = window._qdata[k][qi].ans;
-      const opts = btn.parentElement.querySelectorAll('.qopt');
-      if (opts[correctIdx]) opts[correctIdx].classList.add('ok');
-    }
+    // highlight correct answer — find correct button by checking onclick attribute
+    const opts = btn.parentElement.querySelectorAll('.qopt');
+    opts.forEach(function(o) {
+      if (o !== btn && o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') !== -1) {
+        o.classList.add('ok');
+      }
+    });
   }
   qState[k].done++;
   const allCards = document.querySelectorAll('#tc-quiz .qcard');
@@ -7822,6 +7826,12 @@ window.showSubj = function(s) {
   }
   _origShowSubjFinal(s);
   if (s === 'phys' || s === 'elec') _buildAccordion(s);
+  // CELN : le contenu est déjà dans #home-celn (accordion statique),
+  // showSubj() l'a caché via display:none → on le force à block
+  if (s === 'celn') {
+    const homeCeln = document.getElementById('home-celn');
+    if (homeCeln) homeCeln.style.display = 'block';
+  }
 };
 
 /* ══ Appelé par Firebase après que l'app est visible ══ */

@@ -945,6 +945,16 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById('auth-loading').style.display = 'none';
   document.getElementById('app-content').style.display = 'flex';
 
+  // ── Construire l'accordion Physique (page par défaut) ──
+  if (typeof window._buildPhysAccordion === 'function') {
+    window._buildPhysAccordion();
+  } else {
+    // fallback si le script non-module n'est pas encore prêt
+    setTimeout(function() {
+      if (typeof window._buildPhysAccordion === 'function') window._buildPhysAccordion();
+    }, 300);
+  }
+
   // ── Nom et avatar ──
   document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
   document.querySelectorAll('.user-email').forEach(el => el.textContent = email);
@@ -6170,19 +6180,29 @@ window.showSubj = function(s) {
     const homeEl = document.getElementById('home-' + s);
     if (homeEl && !homeEl.querySelector('.acc-home')) {
       homeEl.innerHTML = buildAccordionHome(s);
+      // Re-trigger animations
+      homeEl.querySelectorAll('.acc-card').forEach(function(card) {
+        card.style.animation = 'none';
+        card.offsetHeight;
+        card.style.animation = '';
+      });
     }
   }
 };
 
-/* Also build on first load for phys (it's the default visible page) */
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(function() {
-    const homePhys = document.getElementById('home-phys');
-    if (homePhys && !homePhys.querySelector('.acc-home')) {
-      homePhys.innerHTML = buildAccordionHome('phys');
-    }
-  }, 600);
-});
+/* Build accordion for phys AFTER Firebase makes app-content visible */
+window._buildPhysAccordion = function() {
+  const homePhys = document.getElementById('home-phys');
+  if (homePhys && !homePhys.querySelector('.acc-home')) {
+    homePhys.innerHTML = buildAccordionHome('phys');
+    // Re-trigger animations on freshly injected cards
+    homePhys.querySelectorAll('.acc-card').forEach(function(card) {
+      card.style.animation = 'none';
+      card.offsetHeight; // reflow
+      card.style.animation = '';
+    });
+  }
+};
 
 </script></div><!-- /app-content -->
 </body></html>

@@ -911,13 +911,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // ═══════════════════════════════════════════════
-// 👑 LISTE DES EMAILS PREMIUM 🤡
+// 👑 LISTE DES EMAILS PREMIUM
 // Pour ajouter un client : ajoute son email ici
 // ═══════════════════════════════════════════════
 const PREMIUM_EMAILS = [
   "ndjanpaalex@gmail.com",
   "sergebelibi05@icloud.com",
-  "asdinondjanpaa@gmail.com",
   // Ajoute les emails des clients qui ont payé ici :
   // "client1@gmail.com",
   // "client2@gmail.com",
@@ -947,14 +946,17 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById('app-content').style.display = 'flex';
 
   // ── Construire l'accordion Physique (page par défaut) ──
-  if (typeof window._buildPhysAccordion === 'function') {
-    window._buildPhysAccordion();
-  } else {
-    // fallback si le script non-module n'est pas encore prêt
-    setTimeout(function() {
-      if (typeof window._buildPhysAccordion === 'function') window._buildPhysAccordion();
-    }, 300);
-  }
+  // On attend que le script non-module soit prêt (max 2s)
+  let _attempts = 0;
+  const _waitAndBuild = function() {
+    if (typeof window._buildPhysAccordion === 'function') {
+      window._buildPhysAccordion();
+    } else if (_attempts < 20) {
+      _attempts++;
+      setTimeout(_waitAndBuild, 100);
+    }
+  };
+  setTimeout(_waitAndBuild, 50);
 
   // ── Nom et avatar ──
   document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
@@ -1284,7 +1286,7 @@ onAuthStateChanged(auth, async (user) => {
 
   <!-- ═══ CIRCUIT ÉLECTRIQUE PAGE ═══ -->
   <div class="spage" id="spage-elec">
-    <div class="hpage" id="home-elec" style="padding:0;"></div>
+    <div class="hpage" id="home-elec" style="padding:0;display:none;"></div>
     <div class="lpage" id="lpage-elec"></div>
   </div>
 
@@ -2951,6 +2953,47 @@ Serveurs DNS.......: 8.8.8.8
   </div>
 
 </div><!-- /container -->
+</div><!-- /srt-section-cours -->
+
+<!-- ══════════════════════════════════════════
+     SECTION ÉPREUVES SRT
+══════════════════════════════════════════ -->
+<div id="srt-section-epreuves" style="display:none;">
+<div class="container" style="padding-bottom:60px;">
+
+  <!-- HERO ÉPREUVES -->
+  <div style="background:linear-gradient(135deg,var(--srt-surface) 0%,#1e1a3a 100%);border:1px solid var(--srt-border);border-radius:16px;padding:32px 28px;margin:24px 0 28px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(108,99,255,.15) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="font-size:2.8rem;margin-bottom:10px;">📝</div>
+    <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;background:linear-gradient(90deg,#a78bfa,#6c63ff,#ff6584);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;">Épreuves SRT · Première</h2>
+    <p style="color:var(--srt-text2);font-size:.88rem;max-width:500px;margin:0 auto 18px;">Sujets d'examens et épreuves blanches avec corrigés détaillés. Entraîne-toi dans les conditions réelles !</p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <div style="background:var(--srt-surface2);border:1px solid var(--srt-border);border-radius:10px;padding:10px 20px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;color:var(--srt-accent);" id="srt-ep-count">—</div>
+        <div style="font-size:.68rem;color:var(--srt-text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Épreuves</div>
+      </div>
+      <div style="background:var(--srt-surface2);border:1px solid var(--srt-border);border-radius:10px;padding:10px 20px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;color:#ff6584;">PDF</div>
+        <div style="font-size:.68rem;color:var(--srt-text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Format</div>
+      </div>
+      <div style="background:var(--srt-surface2);border:1px solid var(--srt-border);border-radius:10px;padding:10px 20px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;color:#43e97b;">✓</div>
+        <div style="font-size:.68rem;color:var(--srt-text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Corrigés</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO GRATUIT/PREMIUM -->
+  <div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.25);border-radius:10px;padding:12px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px;font-size:.84rem;color:var(--srt-text2);">
+    <span style="font-size:1.1rem;">💡</span>
+    <span>La <strong style="color:var(--srt-accent);">1ère épreuve est gratuite</strong>. Les suivantes nécessitent un accès <strong style="color:#ffd700;">👑 Premium</strong>.</span>
+  </div>
+
+  <!-- GRILLE DES ÉPREUVES -->
+  <div id="srt-epreuves-grid" style="display:flex;flex-direction:column;gap:14px;"></div>
+
+</div>
+</div><!-- /srt-section-epreuves -->
 
 <script>
 // ── TOGGLE LEÇON ──
@@ -3014,6 +3057,121 @@ document.querySelectorAll('.srt-course-wrapper .pill').forEach(pill => {
     }
   });
 });
+
+// ══════════════════════════════════════════════════════
+//  SYSTÈME ÉPREUVES SRT
+// ══════════════════════════════════════════════════════
+
+// ── DONNÉES DES ÉPREUVES ──
+// Pour ajouter une épreuve : copie un objet et remplis les champs.
+// sujet_url et corriges_url = liens directs vers tes PDF sur GitHub Pages.
+// ex: "https://studyboard-cm.github.io/studyboard/epreuves/srt/ep1_sujet.pdf"
+const SRT_EPREUVES = [
+  {
+    id: 1,
+    titre: "Épreuve SRT · IPR Ekom",
+    annee: "2024–2025",
+    duree: "3h",
+    tags: ["Réseaux", "IPR", "Ekom"],
+    desc: "Épreuve de SRT — Probatoire. Sujet IPR Ekom avec corrigé détaillé.",
+    sujet_url: "https://studyboard-cm.github.io/studyboard/epreuves/srt/Epreuve%20SRT%202%20Prob%20IPR%20Ekom.pdf",
+    corrige_url: "https://studyboard-cm.github.io/studyboard/epreuves/srt/Epreuve%20SRT%202%20Prob%20corrig%C3%A9.pdf",
+    gratuit: true
+  },
+  // ── Ajoute tes prochaines épreuves ici ──
+  // {
+  //   id: 2,
+  //   titre: "Épreuve SRT · ...",
+  //   annee: "2024–2025",
+  //   duree: "3h",
+  //   tags: ["..."],
+  //   desc: "Description...",
+  //   sujet_url: "https://studyboard-cm.github.io/studyboard/epreuves/srt/NOM_DU_FICHIER.pdf",
+  //   corrige_url: "https://studyboard-cm.github.io/studyboard/epreuves/srt/NOM_CORRIGE.pdf",
+  //   gratuit: false
+  // },
+];
+
+// ── RENDU DES ÉPREUVES ──
+function srtRenderEpreuves() {
+  const grid = document.getElementById('srt-epreuves-grid');
+  const countEl = document.getElementById('srt-ep-count');
+  if (!grid) return;
+  const plan = window.USER_PLAN || 'free';
+  countEl.textContent = SRT_EPREUVES.length;
+
+  grid.innerHTML = SRT_EPREUVES.map(ep => {
+    const locked = !ep.gratuit && plan !== 'premium';
+    const tags = ep.tags.map(t => `<span style="background:var(--srt-surface2);border:1px solid var(--srt-border);color:var(--srt-text3);font-size:.68rem;padding:2px 9px;border-radius:10px;">${t}</span>`).join('');
+    const badge = ep.gratuit
+      ? `<span style="background:rgba(67,233,123,.15);border:1px solid rgba(67,233,123,.3);color:#43e97b;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:99px;letter-spacing:.5px;">✓ GRATUIT</span>`
+      : `<span style="background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:99px;letter-spacing:.5px;">👑 PREMIUM</span>`;
+
+    if (locked) {
+      return `
+<div style="background:var(--srt-surface);border:1px solid var(--srt-border);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:20px;opacity:.6;filter:grayscale(.3);cursor:pointer;" onclick="showUpgrade()">
+  <div style="width:52px;height:52px;border-radius:12px;background:var(--srt-surface2);border:1px solid var(--srt-border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🔒</div>
+  <div style="flex:1;min-width:0;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+      <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;color:var(--srt-text);">${ep.titre}</span>
+      ${badge}
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px;">${tags}</div>
+    <div style="font-size:.8rem;color:var(--srt-text3);">⏱ ${ep.duree} · ${ep.annee}</div>
+  </div>
+  <div style="color:var(--srt-text3);font-size:1.3rem;flex-shrink:0;">›</div>
+</div>`;
+    }
+
+    return `
+<div style="background:var(--srt-surface);border:1px solid var(--srt-border);border-radius:16px;padding:22px 24px;transition:box-shadow .2s,transform .2s;" onmouseover="this.style.boxShadow='0 8px 28px rgba(108,99,255,.18)';this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='';this.style.transform='';">
+  <div style="display:flex;align-items:flex-start;gap:16px;">
+    <div style="width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--srt-accent),#ff6584);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">📄</div>
+    <div style="flex:1;min-width:0;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+        <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;color:var(--srt-text);">${ep.titre}</span>
+        ${badge}
+      </div>
+      <div style="font-size:.83rem;color:var(--srt-text2);margin-bottom:9px;">${ep.desc}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">${tags}</div>
+      <div style="font-size:.78rem;color:var(--srt-text3);margin-bottom:14px;">⏱ Durée : ${ep.duree} · 📅 ${ep.annee}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="${ep.sujet_url}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--srt-accent),#8b5cf6);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:.8rem;font-weight:600;font-family:'DM Sans',sans-serif;text-decoration:none;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          📥 Télécharger le sujet
+        </a>
+        <a href="${ep.corrige_url}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:7px;background:transparent;color:#43e97b;border:1px solid rgba(67,233,123,.4);border-radius:8px;padding:9px 16px;font-size:.8rem;font-weight:600;font-family:'DM Sans',sans-serif;text-decoration:none;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(67,233,123,.12)'" onmouseout="this.style.background='transparent'">
+          ✅ Voir le corrigé
+        </a>
+      </div>
+    </div>
+  </div>
+</div>`;
+  }).join('');
+}
+
+// ── SWITCH ONGLET ──
+function srtSwitchTab(tab) {
+  const cours = document.getElementById('srt-section-cours');
+  const epreuves = document.getElementById('srt-section-epreuves');
+  const tabCours = document.getElementById('srt-tab-cours');
+  const tabEp = document.getElementById('srt-tab-epreuves');
+  if (tab === 'cours') {
+    cours.style.display = '';
+    epreuves.style.display = 'none';
+    tabCours.style.borderBottomColor = 'var(--srt-accent)';
+    tabCours.style.color = 'var(--srt-accent)';
+    tabEp.style.borderBottomColor = 'transparent';
+    tabEp.style.color = 'var(--srt-text3)';
+  } else {
+    cours.style.display = 'none';
+    epreuves.style.display = '';
+    tabEp.style.borderBottomColor = '#ff6584';
+    tabEp.style.color = '#ff6584';
+    tabCours.style.borderBottomColor = 'transparent';
+    tabCours.style.color = 'var(--srt-text3)';
+    srtRenderEpreuves();
+  }
+}
 </script>
 </div>
   </div>
@@ -5762,6 +5920,10 @@ function showSubj(s) {
   const btn = document.getElementById('sj-' + s);
   btn.classList.add(s === 'elec' ? 'active-elec' : 'active');
   // show home, hide lpage
+  ['phys','elec','math','chim','fran','srt','irt','sav','celn','info','sas','gm'].forEach(function(sub) {
+    const h = document.getElementById('home-' + sub);
+    if (h) h.style.display = 'none';
+  });
   document.getElementById('home-' + s).style.display = 'block';
   document.getElementById('lpage-' + s).classList.remove('on');
   document.getElementById('lpage-' + s).innerHTML = '';
@@ -6164,7 +6326,24 @@ function accUpdateProg(subj) {
   if (pctEl) pctEl.textContent = pct + '%';
 }
 
-// ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══
+/* ══ HELPER : construit l'accordion d'un sujet et anime les cartes ══ */
+function _buildAccordion(subj) {
+  const homeEl = document.getElementById('home-' + subj);
+  if (!homeEl || homeEl.querySelector('.acc-home')) return; // déjà construit
+  homeEl.innerHTML = buildAccordionHome(subj);
+  homeEl.querySelectorAll('.acc-card').forEach(function(card, i) {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(28px)';
+    card.style.animation = 'none';
+    setTimeout(function() {
+      card.style.transition = 'opacity .4s ease, transform .4s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, 80 + i * 55);
+  });
+}
+
+/* ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══ */
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
   const plan = window.USER_PLAN || 'free';
@@ -6174,43 +6353,12 @@ window.showSubj = function(s) {
     return;
   }
   _origShowSubjFinal(s);
-  // Construire l'accordion pour phys/elec si pas encore fait
-  if (s === 'phys' || s === 'elec') {
-    const homeEl = document.getElementById('home-' + s);
-    if (homeEl && !homeEl.querySelector('.acc-home')) {
-      homeEl.innerHTML = buildAccordionHome(s);
-      // Force staggered animation on dynamically injected cards
-      homeEl.querySelectorAll('.acc-card').forEach(function(card, i) {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(28px)';
-        card.style.animation = 'none';
-        setTimeout(function() {
-          card.style.transition = 'opacity .4s ease, transform .4s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, 80 + i * 55);
-      });
-    }
-  }
+  if (s === 'phys' || s === 'elec') _buildAccordion(s);
 };
 
-/* Build accordion for phys AFTER Firebase makes app-content visible */
+/* ══ Appelé par Firebase après que l'app est visible ══ */
 window._buildPhysAccordion = function() {
-  const homePhys = document.getElementById('home-phys');
-  if (homePhys && !homePhys.querySelector('.acc-home')) {
-    homePhys.innerHTML = buildAccordionHome('phys');
-    // Force staggered animation on dynamically injected cards
-    homePhys.querySelectorAll('.acc-card').forEach(function(card, i) {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(28px)';
-      card.style.animation = 'none';
-      setTimeout(function() {
-        card.style.transition = 'opacity .4s ease, transform .4s ease';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, 80 + i * 55);
-    });
-  }
+  _buildAccordion('phys');
 };
 
 </script></div><!-- /app-content -->

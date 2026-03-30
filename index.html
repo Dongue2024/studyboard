@@ -7468,12 +7468,18 @@ function buildLesson(n, DB, subj) {
 
 function buildQuiz(n, L, subj) {
   const k = subj + n;
+  // Stocker les données quiz dans un objet global pour éviter tout problème
+  // d'échappement de chaînes dans les attributs onclick HTML
+  if (!window._expData) window._expData = {};
+  window._expData[k] = L.quiz.map(function(q) {
+    return { exp: q.exp, ans: q.ans };
+  });
   return L.quiz.map((q, i) => `
 <div class="qcard">
   <div class="qnum">Question ${i+1} / ${L.quiz.length}</div>
   <div class="qtxt">${q.q}</div>
   <div class="qopts">${q.opts.map((o, j) =>
-    `<button class="qopt" onclick="ans(this,${j===q.ans},'${k}',${i},'${q.exp.replace(/'/g,"\\'")})">${o}</button>`
+    `<button class="qopt" onclick="ans(this,${j===q.ans},'${k}',${i})">${o}</button>`
   ).join('')}</div>
   <div class="qfb" id="qfb-${k}-${i}"></div>
 </div>`).join('') + `<div class="qscore" id="qsc-${k}">Score : <strong id="qsv-${k}">— / ${L.quiz.length}</strong></div>`;
@@ -7493,8 +7499,11 @@ function buildExos(L) {
 }
 
 /* ═══ QUIZ ANSWER ═══ */
-function ans(btn, correct, k, qi, exp) {
-  exp = exp || '';
+function ans(btn, correct, k, qi) {
+  // Récupérer l'explication depuis le stockage global (évite les problèmes d'échappement HTML)
+  const data = (window._expData && window._expData[k] && window._expData[k][qi]);
+  const exp = data ? data.exp : '';
+  const correctIdx = data ? data.ans : -1;
   btn.parentElement.querySelectorAll('.qopt').forEach(o => o.disabled = true);
   const fb = document.getElementById('qfb-' + k + '-' + qi);
   if (!qState[k]) qState[k] = { done: 0, ok: 0 };
@@ -7507,13 +7516,9 @@ function ans(btn, correct, k, qi, exp) {
     btn.classList.add('nok');
     fb.className = 'qfb on nok';
     fb.textContent = '❌ ' + exp;
-    // highlight correct answer — find correct button by checking onclick attribute
+    // Surligner la bonne réponse via l'index stocké
     const opts = btn.parentElement.querySelectorAll('.qopt');
-    opts.forEach(function(o) {
-      if (o !== btn && o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') !== -1) {
-        o.classList.add('ok');
-      }
-    });
+    if (correctIdx >= 0 && opts[correctIdx]) opts[correctIdx].classList.add('ok');
   }
   qState[k].done++;
   const allCards = document.querySelectorAll('#tc-quiz .qcard');

@@ -1358,7 +1358,7 @@ onAuthStateChanged(auth, async (user) => {
   <div class="spage" id="spage-srt">
 
 <!-- ONGLETS -->
-<div style="background:var(--srt-surface);border-bottom:1px solid var(--srt-border);padding:0 24px;display:flex;position:sticky;top:0;z-index:50;">
+<div id="srt-tabs" style="background:var(--srt-surface);border-bottom:1px solid var(--srt-border);padding:0 24px;display:flex;position:sticky;top:0;z-index:50;">
   <button id="srt-tab-cours" onclick="srtSwitchTab('cours')" style="padding:14px 22px;border:none;border-bottom:3px solid var(--srt-accent);background:transparent;color:var(--srt-accent);font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;">📖 Cours</button>
   <button id="srt-tab-epreuves" onclick="srtSwitchTab('epreuves')" style="padding:14px 22px;border:none;border-bottom:3px solid transparent;background:transparent;color:var(--srt-text3);font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;">📝 Épreuves</button>
 </div>
@@ -2962,6 +2962,7 @@ Serveurs DNS.......: 8.8.8.8
   </div>
 
 </div><!-- /container -->
+</div><!-- /srt-course-wrapper -->
 </div><!-- /srt-section-cours -->
 
 <!-- ══════════════════════════════════════════
@@ -3182,8 +3183,6 @@ function srtSwitchTab(tab) {
   }
 }
 </script>
-</div>
-  </div>
 
   <!-- ═══ IRT ═══ -->
   <div class="spage" id="spage-irt">

@@ -6178,11 +6178,16 @@ window.showSubj = function(s) {
     const homeEl = document.getElementById('home-' + s);
     if (homeEl && !homeEl.querySelector('.acc-home')) {
       homeEl.innerHTML = buildAccordionHome(s);
-      // Re-trigger animations
-      homeEl.querySelectorAll('.acc-card').forEach(function(card) {
+      // Force staggered animation on dynamically injected cards
+      homeEl.querySelectorAll('.acc-card').forEach(function(card, i) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(28px)';
         card.style.animation = 'none';
-        card.offsetHeight;
-        card.style.animation = '';
+        setTimeout(function() {
+          card.style.transition = 'opacity .4s ease, transform .4s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 80 + i * 55);
       });
     }
   }
@@ -6193,11 +6198,16 @@ window._buildPhysAccordion = function() {
   const homePhys = document.getElementById('home-phys');
   if (homePhys && !homePhys.querySelector('.acc-home')) {
     homePhys.innerHTML = buildAccordionHome('phys');
-    // Re-trigger animations on freshly injected cards
-    homePhys.querySelectorAll('.acc-card').forEach(function(card) {
+    // Force staggered animation on dynamically injected cards
+    homePhys.querySelectorAll('.acc-card').forEach(function(card, i) {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(28px)';
       card.style.animation = 'none';
-      card.offsetHeight; // reflow
-      card.style.animation = '';
+      setTimeout(function() {
+        card.style.transition = 'opacity .4s ease, transform .4s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 80 + i * 55);
     });
   }
 };

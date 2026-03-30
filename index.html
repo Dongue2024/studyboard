@@ -777,7 +777,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .acc-card {
   margin: 0 16px 10px;
   background:var(--s1); border:1px solid var(--brd); border-radius:12px;
-  overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.2);
+  box-shadow:0 2px 12px rgba(0,0,0,.2);
   transition:box-shadow .22s, transform .22s, border-color .22s;
   animation:srtFadeUp .4s ease both;
 }
@@ -801,6 +801,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   padding:16px 20px; cursor:pointer;
   display:flex; align-items:center; gap:14px;
   user-select:none; transition:background .18s;
+  border-radius:12px;
 }
 .acc-card-header:hover { background:var(--s2); }
 .acc-card-num {
@@ -826,13 +827,20 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 }
 .acc-card.open .acc-toggle-icon { transform:rotate(180deg); color:var(--gold); }
 .acc-home.elec .acc-card.open .acc-toggle-icon { color:var(--pink); }
-.acc-card.open .acc-card-header { border-bottom:1px solid var(--brd); background:var(--s2); }
-.acc-card.open { border-color:var(--brd2); }
+.acc-card.open .acc-card-header { border-bottom:1px solid var(--brd); background:var(--s2); border-radius:12px 12px 0 0; }
+.acc-card.open { border-color:var(--brd2); border-radius:12px; }
 .acc-home.elec .acc-card.open { border-color:rgba(244,114,182,.35); }
 
 /* accordion body */
-.acc-card-body { display:none; }
-.acc-card-body.open { display:block; animation:srtFadeUp .3s ease both; }
+.acc-card-body {
+  display: none;
+  overflow: hidden;
+}
+.acc-card-body.open {
+  display: block;
+  animation: srtFadeUp .3s ease forwards;
+  opacity: 1;
+}
 
 /* action buttons inside card */
 .acc-actions {

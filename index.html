@@ -1188,7 +1188,7 @@ onAuthStateChanged(auth, async (user) => {
     <button class="sb-btn locked" id="snav-srt" onclick="showUpgrade()"><span class="sb-num">🎨</span>SRT</button>
     <button class="sb-btn locked" id="snav-irt" onclick="showUpgrade()"><span class="sb-num">💻</span>IRT</button>
     <button class="sb-btn locked" id="snav-sav" onclick="showUpgrade()"><span class="sb-num">🔧</span>SAV</button>
-    <button class="sb-btn locked" id="snav-celn" onclick="showUpgrade()"><span class="sb-num">⚡</span>Circuit Électronique</button>
+    <button class="sb-btn" id="snav-celn" onclick="showSubj('celn')"><span class="sb-num">⚡</span>Circuit Électronique</button>
     <button class="sb-btn locked" id="snav-info" onclick="showUpgrade()"><span class="sb-num">🖥️</span>Informatique</button>
     <button class="sb-btn locked" id="snav-sas" onclick="showUpgrade()"><span class="sb-num">📊</span>SAS</button>
     <button class="sb-btn locked" id="snav-gm" onclick="showUpgrade()"><span class="sb-num">⚙️</span>GM</button>
@@ -3230,21 +3230,1471 @@ function srtSwitchTab(tab) {
 
   <!-- ═══ CIRCUIT ÉLECTRONIQUE ═══ -->
   <div class="spage" id="spage-celn">
-    <div class="hpage" id="home-celn">
-      <div class="greet-card fu">
-        <div class="gr-av" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">⚡</div>
-        <div>
-          <div class="gr-hello" style="color:#06b6d4">Circuit Électronique</div>
-          <div class="gr-name">Programme <em style="color:#06b6d4">Première</em></div>
-          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+    
+<style id="celn-styles">
+/* ══ ÉLECTRONIQUE SCOPED STYLES ══ */
+.celn-wrapper {
+  --celn-bg: #0f1117;
+  --celn-surface: #1a1d27;
+  --celn-surface2: #22263a;
+  --celn-border: #2e3350;
+  --celn-accent: #00b4d8;
+  --celn-accent2: #ff6584;
+  --celn-accent3: #43e97b;
+  --celn-text: #e8eaf6;
+  --celn-text2: #9fa8da;
+  --celn-text3: #616a9e;
+  --celn-gold: #ffd700;
+  --celn-card-radius: 16px;
+  --celn-shadow: 0 4px 32px rgba(0,180,216,0.13);
+  background: var(--celn-bg);
+  color: var(--celn-text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+.celn-wrapper .chapter-banner{background:linear-gradient(90deg,rgba(0,180,216,.15),rgba(0,180,216,.03));border-left:4px solid var(--celn-accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:32px 0 16px;display:flex;align-items:center;gap:12px}
+.celn-wrapper .ch-num{background:var(--celn-accent);color:#000;font-weight:900;font-size:.8rem;padding:4px 12px;border-radius:20px}
+.celn-wrapper .ch-title{font-size:1.1rem;font-weight:800;color:var(--celn-text)}
+.celn-wrapper .lesson-nav{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 8px;justify-content:center}
+.celn-wrapper .pill{background:var(--celn-surface2);border:1px solid var(--celn-border);color:var(--celn-text2);padding:7px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap}
+.celn-wrapper .pill:hover,.celn-wrapper .pill.active{background:var(--celn-accent);border-color:var(--celn-accent);color:#000;font-weight:700}
+.celn-wrapper .section-title{font-size:1.5rem;font-weight:800;color:var(--celn-text);margin:36px 0 20px;padding-left:16px;border-left:4px solid var(--celn-accent)}
+.celn-wrapper .lesson-card{background:var(--celn-surface);border:1px solid var(--celn-border);border-radius:var(--celn-card-radius);margin-bottom:20px;overflow:hidden;box-shadow:var(--celn-shadow);transition:box-shadow .2s}
+.celn-wrapper .lesson-card:hover{box-shadow:0 8px 40px rgba(0,180,216,.22)}
+.celn-wrapper .lesson-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
+.celn-wrapper .lesson-num{background:linear-gradient(135deg,var(--celn-accent),#0077b6);color:#fff;font-weight:900;font-size:.85rem;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.celn-wrapper .lesson-meta{flex:1}
+.celn-wrapper .lesson-meta h3{font-size:1.05rem;font-weight:700;color:var(--celn-text);margin-bottom:4px}
+.celn-wrapper .lesson-meta .tags{display:flex;gap:6px;flex-wrap:wrap}
+.celn-wrapper .tag{background:var(--celn-surface2);border:1px solid var(--celn-border);color:var(--celn-text3);font-size:.7rem;padding:2px 8px;border-radius:10px}
+.celn-wrapper .toggle-icon{color:var(--celn-text3);font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+.celn-wrapper .lesson-body{display:none;padding:0 24px 24px;border-top:1px solid var(--celn-border)}
+.celn-wrapper .lesson-body.open{display:block;animation:celnFadeUp .32s ease both}
+@keyframes celnFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.celn-wrapper .sub-section{margin-top:20px}
+.celn-wrapper .sub-title{font-size:.95rem;font-weight:700;color:var(--celn-accent2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.celn-wrapper .sub-title::before{content:'';display:block;width:3px;height:16px;background:var(--celn-accent2);border-radius:2px}
+.celn-wrapper .content-block{color:var(--celn-text2);font-size:.9rem;line-height:1.75;margin-bottom:12px}
+.celn-wrapper .content-block strong{color:var(--celn-text)}
+.celn-wrapper .def-box{background:var(--celn-surface2);border-left:4px solid var(--celn-accent3);border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0;font-size:.88rem;color:var(--celn-text2)}
+.celn-wrapper .def-box .def-title{color:var(--celn-accent3);font-weight:700;margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+.celn-wrapper .example-box{background:rgba(67,233,123,.07);border:1px solid rgba(67,233,123,.2);border-radius:12px;padding:16px;margin:12px 0}
+.celn-wrapper .example-box .ex-title{color:var(--celn-accent3);font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase}
+.celn-wrapper .example-box p{color:var(--celn-text2);font-size:.88rem;line-height:1.7}
+.celn-wrapper .formula-box{background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.25);border-radius:12px;padding:16px;margin:12px 0;text-align:center}
+.celn-wrapper .formula-box .f-title{color:var(--celn-accent);font-weight:700;font-size:.82rem;margin-bottom:10px;text-transform:uppercase;text-align:left}
+.celn-wrapper .formula{font-size:1.1rem;font-weight:700;color:var(--celn-accent);font-family:'Courier New',monospace;letter-spacing:.5px}
+.celn-wrapper .styled-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.celn-wrapper .styled-table th{background:var(--celn-surface2);color:var(--celn-accent);padding:10px 14px;text-align:left;border-bottom:2px solid var(--celn-border)}
+.celn-wrapper .styled-table td{padding:9px 14px;border-bottom:1px solid var(--celn-border);color:var(--celn-text2)}
+.celn-wrapper .styled-table tr:hover td{background:var(--celn-surface2)}
+.celn-wrapper .code-block{background:#0d1117;border:1px solid var(--celn-border);border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#79c0ff;overflow-x:auto;margin:12px 0}
+.celn-wrapper .quiz-section{margin-top:28px}
+.celn-wrapper .quiz-title{font-size:1rem;font-weight:800;color:var(--celn-gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.celn-wrapper .quiz-item{background:var(--celn-surface2);border:1px solid var(--celn-border);border-radius:12px;padding:16px;margin-bottom:14px}
+.celn-wrapper .quiz-item .q-text{color:var(--celn-text);font-size:.9rem;font-weight:600;margin-bottom:12px}
+.celn-wrapper .quiz-options{display:flex;flex-direction:column;gap:8px}
+.celn-wrapper .quiz-opt{background:var(--celn-bg);border:1px solid var(--celn-border);border-radius:8px;padding:10px 14px;color:var(--celn-text2);font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.celn-wrapper .quiz-opt:hover{border-color:var(--celn-accent);color:var(--celn-text)}
+.celn-wrapper .quiz-opt.correct{background:rgba(67,233,123,.15);border-color:var(--celn-accent3);color:var(--celn-accent3)}
+.celn-wrapper .quiz-opt.wrong{background:rgba(255,101,132,.12);border-color:var(--celn-accent2);color:var(--celn-accent2)}
+.celn-wrapper .quiz-opt .opt-letter{background:var(--celn-surface2);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.celn-wrapper .quiz-feedback{margin-top:10px;font-size:.83rem;padding:8px 12px;border-radius:8px;display:none}
+.celn-wrapper .quiz-feedback.show{display:block}
+.celn-wrapper .quiz-feedback.correct{background:rgba(67,233,123,.1);color:var(--celn-accent3);border:1px solid rgba(67,233,123,.25)}
+.celn-wrapper .quiz-feedback.wrong{background:rgba(255,101,132,.1);color:var(--celn-accent2);border:1px solid rgba(255,101,132,.25)}
+.celn-wrapper .exo-section{margin-top:28px}
+.celn-wrapper .exo-title{font-size:1rem;font-weight:800;color:var(--celn-accent2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.celn-wrapper .exo-item{background:var(--celn-surface2);border:1px solid var(--celn-border);border-radius:12px;padding:16px;margin-bottom:14px}
+.celn-wrapper .exo-item .exo-num{color:var(--celn-accent);font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.celn-wrapper .exo-item .exo-q{color:var(--celn-text);font-size:.88rem;margin-bottom:10px;line-height:1.6}
+.celn-wrapper .show-answer-btn{background:var(--celn-surface);border:1px solid var(--celn-border);color:var(--celn-accent);padding:7px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s}
+.celn-wrapper .show-answer-btn:hover{background:var(--celn-accent);color:#000;font-weight:700}
+.celn-wrapper .answer-block{display:none;margin-top:12px;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.2);border-radius:8px;padding:12px;color:var(--celn-text2);font-size:.85rem;line-height:1.7}
+.celn-wrapper .answer-block.show{display:block}
+.celn-wrapper .answer-block strong{color:var(--celn-accent3)}
+.celn-wrapper .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--celn-text2);font-size:.85rem;padding:8px 16px;border:1px solid var(--celn-border);border-radius:8px;margin:16px 0;transition:all .2s;background:none;cursor:pointer}
+.celn-wrapper .back-btn:hover{color:var(--celn-accent);border-color:var(--celn-accent)}
+.celn-wrapper .progress-wrap-celn{background:var(--celn-surface);border-bottom:1px solid var(--celn-border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.celn-wrapper .progress-label{font-size:.8rem;color:var(--celn-text3);white-space:nowrap}
+.celn-wrapper .progress-bar-celn{flex:1;min-width:120px;height:6px;background:var(--celn-border);border-radius:3px;overflow:hidden}
+.celn-wrapper .progress-fill-celn{height:100%;background:linear-gradient(90deg,var(--celn-accent),var(--celn-accent3));border-radius:3px;transition:width .4s}
+.celn-wrapper .progress-pct{font-size:.8rem;color:var(--celn-accent);font-weight:700;white-space:nowrap}
+.celn-wrapper .hero-celn{background:linear-gradient(135deg,#1a1d27 0%,#0d1b2b 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid #2e3350}
+.celn-wrapper .hero-celn::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,180,216,.18) 0%,transparent 70%);pointer-events:none}
+.celn-wrapper .hero-icon{font-size:3.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+.celn-wrapper .hero-celn h1{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#00e5ff,#00b4d8,#43e97b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.celn-wrapper .hero-celn p{color:#9fa8da;font-size:1rem;max-width:600px;margin:0 auto 20px}
+.celn-wrapper .hero-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.celn-wrapper .stat-celn{background:#22263a;border:1px solid #2e3350;border-radius:12px;padding:12px 24px;text-align:center}
+.celn-wrapper .stat-celn .num{font-size:1.6rem;font-weight:800;color:#00b4d8}
+.celn-wrapper .stat-celn .lbl{font-size:.75rem;color:#616a9e;text-transform:uppercase;letter-spacing:.5px}
+.celn-wrapper .container-celn{max-width:1100px;margin:0 auto;padding:0 16px;padding-bottom:60px}
+</style>
+
+    <div id="home-celn" style="display:none;">
+      <div class="celn-wrapper">
+<div class="container-celn">
+  <a onclick="showSubj('celn')" class="back-btn" style="cursor:pointer">← Retour à l'accueil</a>
+
+  <!-- NAV PILLS -->
+  <div class="lesson-nav" id="lessonNav">
+    <a class="pill active" href="#l1">L1</a>
+    <a class="pill" href="#l2">L2</a>
+    <a class="pill" href="#l3">L3</a>
+    <a class="pill" href="#l4">L4</a>
+    <a class="pill" href="#l5">L5</a>
+    <a class="pill" href="#l6">L6</a>
+    <a class="pill" href="#l7">L7</a>
+    <a class="pill" href="#l8">L8</a>
+    <a class="pill" href="#l9">L9</a>
+    <a class="pill" href="#l10">L10</a>
+    <a class="pill" href="#l11">L11</a>
+    <a class="pill" href="#l12">L12</a>
+  </div>
+
+  <div class="section-title">📖 Les 12 Leçons du Programme</div>
+
+  <!-- ══════════════════════════════════════════
+       CHAPITRE 1 — Composants électroniques de puissance
+  ══════════════════════════════════════════ -->
+  <div class="chapter-banner">
+    <span class="ch-num">CHAPITRE 1</span>
+    <span class="ch-title">⚙️ Composants électroniques de puissance</span>
+  </div>
+
+  <!-- LEÇON 1 -->
+  <div class="lesson-card" id="l1">
+    <div class="lesson-header" onclick="celnToggleLesson('body1',this)">
+      <div class="lesson-num">L1</div>
+      <div class="lesson-meta">
+        <h3>Transistors bipolaires</h3>
+        <div class="tags"><span class="tag">BJT</span><span class="tag">NPN/PNP</span><span class="tag">Amplification</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body1">
+
+      <div class="sub-section">
+        <div class="sub-title">1.1 — Définition et structure</div>
+        <div class="content-block">Le <strong>transistor bipolaire (BJT — Bipolar Junction Transistor)</strong> est un composant semiconducteur à trois électrodes : <strong>Base (B)</strong>, <strong>Collecteur (C)</strong> et <strong>Émetteur (E)</strong>. Il existe en deux types : <strong>NPN</strong> et <strong>PNP</strong>.</div>
+        <div class="def-box"><div class="def-title">💡 Définition clé</div>Le transistor bipolaire est un composant qui permet de <strong>contrôler un courant fort (IC)</strong> à partir d'un <strong>courant faible (IB)</strong>. C'est le principe de l'amplification.</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Structure</th><th>Fonctionnement</th><th>Symbole courant</th></tr></thead>
+          <tbody>
+            <tr><td><strong>NPN</strong></td><td>N–P–N</td><td>Conducteur si IB > 0 (courant entrant en B)</td><td>Flèche sortante sur E</td></tr>
+            <tr><td><strong>PNP</strong></td><td>P–N–P</td><td>Conducteur si IB < 0 (courant sortant de B)</td><td>Flèche entrante sur E</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.2 — Régimes de fonctionnement</div>
+        <div class="content-block">Le transistor BJT peut fonctionner dans 3 régimes :</div>
+        <table class="styled-table">
+          <thead><tr><th>Régime</th><th>Jonctions</th><th>État</th><th>Utilisation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bloqué</strong></td><td>BE et BC inversées</td><td>Transistor = interrupteur ouvert, IC ≈ 0</td><td>Électronique numérique</td></tr>
+            <tr><td><strong>Actif (linéaire)</strong></td><td>BE directe, BC inverse</td><td>IC = β × IB</td><td>Amplification</td></tr>
+            <tr><td><strong>Saturé</strong></td><td>BE et BC directes</td><td>Transistor = interrupteur fermé, VCE ≈ 0</td><td>Commutation</td></tr>
+          </tbody>
+        </table>
+        <div class="formula-box">
+          <div class="f-title">📐 Formules fondamentales</div>
+          <div class="formula">IC = β × IB &nbsp;|&nbsp; IE = IB + IC &nbsp;|&nbsp; β = IC / IB</div>
         </div>
       </div>
-      <div class="hero fu" style="border-color:rgba(6,182,212,.3)">
-        <div class="hero-tag" style="color:#06b6d4">⚡ Circuit Électronique · Classe de Première</div>
-        <div class="hero-h1">Programme Annuel<br><em style="color:#06b6d4">Circuit Électronique</em></div>
-        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.3 — Applications</div>
+        <div class="content-block">• <strong>Amplificateur de signal</strong> : son audio, radiofréquences<br>
+        • <strong>Commutateur électronique</strong> : allumer/éteindre une charge<br>
+        • <strong>Régulateur de tension</strong> : alimentation stabilisée<br>
+        • <strong>Oscillateur</strong> : génération de signaux périodiques</div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>Un transistor NPN 2N2222 avec β = 100 et IB = 0,5 mA donne : <strong>IC = 100 × 0,5 = 50 mA</strong>. Ce courant peut alimenter une LED ou un petit relais, commandés par un signal logique 5V de microcontrôleur.</p>
+        </div>
       </div>
-      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de Circuit Électronique sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
+
+      <!-- QUIZ L1 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 1</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelles sont les trois électrodes d'un transistor bipolaire ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Anode, Cathode, Grille</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Base, Collecteur, Émetteur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Source, Drain, Grille</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Plus, Moins, Neutre</div>
+          </div>
+          <div class="quiz-feedback">Les trois électrodes du BJT sont : Base (B), Collecteur (C) et Émetteur (E). Anode/Cathode sont pour la diode, Source/Drain/Grille pour le transistor MOS.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Si β = 200 et IB = 0,1 mA, quel est IC ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 2 mA</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 20 mA</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 0,2 mA</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 200 mA</div>
+          </div>
+          <div class="quiz-feedback">IC = β × IB = 200 × 0,1 mA = 20 mA. Le gain β amplifie le courant de base.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Dans quel régime fonctionne un transistor utilisé comme amplificateur ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Régime bloqué</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Régime actif (linéaire)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Régime saturé</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Régime inversé</div>
+          </div>
+          <div class="quiz-feedback">Le régime actif (linéaire) est utilisé pour l'amplification car IC = β×IB. Le régime saturé/bloqué est utilisé pour la commutation (interrupteur).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 1</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.1</div>
+          <div class="exo-q">Un transistor NPN a un gain β = 150. On mesure IB = 0,2 mA. Calculez IC et IE. Dans quel régime fonctionne-t-il si VCE = 5V ?</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>IC = β × IB = 150 × 0,2 mA = 30 mA</strong><br><br>
+            <strong>IE = IB + IC = 0,2 + 30 = 30,2 mA</strong><br><br>
+            <strong>Régime :</strong> Actif (linéaire), car VCE = 5V est bien supérieur à VCE(sat) ≈ 0,2V et la relation IC = β×IB est vérifiée.
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.2</div>
+          <div class="exo-q">Citez 3 différences entre un transistor NPN et un transistor PNP, et donnez un exemple d'application pour chacun.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Structure :</strong> NPN = N–P–N ; PNP = P–N–P<br>
+            <strong>2. Sens du courant :</strong> NPN : courant entre dans la Base ; PNP : courant sort de la Base<br>
+            <strong>3. Polarisation :</strong> NPN : VBE > 0 ; PNP : VBE < 0<br><br>
+            <strong>Applications :</strong> NPN → amplificateur audio bas de gamme, commande de LED depuis un µC. PNP → interrupteur côté haut de tension (high-side switch), alimentation à découpage.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 2 -->
+  <div class="lesson-card" id="l2">
+    <div class="lesson-header" onclick="celnToggleLesson('body2',this)">
+      <div class="lesson-num">L2</div>
+      <div class="lesson-meta">
+        <h3>Transistor MOS et MOS FET</h3>
+        <div class="tags"><span class="tag">MOSFET</span><span class="tag">N-MOS</span><span class="tag">P-MOS</span><span class="tag">Commutation</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body2">
+
+      <div class="sub-section">
+        <div class="sub-title">2.1 — Définition et structure du MOSFET</div>
+        <div class="content-block">Le <strong>MOSFET (Metal Oxide Semiconductor Field Effect Transistor)</strong> est un transistor à effet de champ. Ses trois électrodes sont : <strong>Grille (G)</strong>, <strong>Drain (D)</strong> et <strong>Source (S)</strong>. Il est commandé en <strong>tension</strong> (contrairement au BJT commandé en courant).</div>
+        <div class="def-box"><div class="def-title">💡 Principe clé</div>Le MOSFET contrôle le courant ID (Drain-Source) par la tension VGS appliquée sur la Grille. <strong>Courant de grille ≈ 0A</strong> → très haute impédance d'entrée.</div>
+        <table class="styled-table">
+          <thead><tr><th>Paramètre</th><th>BJT</th><th>MOSFET</th></tr></thead>
+          <tbody>
+            <tr><td>Commande</td><td>Courant (IB)</td><td>Tension (VGS)</td></tr>
+            <tr><td>Impédance entrée</td><td>Faible</td><td>Très élevée (MΩ)</td></tr>
+            <tr><td>Vitesse commutation</td><td>Moyenne</td><td>Très rapide</td></tr>
+            <tr><td>Pertes en commutation</td><td>Plus élevées</td><td>Faibles</td></tr>
+            <tr><td>Applications typiques</td><td>Amplification audio</td><td>Electronique de puissance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">2.2 — Types de MOSFET</div>
+        <div class="content-block">Il existe deux grandes familles :<br>
+        • <strong>N-MOSFET (canal N)</strong> : conducteur si VGS > VGS(th) > 0. Le courant va du Drain vers la Source.<br>
+        • <strong>P-MOSFET (canal P)</strong> : conducteur si VGS < VGS(th) < 0. Utilisé en commutation côté haut.</div>
+        <div class="content-block">Et deux modes de fonctionnement :<br>
+        • <strong>Enhancement (enrichissement)</strong> : normalement bloqué, s'ouvre avec VGS. Le plus courant.<br>
+        • <strong>Depletion (appauvrissement)</strong> : normalement conducteur, se bloque avec VGS.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">2.3 — Applications du MOSFET</div>
+        <div class="content-block">• <strong>Alimentation à découpage (SMPS)</strong> : hacheurs, convertisseurs DC/DC<br>
+        • <strong>Variateurs de vitesse</strong> : moteurs électriques<br>
+        • <strong>Onduleurs</strong> : convertisseur DC → AC<br>
+        • <strong>Amplificateurs de puissance audio</strong> : classe D<br>
+        • <strong>Circuits intégrés CMOS</strong> : portes logiques, microprocesseurs</div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>Un MOSFET IRF540 (N-channel) peut commuter jusqu'à <strong>33A sous 100V</strong> avec une résistance RON = 0,044 Ω. Il est utilisé dans les variateurs de moteurs DC et les alimentations à découpage d'ordinateurs.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L2 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 2</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelles sont les électrodes d'un MOSFET ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Base, Collecteur, Émetteur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Anode, Cathode, Gâchette</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Grille, Drain, Source</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Plus, Moins, Masse</div>
+          </div>
+          <div class="quiz-feedback">Le MOSFET a trois électrodes : Grille (G), Drain (D) et Source (S). Base/Collecteur/Émetteur sont du BJT.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Par quoi est commandé un MOSFET ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Un courant de base</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Une tension grille-source VGS</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Une température</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Un champ magnétique</div>
+          </div>
+          <div class="quiz-feedback">Le MOSFET est commandé en tension (VGS). Contrairement au BJT (commandé en courant), le courant de grille du MOSFET est quasi nul.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel avantage majeur a le MOSFET sur le BJT en électronique de puissance ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Il amplifie mieux les signaux audio</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Il coûte moins cher</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Commutation plus rapide et pertes plus faibles</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Il supporte des températures plus élevées</div>
+          </div>
+          <div class="quiz-feedback">Le MOSFET commute beaucoup plus rapidement que le BJT et présente de faibles pertes en commutation, ce qui le rend idéal pour les alimentations à découpage et variateurs.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 2</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 2.1</div>
+          <div class="exo-q">Comparez le BJT et le MOSFET sur 4 critères. Pour chaque critère, précisez lequel est préférable et pourquoi.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Commande :</strong> BJT = courant (IB), MOSFET = tension (VGS). Le MOSFET est plus simple à piloter depuis un circuit logique.<br>
+            <strong>2. Vitesse :</strong> MOSFET >> BJT. Fréquences jusqu'à plusieurs MHz pour MOSFET.<br>
+            <strong>3. Puissance :</strong> Le BJT peut être plus robuste en basse fréquence à forte puissance.<br>
+            <strong>4. Coût :</strong> Les BJT puissance sont souvent moins chers pour de faibles puissances.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 3 -->
+  <div class="lesson-card" id="l3">
+    <div class="lesson-header" onclick="celnToggleLesson('body3',this)">
+      <div class="lesson-num">L3</div>
+      <div class="lesson-meta">
+        <h3>Transistor IGBT</h3>
+        <div class="tags"><span class="tag">IGBT</span><span class="tag">Puissance</span><span class="tag">Hybride</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body3">
+
+      <div class="sub-section">
+        <div class="sub-title">3.1 — Définition et structure</div>
+        <div class="content-block">L'<strong>IGBT (Insulated Gate Bipolar Transistor)</strong> est un transistor hybride qui combine les avantages du <strong>MOSFET</strong> (commande en tension, haute impédance) et du <strong>transistor bipolaire de puissance</strong> (faibles pertes en conduction, tenue en tension élevée).</div>
+        <div class="def-box"><div class="def-title">💡 Définition clé</div>L'IGBT est commandé comme un MOSFET (tension VGE sur la Grille) mais se comporte comme un BJT en conduction. Ses électrodes sont : <strong>Grille (G)</strong>, <strong>Collecteur (C)</strong>, <strong>Émetteur (E)</strong>.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.2 — Comparaison IGBT vs MOSFET vs BJT</div>
+        <table class="styled-table">
+          <thead><tr><th>Critère</th><th>BJT</th><th>MOSFET</th><th>IGBT</th></tr></thead>
+          <tbody>
+            <tr><td>Commande</td><td>Courant</td><td>Tension</td><td>Tension</td></tr>
+            <tr><td>Tension max</td><td>~600V</td><td>~200V courant</td><td>600V – 6500V</td></tr>
+            <tr><td>Courant max</td><td>Élevé</td><td>Moyen</td><td>Très élevé</td></tr>
+            <tr><td>Fréquence</td><td>Faible</td><td>Très haute</td><td>Moyenne (20kHz)</td></tr>
+            <tr><td>Applications</td><td>Amplification</td><td>Electronique rapide</td><td>Forte puissance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.3 — Applications de l'IGBT</div>
+        <div class="content-block">• <strong>Onduleurs de traction</strong> : trains à grande vitesse, tramways<br>
+        • <strong>Variateurs de fréquence</strong> : moteurs industriels<br>
+        • <strong>UPS (onduleurs de secours)</strong> : alimentation sans interruption<br>
+        • <strong>Soudure à l'arc</strong> : postes à souder à haute performance<br>
+        • <strong>Véhicules électriques</strong> : Tesla, Toyota Prius</div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>Les IGBT sont au cœur du moteur de la <strong>Toyota Prius</strong>. Ils commutent des courants de 200A sous 650V avec un rendement supérieur à 97%, permettant la régénération d'énergie au freinage.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L3 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 3</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Que signifie IGBT ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Internal Gate Bipolar Transformer</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Insulated Gate Bipolar Transistor</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Integrated Gate Binary Transistor</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Internal Gain Bipolar Terminal</div>
+          </div>
+          <div class="quiz-feedback">IGBT = Insulated Gate Bipolar Transistor. C'est un transistor bipolaire à grille isolée, combinant MOSFET et BJT.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Dans quelle application typique trouve-t-on des IGBT ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Circuits logiques numériques basse tension</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Amplificateurs audio hifi</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Onduleurs de traction et véhicules électriques</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Téléphones mobiles</div>
+          </div>
+          <div class="quiz-feedback">Les IGBT sont principalement utilisés en forte puissance : onduleurs de traction (trains), variateurs de moteurs industriels et véhicules électriques.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quelles sont les électrodes de l'IGBT ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Grille, Drain, Source</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Grille, Collecteur, Émetteur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Base, Collecteur, Émetteur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Anode, Cathode, Grille</div>
+          </div>
+          <div class="quiz-feedback">L'IGBT a trois électrodes : Grille (G), Collecteur (C) et Émetteur (E). La grille est commandée en tension comme un MOSFET.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 3</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 3.1</div>
+          <div class="exo-q">Un ingénieur doit choisir entre MOSFET et IGBT pour un onduleur de 10 kW alimentant un moteur industriel sous 400V. Quel composant choisir et pourquoi ?</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Choix : IGBT</strong><br><br>
+            <strong>Justification :</strong> Pour une puissance de 10 kW sous 400V, le courant est I = P/V = 25A. L'IGBT est préférable car :<br>
+            — Il tient facilement les tensions &gt; 400V (IGBT classiques : 600-1200V)<br>
+            — Il supporte de forts courants avec de faibles pertes en conduction<br>
+            — Il est commandé en tension (simple à piloter avec un driver IGBT)<br>
+            Le MOSFET serait préférable pour des fréquences &gt; 50 kHz, mais pour un onduleur industriel (10-20 kHz), l'IGBT offre le meilleur compromis pertes/robustesse.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 4 -->
+  <div class="lesson-card" id="l4">
+    <div class="lesson-header" onclick="celnToggleLesson('body4',this)">
+      <div class="lesson-num">L4</div>
+      <div class="lesson-meta">
+        <h3>Le TRIAC — DIAC</h3>
+        <div class="tags"><span class="tag">TRIAC</span><span class="tag">DIAC</span><span class="tag">Thyristor</span><span class="tag">AC</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body4">
+
+      <div class="sub-section">
+        <div class="sub-title">4.1 — Le DIAC</div>
+        <div class="content-block">Le <strong>DIAC (DIode for Alternating Current)</strong> est un composant bidirectionnel à deux électrodes (pas de gâchette). Il conduit dans les <strong>deux sens</strong> dès que la tension appliquée dépasse une tension de seuil (VBO, typiquement ±30V).</div>
+        <div class="def-box"><div class="def-title">💡 Rôle du DIAC</div>Le DIAC est principalement utilisé comme <strong>déclencheur du TRIAC</strong>. Il génère une impulsion quand la tension dépasse son seuil, ce qui déclenche la conduction du TRIAC.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">4.2 — Le TRIAC</div>
+        <div class="content-block">Le <strong>TRIAC (TRIode for Alternating Current)</strong> est un composant bidirectionnel à trois électrodes : <strong>A1 (MT1)</strong>, <strong>A2 (MT2)</strong> et <strong>Gâchette (G)</strong>. Il conduit dans les deux sens quand une impulsion est appliquée sur la gâchette.</div>
+        <table class="styled-table">
+          <thead><tr><th>Paramètre</th><th>TRIAC</th><th>Thyristor (SCR)</th></tr></thead>
+          <tbody>
+            <tr><td>Sens de conduction</td><td>Bidirectionnel</td><td>Unidirectionnel</td></tr>
+            <tr><td>Type de courant</td><td>AC</td><td>DC ou AC avec pont</td></tr>
+            <tr><td>Électrodes</td><td>MT1, MT2, Gâchette</td><td>Anode, Cathode, Gâchette</td></tr>
+            <tr><td>Application typique</td><td>Variateur de lumière, dimmer</td><td>Redresseur commandé</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">4.3 — Applications TRIAC-DIAC</div>
+        <div class="content-block">• <strong>Variateur de lumière (dimmer)</strong> : régler l'intensité lumineuse d'une ampoule<br>
+        • <strong>Régulateur de puissance</strong> : chauffage électrique, four<br>
+        • <strong>Variateur de vitesse AC</strong> : moteurs à courant alternatif<br>
+        • <strong>Gradateur</strong> : contrôle par angle de phase</div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>Dans un <strong>variateur de lumière (dimmer)</strong>, le DIAC déclenche le TRIAC à un angle de phase précis du secteur 220V. Plus l'angle est grand, moins le TRIAC conduit longtemps, moins la lampe reçoit d'énergie → la lumière est plus faible.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L4 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 4</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Combien d'électrodes possède le TRIAC ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 2</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 3</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 4</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
+          </div>
+          <div class="quiz-feedback">Le TRIAC possède 3 électrodes : MT1 (A1), MT2 (A2) et la Gâchette (G). Le DIAC, lui, n'a que 2 électrodes.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est l'application classique du couple DIAC + TRIAC ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Amplification de signal audio</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Variateur de lumière (dimmer)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Génération de signal RF</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Stockage d'énergie</div>
+          </div>
+          <div class="quiz-feedback">Le couple DIAC+TRIAC est classiquement utilisé dans les variateurs de lumière (dimmers) pour contrôler la puissance délivrée à une lampe par découpe de l'onde secteur.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Dans quel sens conduit le TRIAC ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Seulement de MT1 vers MT2</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Seulement de MT2 vers MT1</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Dans les deux sens (bidirectionnel)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Seulement en courant continu</div>
+          </div>
+          <div class="quiz-feedback">Le TRIAC est bidirectionnel : il conduit dans les deux sens, ce qui le rend adapté au courant alternatif (AC 220V secteur).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 4</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 4.1</div>
+          <div class="exo-q">Expliquez le principe de fonctionnement d'un variateur de lumière utilisant un DIAC et un TRIAC. Décrivez les étapes du cycle de commande.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Principe (commande par angle de phase) :</strong><br><br>
+            <strong>1.</strong> Le secteur 220V AC alimente le circuit. Un potentiomètre (résistance variable) et un condensateur forment un réseau RC.<br>
+            <strong>2.</strong> Le condensateur se charge via le potentiomètre. La vitesse de charge dépend de la valeur R du potentiomètre.<br>
+            <strong>3.</strong> Quand la tension aux bornes du condensateur atteint la tension de seuil du DIAC (≈30V), le DIAC conduit et envoie une impulsion sur la gâchette du TRIAC.<br>
+            <strong>4.</strong> Le TRIAC se déclenche et conduit le courant jusqu'au passage par zéro de la tension secteur.<br>
+            <strong>5.</strong> En augmentant R, le condensateur se charge plus lentement → le TRIAC se déclenche plus tard dans le cycle → moins d'énergie transmise à la lampe → lumière plus faible.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 5 -->
+  <div class="lesson-card" id="l5">
+    <div class="lesson-header" onclick="celnToggleLesson('body5',this)">
+      <div class="lesson-num">L5</div>
+      <div class="lesson-meta">
+        <h3>Transistor unijonction (TUJ)</h3>
+        <div class="tags"><span class="tag">UJT</span><span class="tag">Relaxation</span><span class="tag">Déclencheur</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body5">
+
+      <div class="sub-section">
+        <div class="sub-title">5.1 — Structure et fonctionnement</div>
+        <div class="content-block">Le <strong>TUJ (Transistor Unijonction)</strong>, ou <strong>UJT (Unijunction Transistor)</strong>, est un composant à trois électrodes : <strong>Émetteur (E)</strong>, <strong>Base 1 (B1)</strong> et <strong>Base 2 (B2)</strong>. Il possède une seule jonction PN, contrairement au BJT.</div>
+        <div class="def-box"><div class="def-title">💡 Caractéristique clé</div>Le TUJ présente une <strong>résistance négative</strong> dans sa zone de fonctionnement. Quand la tension en E dépasse un seuil (tension de crête VP), le courant d'émetteur augmente et la tension diminue → le TUJ se bloque ou conduit brusquement.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">5.2 — Applications du TUJ</div>
+        <div class="content-block">• <strong>Oscillateur de relaxation</strong> : génère des impulsions de déclenchement<br>
+        • <strong>Déclencheur de thyristor / TRIAC</strong> : impulsion précise sur la gâchette<br>
+        • <strong>Générateur de dents de scie</strong> : signal triangulaire pour oscilloscope<br>
+        • <strong>Minuterie et temporisateur</strong> : circuits de retard simples</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Tension de crête</div>
+          <div class="formula">VP = η × VBB + VD &nbsp;&nbsp; (η : rapport intrinsèque ≈ 0,5 à 0,8)</div>
+        </div>
+      </div>
+
+      <!-- QUIZ L5 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 5</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Combien de jonctions PN possède un TUJ ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Une seule jonction</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Deux jonctions</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Trois jonctions</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Aucune jonction</div>
+          </div>
+          <div class="quiz-feedback">Le TUJ (Transistor Unijonction) possède une SEULE jonction PN, d'où son nom. Le BJT en possède deux.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est la propriété électrique particulière du TUJ ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Résistance infinie</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Gain en courant très élevé</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Résistance négative dans sa zone de fonctionnement</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Capacité variable</div>
+          </div>
+          <div class="quiz-feedback">Le TUJ présente une résistance négative dans sa zone active : quand VE augmente au-delà de VP, le courant augmente mais la tension diminue. Cette propriété permet les oscillations de relaxation.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Pour quelle application le TUJ est-il particulièrement utilisé ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Amplification haute fréquence</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Oscillateur de relaxation et déclenchement de thyristor</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Stockage d'énergie</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Conversion analogique-numérique</div>
+          </div>
+          <div class="quiz-feedback">Le TUJ est principalement utilisé comme oscillateur de relaxation (génère des impulsions) et pour déclencher des thyristors ou TRIAC avec une impulsion précise.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 5</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 5.1</div>
+          <div class="exo-q">Un TUJ a un rapport intrinsèque η = 0,65 et est alimenté sous VBB = 12V. La tension de jonction VD = 0,7V. Calculez la tension de crête VP.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> VP = η × VBB + VD<br><br>
+            <strong>Application numérique :</strong><br>
+            VP = 0,65 × 12 + 0,7<br>
+            VP = 7,8 + 0,7<br>
+            <strong>VP = 8,5 V</strong><br><br>
+            Interprétation : Quand la tension d'émetteur atteint 8,5V, le TUJ passe en conduction brusquement.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CHAPITRE 2 — Les Amplificateurs Opérationnels (AOP)
+  ══════════════════════════════════════════ -->
+  <div class="chapter-banner">
+    <span class="ch-num">CHAPITRE 2</span>
+    <span class="ch-title">🔊 Les Amplificateurs Opérationnels (AOP)</span>
+  </div>
+
+  <!-- LEÇON 6 -->
+  <div class="lesson-card" id="l6">
+    <div class="lesson-header" onclick="celnToggleLesson('body6',this)">
+      <div class="lesson-num">L6</div>
+      <div class="lesson-meta">
+        <h3>Étude d'un AOP en régime linéaire</h3>
+        <div class="tags"><span class="tag">AOP</span><span class="tag">Régime linéaire</span><span class="tag">Amplificateur</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body6">
+
+      <div class="sub-section">
+        <div class="sub-title">6.1 — Définition et symbole</div>
+        <div class="content-block">L'<strong>AOP (Amplificateur Opérationnel)</strong> est un circuit intégré différentiel à très haute gain. Il possède :<br>
+        • <strong>Entrée non-inverseuse (+)</strong><br>
+        • <strong>Entrée inverseuse (−)</strong><br>
+        • <strong>Une sortie</strong><br>
+        • <strong>Deux alimentations</strong> : +Vcc et −Vcc (symétriques)</div>
+        <div class="def-box"><div class="def-title">💡 AOP idéal</div>• Gain différentiel Ad = ∞ &nbsp;|&nbsp; Impédance d'entrée Ze = ∞ &nbsp;|&nbsp; Impédance de sortie Zs = 0 &nbsp;|&nbsp; Bande passante = ∞</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">6.2 — Règles de l'AOP en régime linéaire</div>
+        <div class="content-block">En régime linéaire (avec contre-réaction négative) :<br>
+        • La tension différentielle est nulle : <strong>V+ = V−</strong><br>
+        • Les courants d'entrée sont nuls : <strong>I+ = I− = 0</strong></div>
+        <div class="formula-box">
+          <div class="f-title">📐 Montages fondamentaux</div>
+          <div class="formula">Inverseur : Vs = −(R2/R1) × Ve &nbsp;|&nbsp; Non-inverseur : Vs = (1 + R2/R1) × Ve</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">6.3 — Montages en régime linéaire</div>
+        <table class="styled-table">
+          <thead><tr><th>Montage</th><th>Formule</th><th>Caractéristique</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Amplificateur inverseur</strong></td><td>Vs = −(R2/R1) × Ve</td><td>Inversion de phase, gain réglable</td></tr>
+            <tr><td><strong>Amplificateur non-inverseur</strong></td><td>Vs = (1 + R2/R1) × Ve</td><td>Pas d'inversion, gain ≥ 1</td></tr>
+            <tr><td><strong>Suiveur de tension</strong></td><td>Vs = Ve</td><td>Adaptation d'impédance, gain = 1</td></tr>
+            <tr><td><strong>Additionneur</strong></td><td>Vs = −R(Ve1/R1 + Ve2/R2)</td><td>Somme pondérée de tensions</td></tr>
+            <tr><td><strong>Soustracteur</strong></td><td>Vs = Ve2 − Ve1</td><td>Différence de deux tensions</td></tr>
+            <tr><td><strong>Intégrateur</strong></td><td>Vs = −(1/RC)∫Ve dt</td><td>Intégration du signal d'entrée</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- QUIZ L6 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 6</div>
+        <div class="quiz-item">
+          <div class="q-text">1. En régime linéaire, quelle est la règle sur les tensions d'entrée d'un AOP idéal ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> V+ = 0 et V− = 0</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> V+ = V−</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> V+ − V− = Vcc</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> V+ > V−</div>
+          </div>
+          <div class="quiz-feedback">En régime linéaire (contre-réaction négative), la tension différentielle est nulle : V+ = V−. C'est la règle fondamentale pour analyser tout montage AOP linéaire.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Un montage inverseur a R1 = 10kΩ et R2 = 47kΩ. Quel est le gain ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> +4,7</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> −4,7</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> +5,7</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> −0,21</div>
+          </div>
+          <div class="quiz-feedback">Gain inverseur = −R2/R1 = −47k/10k = −4,7. Le signe négatif indique l'inversion de phase du signal.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel montage AOP a un gain exactement égal à 1 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Amplificateur inverseur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Additionneur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Intégrateur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">D</span> Suiveur de tension</div>
+          </div>
+          <div class="quiz-feedback">Le suiveur de tension (voltage follower) a un gain de 1 : Vs = Ve. Il est utilisé pour l'adaptation d'impédance sans modifier le signal.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 6</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 6.1</div>
+          <div class="exo-q">Un amplificateur non-inverseur est réalisé avec R1 = 5kΩ et R2 = 20kΩ. L'entrée Ve = 0,5V. Calculez Vs et le gain du montage.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule non-inverseur :</strong> Vs = (1 + R2/R1) × Ve<br><br>
+            <strong>Gain :</strong> A = 1 + R2/R1 = 1 + 20k/5k = 1 + 4 = <strong>5</strong><br><br>
+            <strong>Tension de sortie :</strong> Vs = 5 × 0,5 = <strong>2,5 V</strong><br><br>
+            Remarque : le signal n'est pas inversé (pas de changement de signe), contrairement au montage inverseur.
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 6.2</div>
+          <div class="exo-q">Dans un montage inverseur avec R1 = 2kΩ, quelle doit être la valeur de R2 pour obtenir un gain de −15 ?</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> Gain = −R2/R1 → R2 = |Gain| × R1<br><br>
+            <strong>R2 = 15 × 2kΩ = 30 kΩ</strong><br><br>
+            On choisit la valeur normalisée la plus proche dans la série E24 : R2 = 30 kΩ (valeur disponible).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 7 -->
+  <div class="lesson-card" id="l7">
+    <div class="lesson-header" onclick="celnToggleLesson('body7',this)">
+      <div class="lesson-num">L7</div>
+      <div class="lesson-meta">
+        <h3>Étude d'un AOP en régime non linéaire (saturation)</h3>
+        <div class="tags"><span class="tag">Comparateur</span><span class="tag">Saturation</span><span class="tag">Trigger de Schmitt</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body7">
+
+      <div class="sub-section">
+        <div class="sub-title">7.1 — Régime non linéaire (sans contre-réaction)</div>
+        <div class="content-block">En régime <strong>non linéaire</strong>, l'AOP fonctionne <strong>sans contre-réaction négative</strong> (ou avec contre-réaction positive). La sortie est saturée à :<br>
+        • <strong>Vs = +Vsat ≈ +Vcc</strong> si V+ > V−<br>
+        • <strong>Vs = −Vsat ≈ −Vcc</strong> si V+ &lt; V−</div>
+        <div class="def-box"><div class="def-title">💡 Règle clé en saturation</div>La sortie ne peut prendre que deux valeurs : <strong>+Vsat ou −Vsat</strong>. L'AOP agit comme un <strong>comparateur de tension</strong>.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">7.2 — Montages non linéaires</div>
+        <table class="styled-table">
+          <thead><tr><th>Montage</th><th>Description</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Comparateur simple</strong></td><td>Compare Ve à une référence Vref</td><td>Détection de seuil</td></tr>
+            <tr><td><strong>Comparateur à fenêtre</strong></td><td>Détecte si Ve est entre deux seuils</td><td>Alarme de température</td></tr>
+            <tr><td><strong>Trigger de Schmitt</strong></td><td>Comparateur avec hystérésis</td><td>Anti-rebond, mise en forme</td></tr>
+            <tr><td><strong>Bascule à retard</strong></td><td>Contre-réaction positive</td><td>Oscillateur, temporisateur</td></tr>
+          </tbody>
+        </table>
+        <div class="formula-box">
+          <div class="f-title">📐 Trigger de Schmitt inverseur — Seuils de basculement</div>
+          <div class="formula">VT+ = +(R1/R2) × Vsat &nbsp;|&nbsp; VT− = −(R1/R2) × Vsat</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">7.3 — Hystérésis et immunité au bruit</div>
+        <div class="content-block">Le <strong>trigger de Schmitt</strong> introduit une <strong>hystérésis</strong> : il n'y a pas un seul seuil de basculement mais deux (VT+ et VT−). Cela rend le circuit insensible aux petites perturbations (bruit).</div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>Un trigger de Schmitt avec Vsat = 12V, R1 = 10kΩ, R2 = 100kΩ donne VT+ = +1,2V et VT− = −1,2V. Un signal bruité ne peut pas provoquer de commutations intempestives tant que le bruit est inférieur à 1,2V.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L7 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 7</div>
+        <div class="quiz-item">
+          <div class="q-text">1. En régime de saturation, quelles valeurs peut prendre la sortie d'un AOP ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Une valeur continue quelconque entre −Vcc et +Vcc</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Seulement +Vsat ou −Vsat</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Toujours zéro</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Une valeur dépendant du gain</div>
+          </div>
+          <div class="quiz-feedback">En régime non linéaire (saturation), la sortie ne peut prendre que deux valeurs : +Vsat ou −Vsat. L'AOP se comporte comme un comparateur binaire.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel est l'avantage du trigger de Schmitt par rapport à un comparateur simple ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Il est moins cher</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Il est immunisé contre le bruit grâce à l'hystérésis</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Il amplifie mieux</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Il consomme moins</div>
+          </div>
+          <div class="quiz-feedback">L'hystérésis du trigger de Schmitt définit deux seuils de basculement différents (VT+ et VT−), ce qui évite les commutations intempestives dues au bruit sur le signal d'entrée.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Un comparateur a V+ = 3V et V− = 5V, avec Vsat = ±12V. Quelle est la sortie ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">A</span> −12V</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> +12V</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 0V</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3V</div>
+          </div>
+          <div class="quiz-feedback">V+ (3V) &lt; V− (5V), donc Vs = −Vsat = −12V. La règle : si V+ &lt; V−, la sortie sature à −Vsat.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 7</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 7.1</div>
+          <div class="exo-q">Un trigger de Schmitt non inverseur a R1 = 22kΩ, R2 = 100kΩ et Vsat = ±15V. Calculez les deux seuils de basculement VT+ et VT−.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> VT+ = (R1/R2) × Vsat &nbsp;et&nbsp; VT− = −(R1/R2) × Vsat<br><br>
+            <strong>VT+ = (22k/100k) × 15 = 0,22 × 15 = +3,3 V</strong><br>
+            <strong>VT− = −0,22 × 15 = −3,3 V</strong><br><br>
+            <strong>Hystérésis = VT+ − VT− = 6,6 V</strong><br><br>
+            Interprétation : Le signal doit dépasser +3,3V pour que la sortie passe à +Vsat, et descendre en dessous de −3,3V pour que la sortie passe à −Vsat.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CHAPITRE 3 — Les Filtres
+  ══════════════════════════════════════════ -->
+  <div class="chapter-banner">
+    <span class="ch-num">CHAPITRE 3</span>
+    <span class="ch-title">🎛️ Les Filtres</span>
+  </div>
+
+  <!-- LEÇON 8 -->
+  <div class="lesson-card" id="l8">
+    <div class="lesson-header" onclick="celnToggleLesson('body8',this)">
+      <div class="lesson-num">L8</div>
+      <div class="lesson-meta">
+        <h3>Filtres passifs</h3>
+        <div class="tags"><span class="tag">RC</span><span class="tag">RL</span><span class="tag">LC</span><span class="tag">Fréquence de coupure</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body8">
+
+      <div class="sub-section">
+        <div class="sub-title">8.1 — Définition et types de filtres</div>
+        <div class="content-block">Un <strong>filtre</strong> est un circuit électronique qui laisse passer certaines fréquences et en atténue d'autres. Un filtre <strong>passif</strong> est constitué uniquement de composants passifs (R, L, C) sans alimentation externe.</div>
+        <table class="styled-table">
+          <thead><tr><th>Type de filtre</th><th>Fréquences passantes</th><th>Fréquences atténuées</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Passe-bas</strong></td><td>f &lt; fc</td><td>f > fc</td><td>Anti-aliasing, lissage</td></tr>
+            <tr><td><strong>Passe-haut</strong></td><td>f > fc</td><td>f &lt; fc</td><td>Suppression DC, couplage AC</td></tr>
+            <tr><td><strong>Passe-bande</strong></td><td>f1 &lt; f &lt; f2</td><td>f &lt; f1 et f > f2</td><td>Radiofréquences, audio</td></tr>
+            <tr><td><strong>Coupe-bande</strong></td><td>f &lt; f1 et f > f2</td><td>f1 &lt; f &lt; f2</td><td>Élimination 50Hz secteur</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">8.2 — Filtre RC passe-bas du 1er ordre</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Fréquence de coupure (à −3dB)</div>
+          <div class="formula">fc = 1 / (2π × R × C)</div>
+        </div>
+        <div class="content-block">À la fréquence de coupure fc, le gain vaut <strong>1/√2 ≈ 0,707</strong> (-3dB). La pente de coupure d'un filtre du 1er ordre est de <strong>−20 dB/décade</strong>.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">8.3 — Filtre LC (2ème ordre)</div>
+        <div class="content-block">Le filtre LC (bobine + condensateur) est un filtre du <strong>2ème ordre</strong>, plus sélectif avec une pente de <strong>−40 dB/décade</strong>.</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Fréquence de résonance</div>
+          <div class="formula">f0 = 1 / (2π × √(L × C))</div>
+        </div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>Un filtre RC passe-bas avec R = 10kΩ et C = 1µF donne fc = 1/(2π × 10000 × 0,000001) = <strong>15,9 Hz</strong>. Il laisse passer les signaux audio basses fréquences et coupe les hautes fréquences.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L8 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 8</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la formule de la fréquence de coupure d'un filtre RC ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> fc = 2π × R × C</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> fc = 1 / (2π × R × C)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> fc = R / (2π × C)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> fc = C / (2π × R)</div>
+          </div>
+          <div class="quiz-feedback">La fréquence de coupure d'un filtre RC est fc = 1/(2π×R×C). C'est la fréquence à laquelle le gain tombe à 0,707 (-3dB).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel type de filtre laisse passer les basses fréquences ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Passe-bas</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Passe-haut</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Coupe-bande</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Passe-bande</div>
+          </div>
+          <div class="quiz-feedback">Le filtre passe-bas laisse passer les fréquences inférieures à fc et atténue les fréquences supérieures à fc.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quelle est la pente de coupure d'un filtre passif du 1er ordre ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> −10 dB/décade</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> −20 dB/décade</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −40 dB/décade</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> −60 dB/décade</div>
+          </div>
+          <div class="quiz-feedback">Un filtre du 1er ordre a une pente de −20 dB/décade. Un filtre du 2ème ordre : −40 dB/décade. En général : −20n dB/décade pour un filtre d'ordre n.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 8</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 8.1</div>
+          <div class="exo-q">On veut réaliser un filtre RC passe-bas avec fc = 1 kHz. On dispose d'un condensateur C = 100 nF. Calculez la valeur de R à utiliser.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> fc = 1/(2πRC) → R = 1/(2π × fc × C)<br><br>
+            <strong>Application numérique :</strong><br>
+            R = 1 / (2π × 1000 × 100×10⁻⁹)<br>
+            R = 1 / (2π × 10⁻⁴)<br>
+            R = 1 / (6,283 × 10⁻⁴)<br>
+            <strong>R ≈ 1592 Ω ≈ 1,6 kΩ</strong><br><br>
+            On choisira la valeur normalisée E24 la plus proche : R = 1,5 kΩ ou 1,8 kΩ.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 9 -->
+  <div class="lesson-card" id="l9">
+    <div class="lesson-header" onclick="celnToggleLesson('body9',this)">
+      <div class="lesson-num">L9</div>
+      <div class="lesson-meta">
+        <h3>Filtres actifs</h3>
+        <div class="tags"><span class="tag">Sallen-Key</span><span class="tag">AOP</span><span class="tag">Butterworth</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body9">
+
+      <div class="sub-section">
+        <div class="sub-title">9.1 — Différence entre filtre passif et actif</div>
+        <table class="styled-table">
+          <thead><tr><th>Critère</th><th>Filtre passif</th><th>Filtre actif</th></tr></thead>
+          <tbody>
+            <tr><td>Composants</td><td>R, L, C uniquement</td><td>R, C + AOP</td></tr>
+            <tr><td>Gain</td><td>≤ 1 (atténuation)</td><td>Possible > 1 (amplification)</td></tr>
+            <tr><td>Alimentation</td><td>Non requise</td><td>Requise pour l'AOP</td></tr>
+            <tr><td>Bobines</td><td>Parfois nécessaires</td><td>Non nécessaires</td></tr>
+            <tr><td>Fréquences</td><td>Tout domaine</td><td>Basses et moyennes fréquences</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.2 — Filtre actif passe-bas de Sallen-Key (2ème ordre)</div>
+        <div class="content-block">Le montage <strong>Sallen-Key</strong> est le filtre actif le plus courant. Il réalise un filtre du 2ème ordre avec deux résistances, deux condensateurs et un AOP monté en suiveur (gain = 1) ou avec amplification.</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Fréquence de coupure Sallen-Key (R1=R2=R, C1=C2=C)</div>
+          <div class="formula">f0 = 1 / (2π × R × C)</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.3 — Gabarits de filtres normalisés</div>
+        <div class="content-block">Selon leur réponse fréquentielle, les filtres actifs sont classés :<br>
+        • <strong>Butterworth</strong> : réponse plate dans la bande passante, pente −40dB/décade (2ème ordre)<br>
+        • <strong>Chebyshev</strong> : ondulations dans la bande passante, mais coupure plus nette<br>
+        • <strong>Bessel</strong> : réponse en phase linéaire, préserve la forme des signaux temporels</div>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>En audio, un filtre actif Butterworth passe-bas à 20 kHz protège les <strong>tweeter</strong> (haut-parleurs aigus) en supprimant les basses fréquences. Il est utilisé dans les filtres de crossover des enceintes acoustiques hi-fi.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L9 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 9</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel composant actif est utilisé dans les filtres actifs ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Condensateur</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Inductance</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Amplificateur opérationnel (AOP)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Résistance</div>
+          </div>
+          <div class="quiz-feedback">Les filtres actifs utilisent un AOP (Amplificateur Opérationnel) en plus des composants passifs R et C. Cela permet d'avoir un gain supérieur à 1 et d'éviter les bobines.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel avantage a un filtre actif sur un filtre passif ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Il ne nécessite pas d'alimentation</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Il peut avoir un gain supérieur à 1</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Il fonctionne à très haute fréquence</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Il ne contient pas de résistances</div>
+          </div>
+          <div class="quiz-feedback">Le filtre actif peut amplifier le signal (gain > 1) contrairement au filtre passif qui ne peut qu'atténuer (gain ≤ 1).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Comment s'appelle le filtre actif qui a une réponse plate dans la bande passante ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Butterworth</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Chebyshev</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Bessel</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Sallen-Key</div>
+          </div>
+          <div class="quiz-feedback">Le filtre Butterworth présente une réponse en fréquence aussi plate que possible dans la bande passante. Sallen-Key est une topologie de circuit, pas un gabarit de filtre.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 9</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 9.1</div>
+          <div class="exo-q">Citez 3 avantages des filtres actifs sur les filtres passifs, et 2 inconvénients.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Avantages :</strong><br>
+            <strong>1.</strong> Gain possible > 1 : amplifie le signal tout en filtrant<br>
+            <strong>2.</strong> Pas besoin de bobines (composants volumineux et coûteux)<br>
+            <strong>3.</strong> Meilleure sélectivité à faible coût (réglage facile par R et C)<br><br>
+            <strong>Inconvénients :</strong><br>
+            <strong>1.</strong> Nécessite une alimentation (consomme de l'énergie)<br>
+            <strong>2.</strong> Limité en fréquence par la bande passante de l'AOP (difficile au-delà de quelques MHz)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CHAPITRE 4 — Les Oscillateurs
+  ══════════════════════════════════════════ -->
+  <div class="chapter-banner">
+    <span class="ch-num">CHAPITRE 4</span>
+    <span class="ch-title">🌊 Les Oscillateurs</span>
+  </div>
+
+  <!-- LEÇON 10 -->
+  <div class="lesson-card" id="l10">
+    <div class="lesson-header" onclick="celnToggleLesson('body10',this)">
+      <div class="lesson-num">L10</div>
+      <div class="lesson-meta">
+        <h3>Oscillateurs analogiques</h3>
+        <div class="tags"><span class="tag">Wien</span><span class="tag">Colpitts</span><span class="tag">Hartley</span><span class="tag">RC</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body10">
+
+      <div class="sub-section">
+        <div class="sub-title">10.1 — Définition et condition d'oscillation</div>
+        <div class="content-block">Un <strong>oscillateur</strong> est un circuit électronique qui génère un signal périodique <strong>sans signal d'entrée externe</strong>. Il utilise une <strong>contre-réaction positive</strong> pour entretenir les oscillations.</div>
+        <div class="def-box"><div class="def-title">💡 Critère de Barkhausen</div>Pour qu'un oscillateur oscille de façon entretenue, il faut que :<br>
+        • Le gain en boucle ouverte soit ≥ 1 : <strong>|A × β| ≥ 1</strong><br>
+        • La phase de la boucle soit un multiple de 360° : <strong>∠Aβ = 0° ou 360°</strong></div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">10.2 — Oscillateurs RC (basses fréquences)</div>
+        <table class="styled-table">
+          <thead><tr><th>Oscillateur</th><th>Réseau de réaction</th><th>Fréquence</th><th>Signal</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Wien</strong></td><td>Pont de Wien (RC)</td><td>f = 1/(2πRC)</td><td>Sinusoïdal</td></tr>
+            <tr><td><strong>Déphaseur RC</strong></td><td>3 cellules RC en cascade</td><td>f = 1/(2π√6 RC)</td><td>Sinusoïdal</td></tr>
+            <tr><td><strong>Relaxation (TUJ)</strong></td><td>RC + TUJ</td><td>Variable par RC</td><td>Impulsionnel</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">10.3 — Oscillateurs LC (hautes fréquences)</div>
+        <table class="styled-table">
+          <thead><tr><th>Oscillateur</th><th>Réseau de réaction</th><th>Fréquence</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Colpitts</strong></td><td>LC (condensateurs diviseurs)</td><td>f = 1/(2π√(L×C))</td><td>Radiofréquences</td></tr>
+            <tr><td><strong>Hartley</strong></td><td>LC (bobines diviseurs)</td><td>f = 1/(2π√(L×C))</td><td>Radiofréquences</td></tr>
+            <tr><td><strong>Quartz</strong></td><td>Résonateur quartz</td><td>Très stable (MHz)</td><td>Horloges, microprocesseurs</td></tr>
+          </tbody>
+        </table>
+        <div class="example-box">
+          <div class="ex-title">⚡ Exemple concret</div>
+          <p>L'oscillateur à <strong>quartz</strong> de votre smartphone oscille à 32 768 Hz (32,768 kHz). Ce signal est divisé électroniquement pour générer une seconde exacte. Sa précision est de l'ordre de ±20 ppm (±1,7 seconde par jour).</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L10 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 10</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle condition de phase doit vérifier un oscillateur selon Barkhausen ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Phase = 90°</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Phase = 180°</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Phase = 0° ou 360°</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Phase = 270°</div>
+          </div>
+          <div class="quiz-feedback">Selon Barkhausen, la phase totale de la boucle doit être 0° (ou 360°) pour entretenir les oscillations. Le gain en boucle |Aβ| doit être ≥ 1.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel oscillateur est utilisé dans les montres et microprocesseurs pour sa stabilité ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Oscillateur de Wien</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Oscillateur Colpitts</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Oscillateur à quartz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Oscillateur de relaxation</div>
+          </div>
+          <div class="quiz-feedback">L'oscillateur à quartz utilise un cristal piézoélectrique de quartz dont la fréquence de résonance est très stable. Il est indispensable dans les horloges, montres et processeurs.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Un oscillateur de Wien a R = 5kΩ et C = 10nF. Quelle est sa fréquence d'oscillation ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 31,8 Hz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 318 Hz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">C</span> 3 183 Hz ≈ 3,18 kHz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 31 831 Hz</div>
+          </div>
+          <div class="quiz-feedback">f = 1/(2π×R×C) = 1/(2π×5000×10×10⁻⁹) = 1/(314,16×10⁻⁶) ≈ 3 183 Hz ≈ 3,18 kHz.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 10</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 10.1</div>
+          <div class="exo-q">On veut réaliser un oscillateur de Wien générant une sinusoïde à 1 kHz. On choisit C = 22 nF. Calculez la valeur de R nécessaire.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> f = 1/(2πRC) → R = 1/(2π × f × C)<br><br>
+            <strong>Application :</strong> R = 1/(2π × 1000 × 22×10⁻⁹)<br>
+            R = 1/(138,23×10⁻⁶)<br>
+            <strong>R ≈ 7 234 Ω ≈ 7,2 kΩ</strong><br><br>
+            Valeur normalisée E24 : R = 6,8 kΩ (donne f ≈ 1065 Hz) ou R = 7,5 kΩ (donne f ≈ 964 Hz).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 11 -->
+  <div class="lesson-card" id="l11">
+    <div class="lesson-header" onclick="celnToggleLesson('body11',this)">
+      <div class="lesson-num">L11</div>
+      <div class="lesson-meta">
+        <h3>Oscillateurs numériques</h3>
+        <div class="tags"><span class="tag">Portes logiques</span><span class="tag">NE555</span><span class="tag">CMOS</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body11">
+
+      <div class="sub-section">
+        <div class="sub-title">11.1 — Oscillateurs à portes logiques</div>
+        <div class="content-block">Un <strong>oscillateur numérique</strong> génère un signal carré (états 0 et 1). On peut réaliser des oscillateurs avec des <strong>portes logiques inverseuses (NOT)</strong> et un réseau RC.</div>
+        <div class="content-block">Un anneau de 3 inverseurs avec un condensateur de rétroaction génère des oscillations. La fréquence dépend du délai de propagation des portes et du réseau RC.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">11.2 — Le timer NE555 en mode astable</div>
+        <div class="content-block">Le <strong>NE555</strong> est le circuit intégré de temporisation/oscillation le plus utilisé au monde. En mode <strong>astable</strong>, il génère un signal carré continu.</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Formules NE555 mode astable</div>
+          <div class="formula">f = 1,44 / ((R1 + 2×R2) × C) &nbsp;|&nbsp; Rapport cyclique = (R1+R2)/(R1+2R2)</div>
+        </div>
+        <table class="styled-table">
+          <thead><tr><th>Mode</th><th>Fonctionnement</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Astable</strong></td><td>Oscillateur libre, pas de déclenchement</td><td>Génération de signal carré, LED clignotante</td></tr>
+            <tr><td><strong>Monostable</strong></td><td>Une impulsion en sortie par déclenchement</td><td>Temporisateur, anti-rebond</td></tr>
+            <tr><td><strong>Bistable</strong></td><td>Deux états stables (flip-flop)</td><td>Mémoire, bascule RS</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- QUIZ L11 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 11</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel est le signal de sortie d'un oscillateur numérique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Sinusoïdal</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Carré (états 0 et 1)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Triangulaire</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Dents de scie</div>
+          </div>
+          <div class="quiz-feedback">Un oscillateur numérique génère un signal carré qui alterne entre deux niveaux logiques (0V et Vcc). C'est différent des oscillateurs analogiques qui génèrent des sinusoïdes.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Un NE555 en mode astable avec R1=1kΩ, R2=10kΩ, C=10µF. Quelle est la fréquence ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 6,77 Hz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 6,77 Hz ≈ 6,8 Hz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 67,7 Hz</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 0,677 Hz</div>
+          </div>
+          <div class="quiz-feedback">f = 1,44/((R1+2R2)×C) = 1,44/((1000+20000)×10⁻⁵) = 1,44/(0,21) ≈ 6,86 Hz ≈ 6,8 Hz.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. En quel mode fonctionne le NE555 quand il génère un signal oscillant continu ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Mode astable</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Mode monostable</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Mode bistable</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Mode de veille</div>
+          </div>
+          <div class="quiz-feedback">En mode astable, le NE555 oscille en permanence sans déclenchement externe. En mode monostable, il génère une seule impulsion par déclenchement.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 11</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 11.1</div>
+          <div class="exo-q">On veut faire clignoter une LED à 2 Hz avec un NE555 en mode astable. On choisit C = 47µF et R1 = 1kΩ. Calculez R2.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> f = 1,44/((R1+2R2)×C) → (R1+2R2) = 1,44/(f×C)<br><br>
+            <strong>R1+2R2 = 1,44/(2 × 47×10⁻⁶) = 1,44/0,000094 = 15 319 Ω</strong><br><br>
+            <strong>2R2 = 15 319 − R1 = 15 319 − 1000 = 14 319 Ω</strong><br><br>
+            <strong>R2 = 14 319 / 2 ≈ 7 160 Ω ≈ 7,2 kΩ</strong><br><br>
+            Valeur normalisée : R2 = 6,8 kΩ ou 8,2 kΩ selon la précision souhaitée.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEÇON 12 -->
+  <div class="lesson-card" id="l12">
+    <div class="lesson-header" onclick="celnToggleLesson('body12',this)">
+      <div class="lesson-num">L12</div>
+      <div class="lesson-meta">
+        <h3>Analyse d'un dispositif électronique à partir de son schéma</h3>
+        <div class="tags"><span class="tag">Analyse de schéma</span><span class="tag">Méthodologie</span><span class="tag">Synthèse</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body12">
+
+      <div class="sub-section">
+        <div class="sub-title">12.1 — Démarche d'analyse d'un schéma</div>
+        <div class="content-block">L'analyse d'un circuit électronique suit une méthode rigoureuse :</div>
+        <div class="content-block">
+        <strong>Étape 1 — Identifier les blocs fonctionnels :</strong> Repérer les grandes parties du schéma (alimentation, entrée, traitement, sortie).<br><br>
+        <strong>Étape 2 — Identifier les composants :</strong> Repérer chaque composant (transistors, AOP, R, C, L) et leur rôle.<br><br>
+        <strong>Étape 3 — Analyser les liaisons :</strong> Suivre le chemin du signal de l'entrée vers la sortie.<br><br>
+        <strong>Étape 4 — Calculer les grandeurs :</strong> Appliquer les lois (Kirchhoff, loi d'Ohm, formules des composants).<br><br>
+        <strong>Étape 5 — Conclure :</strong> Expliquer le fonctionnement global et le rôle du circuit.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">12.2 — Blocs fonctionnels typiques</div>
+        <table class="styled-table">
+          <thead><tr><th>Bloc fonctionnel</th><th>Composants typiques</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Alimentation</strong></td><td>Transformateur, pont de diodes, condensateur, régulateur</td><td>Fournit les tensions continues stabilisées</td></tr>
+            <tr><td><strong>Capteur/Entrée</strong></td><td>Capteur, potentiomètre, microphone</td><td>Convertit un phénomène physique en signal électrique</td></tr>
+            <tr><td><strong>Amplification</strong></td><td>BJT, AOP, MOSFET</td><td>Augmente l'amplitude du signal</td></tr>
+            <tr><td><strong>Filtrage</strong></td><td>RC, LC, filtre actif</td><td>Sélectionne les fréquences utiles</td></tr>
+            <tr><td><strong>Commutation</strong></td><td>Transistor saturé, relais, TRIAC</td><td>Commande une charge on/off</td></tr>
+            <tr><td><strong>Affichage/Sortie</strong></td><td>LED, buzzer, moteur, haut-parleur</td><td>Convertit le signal en action physique</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">12.3 — Exemple d'analyse : Alarme sonore</div>
+        <div class="example-box">
+          <div class="ex-title">🔬 Analyse d'un circuit d'alarme</div>
+          <p><strong>Schéma :</strong> Capteur (LDR) → Pont diviseur → AOP comparateur → Transistor NPN → Buzzer<br><br>
+          <strong>Analyse bloc par bloc :</strong><br>
+          • <strong>LDR + R :</strong> pont diviseur de tension. Quand la lumière baisse, VLdR monte.<br>
+          • <strong>AOP comparateur :</strong> compare VLDR à Vref. Si VLDR > Vref → sortie = +Vsat.<br>
+          • <strong>Transistor NPN :</strong> commandé par la sortie AOP. Quand IB > 0 → transistor sature → buzzer alimenté.<br>
+          • <strong>Buzzer :</strong> émet un son quand il reçoit l'alimentation.<br><br>
+          <strong>Conclusion :</strong> Ce circuit est une alarme anti-intrusion : il sonne quand la lumière est coupée (quelqu'un passe devant le capteur).</p>
+        </div>
+      </div>
+
+      <!-- QUIZ L12 -->
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Leçon 12</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la première étape dans l'analyse d'un schéma électronique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Calculer les courants dans chaque branche</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Identifier les blocs fonctionnels</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Mesurer la tension d'alimentation</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Dessiner le circuit imprimé</div>
+          </div>
+          <div class="quiz-feedback">La première étape est d'identifier les blocs fonctionnels (alimentation, entrée, traitement, sortie). Cela donne une vue d'ensemble avant d'entrer dans les détails.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Dans un schéma, un transistor NPN dont la base reçoit 0V est dans quel état ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Bloqué (interrupteur ouvert)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Saturé (interrupteur fermé)</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> En régime actif</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Oscillant</div>
+          </div>
+          <div class="quiz-feedback">Si VB = 0V, alors VBE = 0V &lt; 0,6V → la jonction BE n'est pas polarisée → transistor NPN bloqué → IC = 0 → charge éteinte.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel bloc fonctionnel convertit un signal électrique en action physique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Amplification</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Filtrage</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Alimentation</div>
+            <div class="quiz-opt" onclick="celnCheckQuiz(this,'correct')"><span class="opt-letter">D</span> Affichage / Sortie (actuateur)</div>
+          </div>
+          <div class="quiz-feedback">Le bloc de sortie (actuateur) comme un buzzer, moteur, LED ou haut-parleur convertit le signal électrique en action physique (son, mouvement, lumière).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Leçon 12</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.1</div>
+          <div class="exo-q">Décrivez la structure fonctionnelle d'un variateur de vitesse de moteur DC utilisant : un potentiomètre, un AOP comparateur, un transistor MOSFET et un moteur DC. Expliquez le rôle de chaque bloc.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Structure fonctionnelle :</strong><br><br>
+            <strong>1. Potentiomètre (Entrée/Commande) :</strong> Génère une tension de référence variable entre 0 et Vcc selon la position. C'est la consigne de vitesse.<br><br>
+            <strong>2. AOP comparateur (Traitement) :</strong> Compare la tension de consigne avec un signal de retour (ou agit comme amplificateur d'erreur). Génère une tension de commande.<br><br>
+            <strong>3. MOSFET N-channel (Commutation/Puissance) :</strong> Commandé par la tension VGS issue de l'AOP. Il module le courant dans le moteur (souvent en commutation PWM).<br><br>
+            <strong>4. Moteur DC (Sortie/Actionneur) :</strong> Reçoit le courant modulé et tourne à une vitesse proportionnelle à la tension moyenne appliquée.<br><br>
+            <strong>Conclusion :</strong> Ce circuit permet de faire varier la vitesse du moteur en jouant sur le potentiomètre. Plus la consigne est élevée, plus le MOSFET conduit longtemps, plus le moteur tourne vite.
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.2</div>
+          <div class="exo-q">Listez les 5 étapes de la démarche d'analyse d'un circuit électronique et expliquez brièvement chacune.</div>
+          <button class="show-answer-btn" onclick="celnToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Identifier les blocs fonctionnels :</strong> Regrouper les composants en grandes fonctions (alimentation, entrée, traitement, sortie).<br>
+            <strong>2. Identifier les composants :</strong> Nommer et situer chaque composant sur le schéma (R, C, transistors, AOP...).<br>
+            <strong>3. Analyser les liaisons :</strong> Suivre le chemin du signal de l'entrée à la sortie, repérer les points de connexion.<br>
+            <strong>4. Calculer les grandeurs :</strong> Appliquer les lois de Kirchhoff, formules des composants, calculer tensions et courants.<br>
+            <strong>5. Conclure :</strong> Expliquer le fonctionnement global du circuit et définir son application.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:40px 0 60px;color:var(--text3);font-size:.83rem">
+    ⚡ Électronique · Programme complet · M. GWETH · Classe de Première · 2025–2026<br>
+    <span style="color:var(--accent)">📚 STUDYBOARD</span> · NDJANPA Alex
+  </div>
+
+</div><!-- /container -->
+<script>
+
+// ── TOGGLE LEÇON ──
+function celnToggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  celnUpdateProgress();
+}
+
+// ── QUIZ ──
+function celnCheckQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.style.pointerEvents = 'none');
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  celnUpdateProgress();
+}
+
+// ── SHOW ANSWER ──
+function celnToggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+
+// ── PROGRESS ──
+function celnUpdateProgress() {
+  const total = document.querySelectorAll('.quiz-item').length;
+  const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('celnProgressFill').style.width = pct + '%';
+  document.getElementById('celnProgressPct').textContent = pct + '%';
+}
+
+// ── SMOOTH SCROLL FOR PILLS ──
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const target = document.querySelector(pill.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      const id = target.querySelector('.lesson-body')?.id;
+      const header = target.querySelector('.lesson-header');
+      if (id && header) {
+        const body = document.getElementById(id);
+        if (!body.classList.contains('open')) celnToggleLesson(id, header);
+      }
+    }
+  });
+});
+
+// Smooth scroll for pills in celn
+document.querySelectorAll('.celn-wrapper .pill').forEach(function(pill) {
+  pill.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.celn-wrapper .pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+    var target = document.querySelector(pill.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      var id = target.querySelector('.lesson-body') ? target.querySelector('.lesson-body').id : null;
+      var header = target.querySelector('.lesson-header');
+      if (id && header) {
+        var body = document.getElementById(id);
+        if (body && !body.classList.contains('open')) celnToggleLesson(id, header);
+      }
+    }
+  });
+});
+</script>
+</div>
     </div>
     <div class="lpage" id="lpage-celn"></div>
   </div>

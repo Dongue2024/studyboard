@@ -918,18 +918,82 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// ═══════════════════════════════════════════════
-// 👑 LISTE DES EMAILS PREMIUM
-  "ndjanpaalex@gmail.com",
-// Pour ajouter un client : ajoute son email ici
-// ═══════════════════════════════════════════════
+// ... (garde ton code de configuration Firebase et l'initialisation de app et auth)
+
+// // ————————————————————————————————————————————————————
+// // 👑 LISTE DES EMAILS PREMIUM
+// // Pour ajouter un client : ajoute son email ici
+// // ————————————————————————————————————————————————————
 const PREMIUM_EMAILS = [
   "ndjanpaalex@gmail.com",
-  "sergebelibi05@icloud.com",
-  // Ajoute les emails des clients qui ont payé ici :
-  // "client1@gmail.com",
-  // "client2@gmail.com",
+  "sergebelibi05@icloud.com", // Ajouté correctement ici
+  "clien1@gmail.com",
+  // Ajoute les autres ici
 ];
+// // ————————————————————————————————————————————————————
+
+// Éléments d'interface
+const authLoading = document.getElementById('auth-loading');
+const appContent = document.getElementById('app-content');
+
+// Par défaut au chargement : on montre le loading
+authLoading.style.display = 'flex';
+appContent.style.display = 'none';
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    // CAS 1 : PERSONNE N'EST CONNECTÉ
+    console.log("Utilisateur non connecté. Redirection...");
+    window.location.href = 'login.html'; // Redirige vers la page de login
+    return; // Arrête l'exécution ici
+  }
+
+  // CAS 2 : UN UTILISATEUR EST CONNECTÉ
+  console.log("Utilisateur connecté :", user.email);
+
+  // ÉTAPE 1 : Vérifier le statut (Gratuit ou Premium)
+  const isPremium = PREMIUM_EMAILS.includes(user.email);
+  
+  // ÉTAPE 2 : Gérer l'affichage selon le statut
+  if (isPremium) {
+    console.log("🏆 Accès PREMIUM accordé !");
+    
+    // Afficher TOUT le contenu
+    appContent.style.display = 'block';
+    // On débloque tout ce qui est marqué comme "premium-content"
+    document.querySelectorAll('.premium-content').forEach(element => {
+        element.style.pointerEvents = 'auto'; // Permet de cliquer
+        element.style.opacity = '1';          // Rend bien visible
+    });
+    
+    // On cache les icônes de cadenas (si elles ont une classe "fa-lock" par exemple)
+    document.querySelectorAll('.fa-lock').forEach(lock => {
+        lock.style.display = 'none';
+    });
+    
+    // Rendre visibles tous les éléments verrouillés (s'ils existent)
+    // On suppose que tes leçons verrouillées ont une classe CSS spéciale, 
+    // par exemple '.lesson-locked' ou un attribut particulier.
+    // Il faudrait ajuster le sélecteur ci-dessous selon ton HTML.
+    document.querySelectorAll('.is-locked').forEach(el => {
+        el.classList.remove('is-locked'); // Enlève la classe qui cache/verrouille
+    });
+    
+  } else {
+    console.log("👤 Accès GRATUIT accordé.");
+    
+    // Afficher le contenu de base
+    appContent.style.display = 'block';
+    
+    // Optionnel : Tu peux cacher les éléments premium explicitement ici si nécessaire
+    // Mais le mieux est qu'ils soient cachés par défaut dans ton CSS et 
+    // que le code ci-dessus les affiche uniquement pour les premium.
+  }
+
+  // ÉTAPE 3 : Cacher l'écran de chargement
+  authLoading.style.display = 'none';
+
+});
 // ═══════════════════════════════════════════════
 
 document.getElementById('auth-loading').style.display = 'flex';

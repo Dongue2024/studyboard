@@ -3134,11 +3134,14 @@ function srtToggleAnswer(btn) {
 
 // ── PROGRESS ──
 function srtUpdateProgress() {
+  const fill = document.getElementById('srtProgressFill');
+  const pctEl = document.getElementById('srtProgressPct');
+  if (!fill || !pctEl) return;
   const total = document.querySelectorAll('.srt-course-wrapper .quiz-item').length;
   const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
   const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
-  document.getElementById('srtProgressFill').style.width = pct + '%';
-  document.getElementById('srtProgressPct').textContent = pct + '%';
+  fill.style.width = pct + '%';
+  pctEl.textContent = pct + '%';
 }
 
 // ── SMOOTH SCROLL FOR PILLS ──
@@ -9062,7 +9065,8 @@ function showSubj(s) {
     const h = document.getElementById('home-' + sub);
     if (h) h.style.display = 'none';
   });
-  document.getElementById('home-' + s).style.display = 'block';
+  const _homeEl = document.getElementById('home-' + s);
+  if (_homeEl) _homeEl.style.display = 'block';
   const lp = document.getElementById('lpage-' + s);
   if (lp) { lp.classList.remove('on'); lp.innerHTML = ''; }
   // bottom nav
@@ -9143,7 +9147,7 @@ function buildQuiz(n, L, subj) {
   <div class="qnum">Question ${i+1} / ${L.quiz.length}</div>
   <div class="qtxt">${q.q}</div>
   <div class="qopts">${q.opts.map((o, j) =>
-    `<`<button class="qopt" onclick="ans(this,${j===q.ans},'${k}',${i})">${o}</button>`
+    `<button class="qopt" onclick="ans(this,${j===q.ans},'${k}',${i})">${o}</button>`
   ).join('')}</div>
   <div class="qfb" id="qfb-${k}-${i}"></div>
 </div>`).join('') + `<div class="qscore" id="qsc-${k}">Score : <strong id="qsv-${k}">— / ${L.quiz.length}</strong></div>`;
@@ -9494,6 +9498,11 @@ window.showSubj = function(s) {
   }
   _origShowSubjFinal(s);
   if (s === 'phys' || s === 'elec') _buildAccordion(s);
+  // CELN : contenu statique dans #home-celn, forcé visible après showSubj qui le cache
+  if (s === 'celn') {
+    var el = document.getElementById('home-celn');
+    if (el) el.style.display = 'block';
+  }
 };
 
 /* ══ Appelé par Firebase après que l'app est visible ══ */

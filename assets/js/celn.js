@@ -45,6 +45,7 @@ function celnUpdateProgress() {
 }
 
 // ── SMOOTH SCROLL FOR PILLS ──
+document.addEventListener('DOMContentLoaded', function() {
 document.querySelectorAll('.pill').forEach(pill => {
   pill.addEventListener('click', e => {
     e.preventDefault();
@@ -62,23 +63,5 @@ document.querySelectorAll('.pill').forEach(pill => {
     }
   });
 });
+}); // fin DOMContentLoaded
 
-// Smooth scroll for pills in celn
-document.querySelectorAll('.celn-wrapper .pill').forEach(function(pill) {
-  pill.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.querySelectorAll('.celn-wrapper .pill').forEach(function(p) { p.classList.remove('active'); });
-    pill.classList.add('active');
-    var target = document.querySelector(pill.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({behavior:'smooth', block:'start'});
-      var id = target.querySelector('.lesson-body') ? target.querySelector('.lesson-body').id : null;
-      var header = target.querySelector('.lesson-header');
-      if (id && header) {
-        var body = document.getElementById(id);
-        if (body && !body.classList.contains('open')) celnToggleLesson(id, header);
-      }
-    }
-  });
-});
-</script>

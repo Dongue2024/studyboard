@@ -47,6 +47,7 @@ function srtUpdateProgress() {
 }
 
 // ── SMOOTH SCROLL FOR PILLS ──
+document.addEventListener('DOMContentLoaded', function() {
 document.querySelectorAll('.srt-course-wrapper .pill').forEach(pill => {
   pill.addEventListener('click', e => {
     e.preventDefault();
@@ -64,6 +65,7 @@ document.querySelectorAll('.srt-course-wrapper .pill').forEach(pill => {
     }
   });
 });
+}); // fin DOMContentLoaded
 
 // ══════════════════════════════════════════════════════
 //  SYSTÈME ÉPREUVES SRT
@@ -179,4 +181,3 @@ function srtSwitchTab(tab) {
     srtRenderEpreuves();
   }
 }
-</script>

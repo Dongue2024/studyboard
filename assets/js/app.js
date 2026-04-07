@@ -3012,6 +3012,64 @@ function _buildAccordion(subj) {
   });
 }
 
+/* ══ MATHS — Fonctions interactives ══ */
+function mathToggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  mathUpdateProgress();
+}
+function mathCheckQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  allOpts.forEach(function(o) { o.style.pointerEvents = 'none'; });
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  mathUpdateProgress();
+}
+function mathToggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+function mathUpdateProgress() {
+  const mathSection = document.getElementById('home-math');
+  const total = mathSection ? mathSection.querySelectorAll('.quiz-item').length : 0;
+  const answered = mathSection ? mathSection.querySelectorAll('.quiz-item[data-answered]').length : 0;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  const fill = document.getElementById('mathProgressFill');
+  const pctEl = document.getElementById('mathProgressPct');
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+function mathInitPills() {
+  const homeEl = document.getElementById('home-math');
+  if (!homeEl) return;
+  homeEl.querySelectorAll('.pill').forEach(function(pill) {
+    pill.addEventListener('click', function(e) {
+      e.preventDefault();
+      homeEl.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      const target = homeEl.querySelector(pill.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+        const id = target.querySelector('.lesson-body') && target.querySelector('.lesson-body').id;
+        const header = target.querySelector('.lesson-header');
+        if (id && header) {
+          const body = document.getElementById(id);
+          if (!body.classList.contains('open')) mathToggleLesson(id, header);
+        }
+      }
+    });
+  });
+}
+
 /* ══ LOAD MATHS — fetch dynamique depuis cours/maths.html ══ */
 let _mathsLoaded = false;
 function loadMaths() {
@@ -3024,13 +3082,8 @@ function loadMaths() {
     })
     .then(function(html) {
       homeEl.innerHTML = html;
-      // Exécuter les scripts injectés manuellement
-      homeEl.querySelectorAll('script').forEach(function(oldScript) {
-        const newScript = document.createElement('script');
-        newScript.textContent = oldScript.textContent;
-        document.body.appendChild(newScript);
-      });
       _mathsLoaded = true;
+      mathInitPills();
     })
     .catch(function(err) {
       homeEl.innerHTML = '<div style="padding:40px;text-align:center;color:#f87171;">⚠️ Impossible de charger les cours de Maths.<br><small>' + err.message + '</small></div>';

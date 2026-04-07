@@ -3101,8 +3101,11 @@ window.showSubj = function(s) {
   }
   _origShowSubjFinal(s);
   if (s === 'phys' || s === 'elec') _buildAccordion(s);
-  // MATH : chargement dynamique depuis cours/maths.html
-  if (s === 'math') loadMaths();
+  // MATH : contenu statique dans #home-math, forcé visible après showSubj qui le cache
+  if (s === 'math') {
+    var homeMath = document.getElementById('home-math');
+    if (homeMath) homeMath.style.display = 'block';
+  }
   // CELN : contenu statique dans #home-celn, forcé visible après showSubj qui le cache
   if (s === 'celn') {
     var homeCeln = document.getElementById('home-celn');

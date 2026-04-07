@@ -1,9 +1,9 @@
-<!-- ══════════════════════════════════════
-     STUDYBOARD — cours/maths.html
-     Contenu injecté dans #home-math de index.html
-     Généré automatiquement
-══════════════════════════════════════ -->
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mathématiques — Programme Annuel · StudyBoard</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -144,14 +144,21 @@
     .stat{padding:8px 16px}
   }
 </style>
+</head>
+<body>
 
-
+<!-- HEADER -->
+<header class="site-header">
+  <span class="logo">📚 STUDYBOARD</span>
+  <span class="breadcrumb">Accueil › <span>Mathématiques</span></span>
+  <span class="badge-premium">👑 PREMIUM</span>
+</header>
 
 <!-- PROGRESS -->
 <div class="progress-wrap">
   <span class="progress-label">📐 Maths — Progression Quiz</span>
-  <div class="progress-bar"><div class="progress-fill" id="mathProgressFill" style="width:0%"></div></div>
-  <span class="progress-pct" id="mathProgressPct">0%</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-pct" id="progressPct">0%</span>
 </div>
 
 <!-- HERO -->
@@ -168,7 +175,7 @@
 
 <!-- MAIN -->
 <div class="container">
-  
+  <a href="../index.html" class="back-btn">← Retour à l'accueil</a>
 
   <!-- NAV PILLS -->
   <div class="lesson-nav" id="lessonNav">
@@ -192,7 +199,7 @@
        CHAPITRE 1 — Équations, Inéquations, Systèmes
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c1">
-    <div class="lesson-header" onclick="mathToggleLesson('body1',this)">
+    <div class="lesson-header" onclick="toggleLesson('body1',this)">
       <div class="lesson-num">C1</div>
       <div class="lesson-meta">
         <h3>Équations, Inéquations et Systèmes linéaires</h3>
@@ -239,30 +246,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Quel est le discriminant de x² − 5x + 6 = 0 ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 1  (Δ = 25 − 24 = 1)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −24</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 1  (Δ = 25 − 24 = 1)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> −24</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 0</div>
           </div>
           <div class="quiz-feedback">Δ = b² − 4ac = (−5)² − 4×1×6 = 25 − 24 = 1 &gt; 0 → deux solutions réelles distinctes x₁=2 et x₂=3.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Résoudre −2x + 4 ≥ 0. Quelle est la solution ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> x ≥ 2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> x ≤ 2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> x ≥ −2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> x ≤ −2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> x ≥ 2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> x ≤ 2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> x ≥ −2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> x ≤ −2</div>
           </div>
           <div class="quiz-feedback">−2x ≥ −4 → on divise par −2 (on inverse) → x ≤ 2. Solution : ]−∞ ; 2].</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Un système a Δ = 0. Combien de solutions admet l'équation associée ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Aucune</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Deux solutions distinctes</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Une solution double</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Une infinité</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Aucune</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Deux solutions distinctes</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Une solution double</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Une infinité</div>
           </div>
           <div class="quiz-feedback">Δ = 0 → une seule solution appelée racine double : x₀ = −b / 2a.</div>
         </div>
@@ -273,7 +280,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 1.1</div>
           <div class="exo-q">Résoudre dans ℝ l'équation 2x² − 7x + 3 = 0, puis indiquer l'ensemble solution de 2x² − 7x + 3 ≤ 0.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             <strong>Calcul du discriminant :</strong> Δ = (−7)² − 4×2×3 = 49 − 24 = 25 &gt; 0<br>
             <strong>Racines :</strong> x₁ = (7 − 5) / 4 = <strong>1/2</strong> et x₂ = (7 + 5) / 4 = <strong>3</strong><br>
@@ -284,7 +291,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 1.2</div>
           <div class="exo-q">Résoudre le système : { 3x + 2y = 12 et 5x − y = 1 } par la méthode de combinaison.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             On multiplie la 2ème équation par 2 : 10x − 2y = 2<br>
             Addition avec la 1ère : 13x = 14 → <strong>x = 14/13</strong><br>
@@ -300,7 +307,7 @@
        CHAPITRE 2 — Calculs Barycentriques
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c2">
-    <div class="lesson-header" onclick="mathToggleLesson('body2',this)">
+    <div class="lesson-header" onclick="toggleLesson('body2',this)">
       <div class="lesson-num">C2</div>
       <div class="lesson-meta">
         <h3>Calculs barycentriques</h3>
@@ -347,30 +354,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Le barycentre de (A, 1) et (B, 1) est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Le point A</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Le milieu de [AB]</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Le point B</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Un point extérieur à [AB]</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Le point A</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Le milieu de [AB]</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Le point B</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Un point extérieur à [AB]</div>
           </div>
           <div class="quiz-feedback">Avec des coefficients égaux, le barycentre est le milieu du segment. GA⃗ + GB⃗ = 0⃗ ↔ G est le milieu de [AB].</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Pour que le barycentre existe, la somme des coefficients doit être :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Égale à 1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Positive</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Différente de 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Égale à 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Égale à 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Positive</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Différente de 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Égale à 0</div>
           </div>
           <div class="quiz-feedback">La somme des coefficients doit être ≠ 0, sinon le barycentre n'est pas défini (point à l'infini).</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Les coordonnées du centre de gravité G du triangle A(0,0), B(6,0), C(0,6) sont :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> (3 ; 3)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> (2 ; 2)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> (6 ; 6)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> (1 ; 1)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> (3 ; 3)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> (2 ; 2)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> (6 ; 6)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> (1 ; 1)</div>
           </div>
           <div class="quiz-feedback">G = ((0+6+0)/3 ; (0+0+6)/3) = (6/3 ; 6/3) = (2 ; 2).</div>
         </div>
@@ -381,7 +388,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 2.1</div>
           <div class="exo-q">Calculer le barycentre G de A(−1 ; 2), B(3 ; 0) et C(1 ; 4) affectés des coefficients respectifs 3, 1 et 2.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             <strong>Somme des coefficients :</strong> 3 + 1 + 2 = 6<br>
             <strong>x_G</strong> = (3×(−1) + 1×3 + 2×1) / 6 = (−3 + 3 + 2) / 6 = 2/6 = <strong>1/3</strong><br>
@@ -397,7 +404,7 @@
        CHAPITRE 3 — Angles orientés et Trigonométrie
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c3">
-    <div class="lesson-header" onclick="mathToggleLesson('body3',this)">
+    <div class="lesson-header" onclick="toggleLesson('body3',this)">
       <div class="lesson-num">C3</div>
       <div class="lesson-meta">
         <h3>Angles orientés et Trigonométrie</h3>
@@ -444,30 +451,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Quelle est la valeur de sin(π/3) ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1/2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> √3/2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> √2/2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 1/2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> √3/2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> √2/2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
           </div>
           <div class="quiz-feedback">sin(π/3) = sin(60°) = √3/2 ≈ 0,866. À retenir absolument dans le tableau des valeurs remarquables.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Combien de radians correspond à 270° ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> π</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 2π</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> 3π/2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> π/2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> π</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 2π</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 3π/2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> π/2</div>
           </div>
           <div class="quiz-feedback">270° × (π/180°) = 270π/180 = 3π/2 radians.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Quelle est la formule de cos(2a) ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 2cos(a)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 2sin(a)cos(a)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> cos²a − sin²a</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> sin²a − cos²a</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 2cos(a)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 2sin(a)cos(a)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> cos²a − sin²a</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> sin²a − cos²a</div>
           </div>
           <div class="quiz-feedback">cos(2a) = cos²a − sin²a. On peut aussi écrire 1 − 2sin²a ou 2cos²a − 1 (formes équivalentes).</div>
         </div>
@@ -478,7 +485,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 3.1</div>
           <div class="exo-q">Résoudre dans ℝ l'équation : sin(x) = √3/2</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             sin(x) = √3/2 → sin(x) = sin(π/3)<br>
             <strong>Solution :</strong><br>
@@ -493,7 +500,7 @@
        CHAPITRE 4 — Nombres complexes
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c4">
-    <div class="lesson-header" onclick="mathToggleLesson('body4',this)">
+    <div class="lesson-header" onclick="toggleLesson('body4',this)">
       <div class="lesson-num">C4</div>
       <div class="lesson-meta">
         <h3>Nombres complexes</h3>
@@ -532,30 +539,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Quelle est la valeur de i² ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> −1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> i</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> −1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> i</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 0</div>
           </div>
           <div class="quiz-feedback">Par définition de l'unité imaginaire, i² = −1. C'est la base de tout le chapitre sur les complexes.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Le module de z = 3 + 4i est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 7</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 5</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 25</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 7</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 5</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 25</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
           </div>
           <div class="quiz-feedback">|z| = √(3² + 4²) = √(9 + 16) = √25 = 5. C'est un triplet pythagoricien classique (3, 4, 5).</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Le conjugué de z = 2 − 3i est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> −2 + 3i</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 2 + 3i</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −2 − 3i</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3 − 2i</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> −2 + 3i</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 2 + 3i</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> −2 − 3i</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 3 − 2i</div>
           </div>
           <div class="quiz-feedback">Le conjugué s'obtient en changeant le signe de la partie imaginaire : z̄ = 2 + 3i.</div>
         </div>
@@ -566,7 +573,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 4.1</div>
           <div class="exo-q">Écrire z = (1 + i)² sous forme algébrique, puis calculer son module et son argument.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             <strong>Forme algébrique :</strong> (1+i)² = 1 + 2i + i² = 1 + 2i − 1 = <strong>2i</strong><br>
             <strong>Module :</strong> |2i| = 2<br>
@@ -582,7 +589,7 @@
        CHAPITRE 5 — Statistiques
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c5">
-    <div class="lesson-header" onclick="mathToggleLesson('body5',this)">
+    <div class="lesson-header" onclick="toggleLesson('body5',this)">
       <div class="lesson-num">C5</div>
       <div class="lesson-meta">
         <h3>Statistiques</h3>
@@ -625,30 +632,30 @@
         <div class="quiz-item">
           <div class="q-text">1. La série : 2, 4, 4, 6, 8, 10. Quelle est la moyenne ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 5</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 5,67</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 4</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 6</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 5</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 5,67</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 4</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 6</div>
           </div>
           <div class="quiz-feedback">x̄ = (2+4+4+6+8+10)/6 = 34/6 ≈ 5,67.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. L'écart-type est la racine carrée de :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> La moyenne</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> La variance</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> La médiane</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> L'étendue</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> La moyenne</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> La variance</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> La médiane</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> L'étendue</div>
           </div>
           <div class="quiz-feedback">σ = √V où V est la variance. L'écart-type est l'indicateur de dispersion le plus utilisé.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Un coefficient de corrélation r = −0,95 indique :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Pas de corrélation</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Forte corrélation positive</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Forte corrélation négative</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Corrélation nulle</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Pas de corrélation</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Forte corrélation positive</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Forte corrélation négative</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Corrélation nulle</div>
           </div>
           <div class="quiz-feedback">|r| = 0,95 proche de 1 → forte corrélation. Le signe négatif indique que quand X augmente, Y diminue.</div>
         </div>
@@ -659,7 +666,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 5.1</div>
           <div class="exo-q">Calculer la variance et l'écart-type de la série : 3, 5, 7, 9, 11.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             <strong>Moyenne :</strong> x̄ = (3+5+7+9+11)/5 = 35/5 = 7<br>
             <strong>Variance :</strong> V = [(3−7)²+(5−7)²+(7−7)²+(9−7)²+(11−7)²]/5<br>
@@ -675,7 +682,7 @@
        CHAPITRE 6 — Généralités sur les fonctions
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c6">
-    <div class="lesson-header" onclick="mathToggleLesson('body6',this)">
+    <div class="lesson-header" onclick="toggleLesson('body6',this)">
       <div class="lesson-num">C6</div>
       <div class="lesson-meta">
         <h3>Généralités sur les fonctions</h3>
@@ -717,30 +724,30 @@
         <div class="quiz-item">
           <div class="q-text">1. f(x) = x² est une fonction :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Paire</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Impaire</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Ni paire ni impaire</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Périodique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> Paire</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Impaire</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Ni paire ni impaire</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Périodique</div>
           </div>
           <div class="quiz-feedback">f(−x) = (−x)² = x² = f(x) → f est paire. Sa courbe est symétrique par rapport à l'axe des ordonnées.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Quelle est la période de la fonction sinus ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> π</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 2π</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> π/2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 4π</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> π</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 2π</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> π/2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 4π</div>
           </div>
           <div class="quiz-feedback">sin(x + 2π) = sin(x). La période de sin et cos est 2π.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. f est croissante sur [a, b] signifie que pour x₁ &lt; x₂ on a :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> f(x₁) &lt; f(x₂)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> f(x₁) &gt; f(x₂)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> f(x₁) = f(x₂)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> f(x₁) ≤ f(x₂)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> f(x₁) &lt; f(x₂)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> f(x₁) &gt; f(x₂)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> f(x₁) = f(x₂)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> f(x₁) ≤ f(x₂)</div>
           </div>
           <div class="quiz-feedback">Croissante signifie que la fonction "monte" : plus x est grand, plus f(x) est grand (strictement).</div>
         </div>
@@ -751,7 +758,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 6.1</div>
           <div class="exo-q">Déterminer si f(x) = x³ − x est paire, impaire ou ni l'une ni l'autre. Préciser la symétrie de sa courbe.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             f(−x) = (−x)³ − (−x) = −x³ + x = −(x³ − x) = −f(x)<br>
             <strong>Conclusion :</strong> f est <strong>impaire</strong>.<br>
@@ -766,7 +773,7 @@
        CHAPITRE 7 — Limites et Continuité
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c7">
-    <div class="lesson-header" onclick="mathToggleLesson('body7',this)">
+    <div class="lesson-header" onclick="toggleLesson('body7',this)">
       <div class="lesson-num">C7</div>
       <div class="lesson-meta">
         <h3>Limites et continuité</h3>
@@ -808,30 +815,30 @@
         <div class="quiz-item">
           <div class="q-text">1. lim(x→+∞) (3x² + 2x − 1) / x² est égal à :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> +∞</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 3</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> +∞</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 3</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 2</div>
           </div>
           <div class="quiz-feedback">On divise par x² : (3 + 2/x − 1/x²) → 3 quand x → +∞. C'est la méthode du terme dominant.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. f(x) = 1/(x−2). Quelle est l'asymptote verticale ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> y = 2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> x = 2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> x = 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> y = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> y = 2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> x = 2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> x = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> y = 0</div>
           </div>
           <div class="quiz-feedback">f(x) → ±∞ quand x → 2, donc x = 2 est l'asymptote verticale. y = 0 est l'asymptote horizontale.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Le TVI garantit l'existence d'une solution à condition que f soit :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Dérivable</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Continue</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Croissante</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Paire</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Dérivable</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Continue</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Croissante</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Paire</div>
           </div>
           <div class="quiz-feedback">Le TVI requiert uniquement la continuité sur [a,b]. Une fonction dérivable est continue, mais la réciproque est fausse.</div>
         </div>
@@ -842,7 +849,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 7.1</div>
           <div class="exo-q">Montrer que l'équation x³ − 3x + 1 = 0 admet au moins une solution dans [1 ; 2].</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             Soit f(x) = x³ − 3x + 1. f est continue sur ℝ (polynôme).<br>
             <strong>f(1)</strong> = 1 − 3 + 1 = <strong>−1 &lt; 0</strong><br>
@@ -858,7 +865,7 @@
        CHAPITRE 8 — Dérivation
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c8">
-    <div class="lesson-header" onclick="mathToggleLesson('body8',this)">
+    <div class="lesson-header" onclick="toggleLesson('body8',this)">
       <div class="lesson-num">C8</div>
       <div class="lesson-meta">
         <h3>Dérivation</h3>
@@ -909,30 +916,30 @@
         <div class="quiz-item">
           <div class="q-text">1. La dérivée de f(x) = x⁴ est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> x³</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 4x³</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 4x⁴</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> x⁵/5</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> x³</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 4x³</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 4x⁴</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> x⁵/5</div>
           </div>
           <div class="quiz-feedback">Règle : (xⁿ)' = n·xⁿ⁻¹. Donc (x⁴)' = 4·x³.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. La dérivée de f(x) = eˣ est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> xeˣ⁻¹</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> eˣ</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> x·eˣ</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> ln(x)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> xeˣ⁻¹</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> eˣ</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> x·eˣ</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> ln(x)</div>
           </div>
           <div class="quiz-feedback">La fonction exponentielle est sa propre dérivée : (eˣ)' = eˣ. C'est une propriété remarquable.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. L'équation de la tangente à f(x) = x² en x = 1 est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> y = x</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> y = 2x − 1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> y = 2x + 1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> y = x + 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> y = x</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> y = 2x − 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> y = 2x + 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> y = x + 1</div>
           </div>
           <div class="quiz-feedback">f'(x) = 2x → f'(1) = 2. Point A(1, 1). Tangente : y = 2(x−1) + 1 = 2x − 1.</div>
         </div>
@@ -943,7 +950,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 8.1</div>
           <div class="exo-q">Calculer la dérivée de f(x) = (2x + 1)·eˣ, puis écrire l'équation de la tangente au point d'abscisse x = 0.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             Produit u·v avec u = 2x+1 et v = eˣ<br>
             u' = 2, v' = eˣ<br>
@@ -960,7 +967,7 @@
        CHAPITRE 9 — Étude des fonctions
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c9">
-    <div class="lesson-header" onclick="mathToggleLesson('body9',this)">
+    <div class="lesson-header" onclick="toggleLesson('body9',this)">
       <div class="lesson-num">C9</div>
       <div class="lesson-meta">
         <h3>Étude des fonctions</h3>
@@ -1001,30 +1008,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Si f'(x) &lt; 0 sur ]a ; b[, alors f est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Croissante</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Décroissante</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Constante</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Nulle</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Croissante</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Décroissante</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Constante</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Nulle</div>
           </div>
           <div class="quiz-feedback">Une dérivée négative signifie que la fonction "descend" : elle est strictement décroissante.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. f(x) = −x² + 4x. En quel point f admet-elle son maximum ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> x = 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> x = 4</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> x = 2</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> x = −2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> x = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> x = 4</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> x = 2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> x = −2</div>
           </div>
           <div class="quiz-feedback">f'(x) = −2x + 4 = 0 → x = 2. Comme f'' = −2 &lt; 0, c'est bien un maximum. f(2) = −4 + 8 = 4.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. Un point d'inflexion se trouve là où :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> f'(x) = 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> f''(x) change de signe</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> f(x) = 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> f est continue</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> f'(x) = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> f''(x) change de signe</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> f(x) = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> f est continue</div>
           </div>
           <div class="quiz-feedback">Un point d'inflexion est un point de la courbe où la convexité change, c'est-à-dire où f'' change de signe.</div>
         </div>
@@ -1035,7 +1042,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 9.1</div>
           <div class="exo-q">Étudier les variations de f(x) = x³ − 3x + 2 sur ℝ et dresser son tableau de variation.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             f'(x) = 3x² − 3 = 3(x² − 1) = 3(x−1)(x+1)<br>
             f'(x) = 0 pour x = −1 et x = 1<br>
@@ -1053,7 +1060,7 @@
        CHAPITRE 10 — Suites numériques
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c10">
-    <div class="lesson-header" onclick="mathToggleLesson('body10',this)">
+    <div class="lesson-header" onclick="toggleLesson('body10',this)">
       <div class="lesson-num">C10</div>
       <div class="lesson-meta">
         <h3>Suites numériques</h3>
@@ -1096,30 +1103,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Suite arithmétique de raison 3 avec u₀ = 2. Quelle est u₅ ?</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 13</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 17</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 15</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 20</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 13</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 17</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 15</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 20</div>
           </div>
           <div class="quiz-feedback">uₙ = u₀ + n·r → u₅ = 2 + 5×3 = 2 + 15 = 17.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Une suite géométrique de raison q = 1/2 est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Divergente</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Convergente vers 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Croissante</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Constante</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Divergente</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Convergente vers 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Croissante</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Constante</div>
           </div>
           <div class="quiz-feedback">|q| = 1/2 &lt; 1 → la suite converge vers 0. uₙ = u₀ × (1/2)ⁿ → 0.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. La somme 1 + 2 + 3 + ... + 100 est égale à :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1000</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 5000</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> 5050</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 10000</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 1000</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 5000</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 5050</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 10000</div>
           </div>
           <div class="quiz-feedback">Suite arith. r=1, u₁=1, u₁₀₀=100. S = 100×(1+100)/2 = 100×101/2 = 5050.</div>
         </div>
@@ -1130,7 +1137,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 10.1</div>
           <div class="exo-q">Un capital de 1000 € est placé à 5% d'intérêts composés. Exprimer le capital Cₙ après n années, puis calculer C₁₀.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             Chaque année on multiplie par 1,05 → suite géométrique de raison q = 1,05.<br>
             <strong>Cₙ = 1000 × (1,05)ⁿ</strong><br>
@@ -1145,7 +1152,7 @@
        CHAPITRE 11 — Géométrie dans l'espace
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c11">
-    <div class="lesson-header" onclick="mathToggleLesson('body11',this)">
+    <div class="lesson-header" onclick="toggleLesson('body11',this)">
       <div class="lesson-num">C11</div>
       <div class="lesson-meta">
         <h3>Géométrie dans l'espace</h3>
@@ -1186,30 +1193,30 @@
         <div class="quiz-item">
           <div class="q-text">1. Distance entre A(1,0,0) et B(4,3,0) :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 5</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> √18 ≈ 4,24</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 7</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 5</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> √18 ≈ 4,24</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 7</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 3</div>
           </div>
           <div class="quiz-feedback">AB = √[(4−1)² + (3−0)² + 0²] = √[9 + 9] = √18 = 3√2 ≈ 4,24.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. u⃗(1,2,3) et v⃗(−3,0,1). Leur produit scalaire est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 6</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −6</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 6</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> −6</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 3</div>
           </div>
           <div class="quiz-feedback">u⃗·v⃗ = 1×(−3) + 2×0 + 3×1 = −3 + 0 + 3 = 0 → les vecteurs sont perpendiculaires !</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. L'équation d'un plan de vecteur normal n⃗(2,−1,3) passant par O est :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> 2x − y + 3z = 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> x + y + z = 0</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 2x + y − 3z = 1</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> −x + 2y + z = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> 2x − y + 3z = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> x + y + z = 0</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 2x + y − 3z = 1</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> −x + 2y + z = 0</div>
           </div>
           <div class="quiz-feedback">Un plan de normale (a,b,c) passant par l'origine a pour équation ax + by + cz = 0.</div>
         </div>
@@ -1220,7 +1227,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 11.1</div>
           <div class="exo-q">Déterminer une équation du plan passant par A(1,2,3), B(0,1,1) et C(2,0,1).</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             AB⃗ = (−1,−1,−2) et AC⃗ = (1,−2,−2)<br>
             <strong>Vecteur normal</strong> n⃗ = AB⃗ × AC⃗ :<br>
@@ -1238,7 +1245,7 @@
        CHAPITRE 12 — Transformation du plan
   ════════════════════════════════════════════════════ -->
   <div class="lesson-card" id="c12">
-    <div class="lesson-header" onclick="mathToggleLesson('body12',this)">
+    <div class="lesson-header" onclick="toggleLesson('body12',this)">
       <div class="lesson-num">C12</div>
       <div class="lesson-meta">
         <h3>Transformation du plan</h3>
@@ -1286,30 +1293,30 @@
         <div class="quiz-item">
           <div class="q-text">1. La translation de vecteur u⃗(3,−2) envoie A(1,4) sur :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> A'(4, 2)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> A'(−2, 6)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> A'(3, −2)</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> A'(1, 4)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> A'(4, 2)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> A'(−2, 6)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> A'(3, −2)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> A'(1, 4)</div>
           </div>
           <div class="quiz-feedback">A'(1+3 ; 4+(−2)) = A'(4 ; 2).</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">2. Une isométrie est une transformation qui conserve :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Les angles seulement</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Les distances</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Les orientations</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Les aires seulement</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Les angles seulement</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Les distances</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Les orientations</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Les aires seulement</div>
           </div>
           <div class="quiz-feedback">Par définition, une isométrie conserve les distances. Elle conserve aussi les angles et les aires en conséquence.</div>
         </div>
         <div class="quiz-item">
           <div class="q-text">3. L'homothétie de centre O et de rapport k = −1 est équivalente à :</div>
           <div class="quiz-options">
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Une translation</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Une réflexion axiale</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Une symétrie centrale par rapport à O</div>
-            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Une rotation de 90°</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Une translation</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Une réflexion axiale</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Une symétrie centrale par rapport à O</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Une rotation de 90°</div>
           </div>
           <div class="quiz-feedback">Quand k = −1, OM'⃗ = −OM⃗, ce qui signifie que O est le milieu de [MM'] → symétrie centrale de centre O.</div>
         </div>
@@ -1320,7 +1327,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 12.1</div>
           <div class="exo-q">Trouver l'image du triangle A(2,0), B(4,0), C(3,2) par la rotation de centre O d'angle 90°. Quelles sont les coordonnées des images A', B', C' ?</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             Pour une rotation de 90° : (x,y) → (−y, x)<br>
             <strong>A(2,0)</strong> → A'(0, 2)<br>
@@ -1332,7 +1339,7 @@
         <div class="exo-item">
           <div class="exo-num">Exercice 12.2</div>
           <div class="exo-q">Déterminer l'image de A(3, 1) par l'homothétie de centre O(0,0) et de rapport k = 2, puis par celle de rapport k = −1/2.</div>
-          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
           <div class="answer-block">
             <strong>k = 2 :</strong> A'(2×3 ; 2×1) = <strong>A'(6 ; 2)</strong><br>
             <strong>k = −1/2 :</strong> A''(−1/2×3 ; −1/2×1) = <strong>A''(−3/2 ; −1/2)</strong><br>
@@ -1350,3 +1357,66 @@
   </div>
 
 </div><!-- /container -->
+
+<script>
+// ── TOGGLE CHAPITRE ──
+function toggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  updateProgress();
+}
+
+// ── QUIZ ──
+function checkQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.style.pointerEvents = 'none');
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  updateProgress();
+}
+
+// ── SHOW ANSWER ──
+function toggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const total = document.querySelectorAll('.quiz-item').length;
+  const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+// ── SMOOTH SCROLL FOR PILLS ──
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const target = document.querySelector(pill.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      const id = target.querySelector('.lesson-body')?.id;
+      const header = target.querySelector('.lesson-header');
+      if (id && header) {
+        const body = document.getElementById(id);
+        if (!body.classList.contains('open')) toggleLesson(id, header);
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>

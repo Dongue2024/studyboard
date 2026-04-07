@@ -3012,6 +3012,31 @@ function _buildAccordion(subj) {
   });
 }
 
+/* ══ LOAD MATHS — fetch dynamique depuis cours/maths.html ══ */
+let _mathsLoaded = false;
+function loadMaths() {
+  const homeEl = document.getElementById('home-math');
+  if (!homeEl || _mathsLoaded) return;
+  fetch('cours/maths.html')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(html) {
+      homeEl.innerHTML = html;
+      // Exécuter les scripts injectés manuellement
+      homeEl.querySelectorAll('script').forEach(function(oldScript) {
+        const newScript = document.createElement('script');
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+      _mathsLoaded = true;
+    })
+    .catch(function(err) {
+      homeEl.innerHTML = '<div style="padding:40px;text-align:center;color:#f87171;">⚠️ Impossible de charger les cours de Maths.<br><small>' + err.message + '</small></div>';
+    });
+}
+
 /* ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══ */
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
@@ -3023,6 +3048,8 @@ window.showSubj = function(s) {
   }
   _origShowSubjFinal(s);
   if (s === 'phys' || s === 'elec') _buildAccordion(s);
+  // MATH : chargement dynamique depuis cours/maths.html
+  if (s === 'math') loadMaths();
   // CELN : contenu statique dans #home-celn, forcé visible après showSubj qui le cache
   if (s === 'celn') {
     var homeCeln = document.getElementById('home-celn');

@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SAV — Son & Image · StudyBoard</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #f72585;
+    --accent2: #7209b7;
+    --accent3: #43e97b;
+    --text: #e8eaf6;
+    --text2: #9fa8da;
+    --text3: #616a9e;
+    --gold: #ffd700;
+    --card-radius: 16px;
+    --shadow: 0 4px 32px rgba(247,37,133,0.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+  .site-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+  .site-header .logo{font-size:1.3rem;font-weight:800;color:var(--accent);letter-spacing:-1px}
+  .site-header .breadcrumb{color:var(--text3);font-size:.85rem}
+  .site-header .breadcrumb span{color:var(--accent)}
+  .badge-premium{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto}
+
+  .hero{background:linear-gradient(135deg,#1a1d27 0%,#1a0a1e 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(247,37,133,.18) 0%,transparent 70%);pointer-events:none}
+  .hero-icon{font-size:3.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .hero h1{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#f72585,#b5179e,#7209b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+  .hero p{color:var(--text2);font-size:1rem;max-width:600px;margin:0 auto 20px}
+  .hero-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+  .stat{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 24px;text-align:center}
+  .stat .num{font-size:1.6rem;font-weight:800;color:var(--accent)}
+  .stat .lbl{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+
+  .container{max-width:1100px;margin:0 auto;padding:0 16px}
+
+  .chapter-banner{background:linear-gradient(90deg,rgba(247,37,133,.13),rgba(247,37,133,.02));border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:32px 0 16px;display:flex;align-items:center;gap:12px}
+  .chapter-banner .ch-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:.8rem;padding:4px 12px;border-radius:20px}
+  .chapter-banner .ch-title{font-size:1.1rem;font-weight:800;color:var(--text)}
+
+  .lesson-nav{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 8px;justify-content:center}
+  .pill{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap}
+  .pill:hover,.pill.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+
+  .section-title{font-size:1.5rem;font-weight:800;color:var(--text);margin:36px 0 20px;padding-left:16px;border-left:4px solid var(--accent)}
+
+  .lesson-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);margin-bottom:20px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s}
+  .lesson-card:hover{box-shadow:0 8px 40px rgba(247,37,133,.22)}
+  .lesson-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
+  .lesson-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:.85rem;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lesson-meta{flex:1}
+  .lesson-meta h3{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:4px}
+  .lesson-meta .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:.7rem;padding:2px 8px;border-radius:10px}
+  .toggle-icon{color:var(--text3);font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+  .lesson-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+  .lesson-body.open{display:block}
+
+  .sub-section{margin-top:20px}
+  .sub-title{font-size:.95rem;font-weight:700;color:#ff6584;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .sub-title::before{content:'';display:block;width:3px;height:16px;background:#ff6584;border-radius:2px}
+  .content-block{color:var(--text2);font-size:.9rem;line-height:1.75;margin-bottom:12px}
+  .content-block strong{color:var(--text)}
+
+  .def-box{background:var(--surface2);border-left:4px solid var(--accent3);border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0;font-size:.88rem;color:var(--text2)}
+  .def-box .def-title{color:var(--accent3);font-weight:700;margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+
+  .example-box{background:rgba(67,233,123,.07);border:1px solid rgba(67,233,123,.2);border-radius:12px;padding:16px;margin:12px 0}
+  .example-box .ex-title{color:var(--accent3);font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase}
+  .example-box p{color:var(--text2);font-size:.88rem;line-height:1.7}
+
+  .formula-box{background:rgba(247,37,133,.08);border:1px solid rgba(247,37,133,.25);border-radius:12px;padding:16px;margin:12px 0}
+  .formula-box .f-title{color:var(--accent);font-weight:700;font-size:.82rem;margin-bottom:10px;text-transform:uppercase}
+  .formula{font-size:1rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace;letter-spacing:.3px}
+
+  .styled-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+  .styled-table th{background:var(--surface2);color:var(--accent);padding:10px 14px;text-align:left;border-bottom:2px solid var(--border)}
+  .styled-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)}
+  .styled-table tr:hover td{background:var(--surface2)}
+
+  .code-block{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#79c0ff;overflow-x:auto;margin:12px 0}
+
+  .quiz-section{margin-top:28px}
+  .quiz-title{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .quiz-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .quiz-item .q-text{color:var(--text);font-size:.9rem;font-weight:600;margin-bottom:12px}
+  .quiz-options{display:flex;flex-direction:column;gap:8px}
+  .quiz-opt{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text2);font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+  .quiz-opt:hover{border-color:var(--accent);color:var(--text)}
+  .quiz-opt.correct{background:rgba(67,233,123,.15);border-color:var(--accent3);color:var(--accent3)}
+  .quiz-opt.wrong{background:rgba(255,101,132,.12);border-color:#ff6584;color:#ff6584}
+  .quiz-opt .opt-letter{background:var(--surface2);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+  .quiz-feedback{margin-top:10px;font-size:.83rem;padding:8px 12px;border-radius:8px;display:none}
+  .quiz-feedback.show{display:block}
+  .quiz-feedback.correct{background:rgba(67,233,123,.1);color:var(--accent3);border:1px solid rgba(67,233,123,.25)}
+  .quiz-feedback.wrong{background:rgba(255,101,132,.1);color:#ff6584;border:1px solid rgba(255,101,132,.25)}
+
+  .exo-section{margin-top:28px}
+  .exo-title{font-size:1rem;font-weight:800;color:#ff6584;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .exo-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .exo-item .exo-num{color:var(--accent);font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .exo-item .exo-q{color:var(--text);font-size:.88rem;margin-bottom:10px;line-height:1.6}
+  .show-answer-btn{background:var(--surface);border:1px solid var(--border);color:var(--accent);padding:7px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s}
+  .show-answer-btn:hover{background:var(--accent);color:#fff}
+  .answer-block{display:none;margin-top:12px;background:rgba(247,37,133,.07);border:1px solid rgba(247,37,133,.18);border-radius:8px;padding:12px;color:var(--text2);font-size:.85rem;line-height:1.7}
+  .answer-block.show{display:block}
+  .answer-block strong{color:var(--accent3)}
+
+  .progress-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .progress-label{font-size:.8rem;color:var(--text3);white-space:nowrap}
+  .progress-bar{flex:1;min-width:120px;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .4s}
+  .progress-pct{font-size:.8rem;color:var(--accent);font-weight:700;white-space:nowrap}
+
+  .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:.85rem;text-decoration:none;padding:8px 16px;border:1px solid var(--border);border-radius:8px;margin:16px 0;transition:all .2s}
+  .back-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+  @media(max-width:600px){
+    .hero h1{font-size:1.4rem}
+    .lesson-header{padding:14px 16px;gap:10px}
+    .lesson-body{padding:0 14px 16px}
+    .hero-stats{gap:12px}
+    .stat{padding:8px 16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="logo">📚 STUDYBOARD</span>
+  <span class="breadcrumb">Accueil › <span>SAV</span></span>
+  <span class="badge-premium">👑 PREMIUM</span>
+</header>
+<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px;">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:.85rem;text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:8px;transition:all .2s;" onmouseover="this.style.color='#f72585';this.style.borderColor='#f72585'" onmouseout="this.style.color='';this.style.borderColor=''">← Retour à l'accueil</a>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label">📺 SAV — Progression</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<div class="hero">
+  <div class="hero-icon">📺</div>
+  <h1>SAV — Son, Image & Audiovisuel</h1>
+  <p>Programme Annuel · M. GWETH · Classe de Première · 2025–2026<br>16 chapitres · cours détaillés · quiz interactifs · exercices corrigés</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">16</div><div class="lbl">Chapitres</div></div>
+    <div class="stat"><div class="num">48</div><div class="lbl">Quiz</div></div>
+    <div class="stat"><div class="num">32</div><div class="lbl">Exercices</div></div>
+  </div>
+</div>
+
+<div class="container">
+  <a href="#" class="back-btn">← Retour à l'accueil</a>
+
+  <div class="lesson-nav">
+    <a class="pill active" href="#c1">Ch.1</a>
+    <a class="pill" href="#c2">Ch.2</a>
+    <a class="pill" href="#c3">Ch.3</a>
+    <a class="pill" href="#c4">Ch.4</a>
+    <a class="pill" href="#c5">Ch.5</a>
+    <a class="pill" href="#c6">Ch.6</a>
+    <a class="pill" href="#c7">Ch.7</a>
+    <a class="pill" href="#c8">Ch.8</a>
+    <a class="pill" href="#c9">Ch.9</a>
+    <a class="pill" href="#c10">Ch.10</a>
+    <a class="pill" href="#c11">Ch.11</a>
+    <a class="pill" href="#c12">Ch.12</a>
+    <a class="pill" href="#c13">Ch.13</a>
+    <a class="pill" href="#c14">Ch.14</a>
+    <a class="pill" href="#c15">Ch.15</a>
+    <a class="pill" href="#c16">Ch.16</a>
+  </div>
+
+  <div class="section-title">📖 Les 16 Chapitres du Programme SAV</div>
+
+  <!-- ═══ CHAPITRE 1 ═══ -->
+  <div class="lesson-card" id="c1">
+    <div class="lesson-header" onclick="toggleLesson('body1',this)">
+      <div class="lesson-num">Ch.1</div>
+      <div class="lesson-meta">
+        <h3>Les équipements de réception du son et de l'image</h3>
+        <div class="tags"><span class="tag">Réception</span><span class="tag">Antenne</span><span class="tag">Tuner</span><span class="tag">TNT</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body1">
+      <div class="sub-section">
+        <div class="sub-title">1.1 — Les équipements de réception</div>
+        <div class="content-block">Les équipements de réception permettent de capter les signaux audiovisuels (son et image) diffusés par voie hertzienne, câble ou satellite. On distingue :<br>
+        • <strong>L'antenne</strong> : capte le signal électromagnétique (VHF/UHF pour la TNT, parabole pour le satellite)<br>
+        • <strong>Le tuner / démodulateur</strong> : sélectionne et démodule le canal voulu<br>
+        • <strong>Le décodeur (set-top box)</strong> : déchiffre le signal numérique et le restitue<br>
+        • <strong>Le téléviseur</strong> : affiche l'image et restitue le son</div>
+        <div class="def-box"><div class="def-title">💡 Définition</div>Un équipement de réception est l'ensemble des dispositifs permettant de <strong>capter, sélectionner, démoduler et restituer</strong> un signal audiovisuel transmis à distance.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">1.2 — Types de réception</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Support</th><th>Équipements</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Hertzien terrestre</strong></td><td>Ondes radio VHF/UHF</td><td>Antenne râteau + décodeur TNT</td><td>TNT en France</td></tr>
+            <tr><td><strong>Satellite</strong></td><td>Ondes micro-ondes</td><td>Parabole + LNB + décodeur</td><td>Canal+, CanalSat</td></tr>
+            <tr><td><strong>Câble</strong></td><td>Câble coaxial / fibre</td><td>Prise câble + décodeur</td><td>Bouygues Box</td></tr>
+            <tr><td><strong>IPTV</strong></td><td>Internet (IP)</td><td>Box opérateur + écran</td><td>Orange TV, Netflix</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">1.3 — Le tuner : rôle et fonctionnement</div>
+        <div class="content-block">Le <strong>tuner</strong> (ou syntoniseur) sélectionne la fréquence porteuse du canal désiré parmi toutes celles captées par l'antenne. Il comprend :<br>
+        • <strong>Un filtre d'entrée</strong> : élimine les canaux non désirés<br>
+        • <strong>Un oscillateur local</strong> : génère la fréquence de référence<br>
+        • <strong>Un mélangeur</strong> : produit la fréquence intermédiaire (FI = canal − fosc)<br>
+        • <strong>Un amplificateur FI</strong> : amplifie le signal à fréquence intermédiaire</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>Un téléviseur reçoit les canaux UHF entre 470 MHz et 862 MHz. Le tuner sélectionne par exemple le canal 21 (474 MHz), le mélange avec l'oscillateur local pour produire une FI de 38,9 MHz, puis amplifie et démodule ce signal.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 1</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel équipement permet de capter les signaux satellite ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Antenne râteau VHF</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Parabole + LNB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Prise câble coaxiale</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Box ADSL</div>
+          </div>
+          <div class="quiz-feedback">Pour recevoir les signaux satellite, on utilise une antenne parabolique (parabole) équipée d'un LNB (Low Noise Block) qui convertit les micro-ondes en signal exploitable.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel est le rôle principal d'un tuner dans un téléviseur ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Afficher l'image</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Sélectionner et démoduler le canal voulu</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Amplifier le son</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Convertir l'image en signal numérique</div>
+          </div>
+          <div class="quiz-feedback">Le tuner sélectionne la fréquence du canal désiré parmi tous les canaux reçus par l'antenne, puis démodule ce signal pour extraire l'information son/image.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Qu'est-ce que la TNT ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Transmission Numérique par Téléphone</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Télévision Numérique Terrestre</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Transfert Numérique de Télécommunication</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Technologie Numérique de Transmission</div>
+          </div>
+          <div class="quiz-feedback">TNT = Télévision Numérique Terrestre. C'est la diffusion numérique de la télévision par voie hertzienne terrestre (antennes UHF), remplaçant l'ancienne TV analogique.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 1</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.1</div>
+          <div class="exo-q">Citez et expliquez les 4 grandes étapes du traitement du signal dans un équipement de réception hertzien terrestre (TNT), depuis l'antenne jusqu'à l'écran.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Captation (Antenne) :</strong> L'antenne UHF capte les ondes électromagnétiques émises par l'émetteur TNT et les convertit en signal électrique HF.<br>
+            <strong>2. Sélection et démodulation (Tuner) :</strong> Le tuner sélectionne la fréquence du canal voulu, produit la fréquence intermédiaire (FI) et démodule le signal COFDM.<br>
+            <strong>3. Décodage (Décodeur MPEG) :</strong> Le signal numérique compressé (MPEG-2 ou MPEG-4) est décompressé pour retrouver le flux vidéo et audio d'origine.<br>
+            <strong>4. Restitution (Écran + HP) :</strong> Le signal vidéo est affiché sur l'écran, le signal audio est amplifié et restitué par les haut-parleurs.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 2 ═══ -->
+  <div class="lesson-card" id="c2">
+    <div class="lesson-header" onclick="toggleLesson('body2',this)">
+      <div class="lesson-num">Ch.2</div>
+      <div class="lesson-meta">
+        <h3>Les caméras — Principe de fonctionnement et caractéristiques techniques</h3>
+        <div class="tags"><span class="tag">Caméra</span><span class="tag">CCD/CMOS</span><span class="tag">Optique</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body2">
+      <div class="sub-section">
+        <div class="sub-title">2.1 — Principe de fonctionnement d'une caméra</div>
+        <div class="content-block">Une caméra convertit une scène lumineuse en signal électrique vidéo. Elle comprend :<br>
+        • <strong>L'objectif</strong> : concentre la lumière sur le capteur<br>
+        • <strong>Le capteur (CCD ou CMOS)</strong> : convertit la lumière en signal électrique<br>
+        • <strong>Le circuit de traitement</strong> : amplifie, filtre et numérise le signal<br>
+        • <strong>Le codeur vidéo</strong> : compresse et encode le signal (MPEG, H.264...)</div>
+        <div class="def-box"><div class="def-title">💡 CCD vs CMOS</div><strong>CCD (Charge-Coupled Device)</strong> : meilleure qualité d'image, moins de bruit, plus consommateur d'énergie. <strong>CMOS</strong> : moins cher, plus rapide, faible consommation — utilisé dans la quasi-totalité des smartphones et caméras modernes.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">2.2 — Caractéristiques techniques</div>
+        <table class="styled-table">
+          <thead><tr><th>Caractéristique</th><th>Définition</th><th>Valeurs typiques</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Résolution</strong></td><td>Nombre de pixels du capteur</td><td>HD (2MP), 4K (8MP), 8K (33MP)</td></tr>
+            <tr><td><strong>Sensibilité ISO</strong></td><td>Capacité à filmer en faible lumière</td><td>100 à 102400 ISO</td></tr>
+            <tr><td><strong>Fréquence d'images</strong></td><td>Images par seconde (fps)</td><td>24, 25, 30, 60, 120 fps</td></tr>
+            <tr><td><strong>Ouverture (f/)</strong></td><td>Quantité de lumière admise</td><td>f/1.2 à f/22</td></tr>
+            <tr><td><strong>Focale</strong></td><td>Angle de champ de l'objectif</td><td>14mm (grand angle) à 600mm (télé)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">2.3 — Types de caméras</div>
+        <div class="content-block">• <strong>Caméra de studio</strong> : grande qualité, fixe, connectée à la régie<br>
+        • <strong>Caméra ENG (Electronic News Gathering)</strong> : portable, reportage<br>
+        • <strong>Caméra PTZ</strong> : pan-tilt-zoom, télécommandée, surveillance et conférence<br>
+        • <strong>Caméra IP</strong> : connectée au réseau, accès à distance<br>
+        • <strong>Action cam / Drone</strong> : miniaturisée, sport et aérien</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 2</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel composant d'une caméra convertit la lumière en signal électrique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> L'objectif</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Le capteur CCD ou CMOS</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Le codeur vidéo</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Le microphone</div>
+          </div>
+          <div class="quiz-feedback">Le capteur (CCD ou CMOS) est le composant qui convertit la lumière (photons) en signal électrique (charges). L'objectif concentre la lumière sur ce capteur.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel type de capteur est principalement utilisé dans les smartphones ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> CCD</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> CMOS</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> OLED</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> LCD</div>
+          </div>
+          <div class="quiz-feedback">Les smartphones utilisent des capteurs CMOS car ils sont moins chers, consomment peu d'énergie et permettent une lecture rapide des pixels — idéal pour les appareils mobiles.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Que signifie fps pour une caméra ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Fréquence de Puissance du Signal</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Frames Per Second (images par seconde)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Format Pixel Standard</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Filtre Photo Sensible</div>
+          </div>
+          <div class="quiz-feedback">fps = Frames Per Second = images par seconde. C'est la fréquence d'acquisition des images. 24fps = cinéma, 25fps = TV européenne (PAL), 60fps = mouvement fluide.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 2</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 2.1</div>
+          <div class="exo-q">Comparez les capteurs CCD et CMOS sur 4 critères. Pour chaque critère, indiquez lequel est préférable selon l'application.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Qualité d'image :</strong> CCD > CMOS (moins de bruit, meilleure dynamique). Préférable en cinéma professionnel.<br>
+            <strong>2. Consommation électrique :</strong> CMOS << CCD. Préférable pour smartphones et caméras embarquées.<br>
+            <strong>3. Vitesse de lecture :</strong> CMOS > CCD. Préférable pour la vidéo haute vitesse (120fps+).<br>
+            <strong>4. Coût :</strong> CMOS << CCD. Préférable pour les appareils grand public.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 3 ═══ -->
+  <div class="lesson-card" id="c3">
+    <div class="lesson-header" onclick="toggleLesson('body3',this)">
+      <div class="lesson-num">Ch.3</div>
+      <div class="lesson-meta">
+        <h3>Les unités d'enregistrement — Principe et caractéristiques techniques</h3>
+        <div class="tags"><span class="tag">Enregistrement</span><span class="tag">Magnétique</span><span class="tag">Numérique</span><span class="tag">SSD</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body3">
+      <div class="sub-section">
+        <div class="sub-title">3.1 — Technologies d'enregistrement</div>
+        <table class="styled-table">
+          <thead><tr><th>Technologie</th><th>Support</th><th>Avantages</th><th>Exemples</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Magnétique</strong></td><td>Bande magnétique</td><td>Longue durée, économique</td><td>VHS, DV, BetaCam</td></tr>
+            <tr><td><strong>Optique</strong></td><td>Disque laser</td><td>Portable, durable</td><td>DVD, Blu-ray</td></tr>
+            <tr><td><strong>Flash (NAND)</strong></td><td>Mémoire flash</td><td>Rapide, compact, silencieux</td><td>SD card, SSD, CFexpress</td></tr>
+            <tr><td><strong>HDD</strong></td><td>Disque dur magnétique</td><td>Grande capacité, économique</td><td>Disques durs de studio</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">3.2 — Caractéristiques techniques</div>
+        <div class="content-block">• <strong>Capacité de stockage</strong> : Go, To (1 To = 1000 Go)<br>
+        • <strong>Vitesse d'écriture/lecture</strong> : MB/s — crucial pour la vidéo 4K/8K<br>
+        • <strong>Débit minimal requis :</strong> 4K ProRes = ~880 MB/s, H.264 4K = ~50 MB/s<br>
+        • <strong>Fiabilité (MTBF)</strong> : Mean Time Between Failures<br>
+        • <strong>Format physique</strong> : 2.5", M.2, carte SD, carte CF</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Calcul de l'espace nécessaire</div>
+          <div class="formula">Espace = Débit (MB/s) × Durée (s)</div>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">3.3 — Enregistrement numérique de la vidéo</div>
+        <div class="content-block">Le signal vidéo numérique est <strong>échantillonné, quantifié puis compressé</strong> avant stockage. Le format d'échantillonnage chromatique le plus courant est le <strong>4:2:0</strong> (TV) ou <strong>4:2:2</strong> (production pro).</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>Une vidéo 4K H.264 à 50 Mbits/s nécessite environ <strong>375 MB par minute</strong>. Pour 1 heure de tournage, il faut <strong>22,5 Go</strong>. Un SSD de 256 Go permet environ 11 heures d'enregistrement en 4K H.264.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 3</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel support d'enregistrement est le plus rapide pour la vidéo professionnelle ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Bande magnétique VHS</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> DVD</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> SSD / Carte CFexpress</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Disque dur HDD</div>
+          </div>
+          <div class="quiz-feedback">Les SSD et cartes CFexpress offrent les débits les plus élevés (jusqu'à 2000+ MB/s), nécessaires pour la vidéo RAW 4K/6K/8K en production professionnelle.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Combien d'espace nécessite 1 heure de vidéo à 100 Mbits/s ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 4,5 Go</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 22,5 Go</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 45 Go</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 100 Go</div>
+          </div>
+          <div class="quiz-feedback">100 Mbits/s = 12,5 MB/s. En 1h = 3600s : 12,5 × 3600 = 45 000 MB = 45 Go.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Que signifie l'échantillonnage 4:2:2 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 4 pixels de luminance pour 2 de rouge et 2 de vert</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> La chrominance est échantillonnée à la moitié de la luminance horizontalement</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 4 bits de luminance et 2 bits de couleur</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 4 images par seconde, 2 de luminance, 2 de chrominance</div>
+          </div>
+          <div class="quiz-feedback">En 4:2:2, pour 4 échantillons de luminance (Y), on a 2 échantillons de chrominance Cb et 2 de Cr. La chrominance est sous-échantillonnée horizontalement par 2 par rapport à la luminance.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 3</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 3.1</div>
+          <div class="exo-q">Un reportage dure 3 heures. La caméra enregistre en 4K H.265 à un débit de 60 Mbits/s. Calculez l'espace de stockage nécessaire en Go. Quelle capacité de carte mémoire recommandez-vous ?</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Calcul :</strong> 60 Mbits/s = 7,5 MB/s<br>
+            Durée = 3h = 10 800 s<br>
+            <strong>Espace = 7,5 × 10 800 = 81 000 MB = 81 Go</strong><br><br>
+            <strong>Recommandation :</strong> Carte de 128 Go minimum (marge de sécurité 50%). Idéalement 2 cartes de 128 Go pour la redondance, ou 1 carte de 256 Go.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 4 ═══ -->
+  <div class="lesson-card" id="c4">
+    <div class="lesson-header" onclick="toggleLesson('body4',this)">
+      <div class="lesson-num">Ch.4</div>
+      <div class="lesson-meta">
+        <h3>Les équipements de transmission — Fonctionnement et caractéristiques techniques</h3>
+        <div class="tags"><span class="tag">Transmission</span><span class="tag">Modulation</span><span class="tag">HF</span><span class="tag">Satellite</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body4">
+      <div class="sub-section">
+        <div class="sub-title">4.1 — Principes de la transmission audiovisuelle</div>
+        <div class="content-block">La transmission audiovisuelle consiste à acheminer un signal son/image d'un point à un autre par un canal de transmission. Les étapes sont :<br>
+        • <strong>Codage/compression</strong> : réduction du débit (MPEG, H.264, H.265)<br>
+        • <strong>Modulation</strong> : adaptation du signal au canal de transmission<br>
+        • <strong>Transmission</strong> : envoi via le support (hertzien, câble, satellite, fibre)<br>
+        • <strong>Démodulation et décodage</strong> : reconstitution du signal à la réception</div>
+        <div class="def-box"><div class="def-title">💡 Modulation</div>La modulation consiste à <strong>superposer le signal utile (modulant) sur une porteuse HF</strong> pour le transmettre à distance. Types : AM (amplitude), FM (fréquence), PM (phase), QAM (quadrature).</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">4.2 — Types de modulation utilisés</div>
+        <table class="styled-table">
+          <thead><tr><th>Modulation</th><th>Application</th><th>Avantage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>AM (Amplitude)</strong></td><td>Radio grande onde, ondes courtes</td><td>Simple, longue portée</td></tr>
+            <tr><td><strong>FM (Fréquence)</strong></td><td>Radio FM (88-108 MHz)</td><td>Meilleure qualité son que AM</td></tr>
+            <tr><td><strong>COFDM</strong></td><td>TNT, DAB+</td><td>Résistant aux multitrajets</td></tr>
+            <tr><td><strong>QPSK</strong></td><td>Satellite (DVB-S2)</td><td>Efficace en bande étroite</td></tr>
+            <tr><td><strong>QAM (64, 256)</strong></td><td>Câble (DVB-C), ADSL</td><td>Haut débit</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">4.3 — Équipements de transmission</div>
+        <div class="content-block">• <strong>Émetteur hertzien</strong> : amplifie et rayonne le signal modulé via une antenne<br>
+        • <strong>Transpondeur satellite</strong> : reçoit, amplifie et réémet le signal depuis l'espace<br>
+        • <strong>Tête de réseau câble</strong> : regroupe les signaux et les distribue sur le réseau<br>
+        • <strong>OB Van (car de reportage)</strong> : studio mobile avec liaison satellite/HF</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 4</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle modulation est utilisée pour la TNT en Europe ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> AM</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> FM</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> COFDM</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> QPSK</div>
+          </div>
+          <div class="quiz-feedback">La TNT utilise la modulation COFDM (Coded Orthogonal Frequency Division Multiplexing), résistante aux multitrajets et aux interférences — parfaite pour la réception en milieu urbain.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est la bande de fréquence de la radio FM ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 540 kHz – 1600 kHz</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 88 MHz – 108 MHz</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 470 MHz – 862 MHz</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 10 GHz – 12 GHz</div>
+          </div>
+          <div class="quiz-feedback">La radio FM émet entre 88 et 108 MHz (bande VHF). La radio AM est à 540-1600 kHz. La TNT est en UHF (470-862 MHz). Le satellite est en Ku-Band (10-12 GHz).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Que fait un transpondeur satellite ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Il convertit le signal vidéo en audio</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Il reçoit, amplifie et réémet le signal depuis l'espace</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Il décode le signal MPEG</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Il stocke les programmes TV</div>
+          </div>
+          <div class="quiz-feedback">Le transpondeur est le répéteur embarqué dans le satellite. Il reçoit le signal montant (uplink) depuis la Terre, l'amplifie, change sa fréquence et le réémet vers la Terre (downlink).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 4</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 4.1</div>
+          <div class="exo-q">Expliquez les différences entre une transmission hertzienne terrestre (TNT) et une transmission par satellite, en termes de fréquences utilisées, de portée et d'équipements nécessaires.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>TNT (Hertzien terrestre) :</strong><br>
+            — Fréquences : UHF (470-862 MHz)<br>
+            — Portée : 50-100 km par émetteur terrestre<br>
+            — Équipements : Antenne râteau UHF + décodeur TNT<br>
+            — Modulation : COFDM (DVB-T2)<br><br>
+            <strong>Satellite :</strong><br>
+            — Fréquences : Ku-Band (10,7-12,75 GHz) / Ka-Band<br>
+            — Portée : Continentale (empreinte du satellite)<br>
+            — Équipements : Parabole (60-90cm) + LNB + décodeur DVB-S2<br>
+            — Modulation : QPSK / 8PSK (DVB-S2)<br><br>
+            <strong>Avantage satellite :</strong> couverture géographique immense. <strong>Avantage TNT :</strong> pas de parabole, simple et économique en zone couverte.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 5 ═══ -->
+  <div class="lesson-card" id="c5">
+    <div class="lesson-header" onclick="toggleLesson('body5',this)">
+      <div class="lesson-num">Ch.5</div>
+      <div class="lesson-meta">
+        <h3>Traitement de l'image — Cryptage, décryptage, incrustation et adressage</h3>
+        <div class="tags"><span class="tag">Cryptage</span><span class="tag">Incrustation</span><span class="tag">Chroma key</span><span class="tag">Adressage</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body5">
+      <div class="sub-section">
+        <div class="sub-title">5.1 — Le cryptage (chiffrement) du signal</div>
+        <div class="content-block">Le <strong>cryptage</strong> protège le signal audiovisuel contre la réception non autorisée. Il consiste à rendre le signal inintelligible sans clé de déchiffrement.</div>
+        <table class="styled-table">
+          <thead><tr><th>Système</th><th>Méthode</th><th>Utilisation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Conax</strong></td><td>Chiffrement par carte à puce</td><td>Opérateurs satellite</td></tr>
+            <tr><td><strong>Viaccess</strong></td><td>Carte à puce + CAS (Conditional Access)</td><td>Canal+, TPS</td></tr>
+            <tr><td><strong>Nagravision</strong></td><td>Chiffrement AES 128 bits</td><td>Bouquet satellite</td></tr>
+            <tr><td><strong>HDCP</strong></td><td>Chiffrement liaison HDMI</td><td>Protection contenu HD/4K</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">5.2 — L'incrustation (chroma key)</div>
+        <div class="content-block">L'<strong>incrustation</strong> consiste à remplacer une couleur de fond (vert ou bleu) par une autre image en temps réel. C'est la technique du <strong>fond vert (green screen)</strong>.</div>
+        <div class="content-block">Principe : le fond uni (vert ou bleu) est détecté par le mélangeur vidéo. Tous les pixels de cette couleur sont remplacés par les pixels de l'image de remplacement (météo, décor virtuel).</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>Le présentateur météo se tient devant un <strong>fond vert</strong>. Le mélangeur vidéo remplace tous les pixels verts par la carte météorologique numérique. Le résultat affiché à la télévision montre le présentateur devant la carte, en temps réel.</p>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">5.3 — L'adressage</div>
+        <div class="content-block">L'<strong>adressage</strong> est une technique qui permet d'envoyer des informations spécifiques à un décodeur particulier. Il est utilisé pour :<br>
+        • <strong>Activer/désactiver</strong> des abonnements à distance<br>
+        • <strong>Envoyer des messages personnalisés</strong> à un décodeur<br>
+        • <strong>Gérer les droits</strong> de visionnage (PPV, Pay-Per-View)<br>
+        • <strong>Mettre à jour</strong> les clés de cryptage à distance (EMM : Entitlement Management Messages)</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 5</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle couleur de fond est principalement utilisée pour l'incrustation en TV ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Rouge</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Blanc</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Vert (ou bleu)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Noir</div>
+          </div>
+          <div class="quiz-feedback">L'incrustation utilise principalement le fond vert (green screen) car cette couleur est la plus éloignée des tons de peau humaine, facilitant la détection par le mélangeur. Le bleu est une alternative classique.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Que signifie l'acronyme EMM dans le système d'accès conditionnel ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Electronic Music Module</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Entitlement Management Message</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Encrypted Multimedia Message</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Error Management Module</div>
+          </div>
+          <div class="quiz-feedback">EMM = Entitlement Management Message. Ce sont des messages adressés individuellement à chaque décodeur pour mettre à jour les droits d'accès et les clés de déchiffrement.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Qu'est-ce que le PPV (Pay-Per-View) ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Un type de modulation satellite</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Un système de paiement à l'unité pour regarder un événement</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Un format de compression vidéo</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Un type de câble HDMI</div>
+          </div>
+          <div class="quiz-feedback">PPV (Pay-Per-View) = paiement à la vue. L'abonné paie pour débloquer un événement précis (match de foot, film en avant-première) via le système d'adressage de son décodeur.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 5</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 5.1</div>
+          <div class="exo-q">Expliquez comment fonctionne le système d'accès conditionnel (CAS) pour protéger une chaîne TV payante, depuis l'encodage chez l'opérateur jusqu'à la restitution chez l'abonné.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Chez l'opérateur (tête de réseau) :</strong><br>
+            1. Le signal vidéo est <strong>chiffré</strong> avec une clé de contrôle (CW - Control Word) qui change toutes les 10s.<br>
+            2. La CW est elle-même chiffrée dans un <strong>ECM (Entitlement Control Message)</strong> envoyé avec le signal.<br>
+            3. Des <strong>EMM</strong> sont envoyés périodiquement pour mettre à jour les droits de chaque abonné.<br><br>
+            <strong>Chez l'abonné (décodeur + carte à puce) :</strong><br>
+            4. La <strong>carte à puce</strong> du décodeur reçoit l'ECM, vérifie les droits de l'abonné et déchiffre la CW.<br>
+            5. La CW est transmise au décodeur qui <strong>déchiffre le signal vidéo</strong>.<br>
+            6. Le signal est décodé (MPEG) et restitué sur l'écran.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 6 ═══ -->
+  <div class="lesson-card" id="c6">
+    <div class="lesson-header" onclick="toggleLesson('body6',this)">
+      <div class="lesson-num">Ch.6</div>
+      <div class="lesson-meta">
+        <h3>Les télétextes</h3>
+        <div class="tags"><span class="tag">Télétexte</span><span class="tag">VBI</span><span class="tag">DVB</span><span class="tag">Sous-titrage</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body6">
+      <div class="sub-section">
+        <div class="sub-title">6.1 — Définition et historique</div>
+        <div class="content-block">Le <strong>télétexte</strong> est un système de diffusion de textes et de graphiques simples via le signal de télévision. Il a été développé dans les années 1970 (Ceefax au Royaume-Uni, Antiope en France).</div>
+        <div class="def-box"><div class="def-title">💡 Définition</div>Le télétexte utilise les <strong>lignes de suppression verticale (VBI - Vertical Blanking Interval)</strong> du signal TV analogique pour transmettre des données textuelles sans perturber l'image principale.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">6.2 — Fonctionnement technique</div>
+        <div class="content-block">En analogique, les données télétexte sont insérées dans le <strong>VBI</strong> (lignes 6 à 22 du signal PAL). Chaque page télétexte peut contenir 24 lignes de 40 caractères.<br><br>
+        En numérique (DVB), le télétexte est encapsulé dans le flux MPEG-2 via des <strong>paquets PES (Packetized Elementary Stream)</strong> dédiés. Il coexiste avec les sous-titres DVB.</div>
+        <table class="styled-table">
+          <thead><tr><th>Caractéristique</th><th>Télétexte analogique</th><th>Télétexte numérique (DVB)</th></tr></thead>
+          <tbody>
+            <tr><td>Support</td><td>VBI du signal PAL/SECAM</td><td>Flux MPEG-2/TS</td></tr>
+            <tr><td>Capacité</td><td>800 pages max</td><td>Illimitée</td></tr>
+            <tr><td>Graphiques</td><td>Caractères semi-graphiques</td><td>Images couleur possible</td></tr>
+            <tr><td>Interactivité</td><td>Navigation par touches</td><td>HbbTV (Hybrid Broadcast Broadband TV)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">6.3 — Applications du télétexte</div>
+        <div class="content-block">• <strong>Sous-titrage pour malentendants</strong> (page 888 classiquement)<br>
+        • <strong>Informations d'actualité</strong> : météo, sport, bourse<br>
+        • <strong>Programme TV</strong> et guide des émissions<br>
+        • <strong>Sous-titres multilingues</strong> pour programmes étrangers</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 6</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Que signifie VBI dans le contexte du télétexte ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Video Broadband Interface</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Vertical Blanking Interval</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Variable Bit Index</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Video Binary Information</div>
+          </div>
+          <div class="quiz-feedback">VBI = Vertical Blanking Interval. Ce sont les lignes du signal TV analogique qui ne contiennent pas d'image (lignes de suppression verticale), utilisées pour transmettre les données télétexte.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle page télétexte est classiquement réservée au sous-titrage ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 100</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 200</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 500</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">D</span> 888</div>
+          </div>
+          <div class="quiz-feedback">La page 888 est la page télétexte conventionnellement utilisée pour les sous-titres pour malentendants en France et dans de nombreux pays européens.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Qu'est-ce que HbbTV ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Un format de compression vidéo</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Hybrid Broadcast Broadband TV — TV interactive via Internet</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Un type de câble haute définition</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Un standard d'antenne hertzienne</div>
+          </div>
+          <div class="quiz-feedback">HbbTV (Hybrid Broadcast Broadband TV) est l'évolution moderne du télétexte : il combine la diffusion TV et Internet pour proposer des services interactifs (replay, météo, réseaux sociaux) directement sur le téléviseur connecté.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 6</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 6.1</div>
+          <div class="exo-q">Expliquez pourquoi le télétexte analogique utilisait les lignes VBI et non les lignes visibles de l'image. Citez 3 applications pratiques du télétexte.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Pourquoi les lignes VBI :</strong> En TV analogique PAL, le signal comporte 625 lignes par image, dont environ 576 lignes visibles. Les autres (lignes 1-22 et 623-625) correspondent aux <strong>intervalles de suppression verticale</strong> pendant lesquels le faisceau électronique revient en haut de l'écran. Ces lignes sont "invisibles" à l'écran, permettant d'y insérer des données numériques (télétexte) sans perturber l'image affichée.<br><br>
+            <strong>3 applications :</strong><br>
+            <strong>1.</strong> Sous-titrage pour malentendants (page 888)<br>
+            <strong>2.</strong> Informations météo, sport et actualités en temps réel<br>
+            <strong>3.</strong> Guide des programmes TV de la semaine
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 7 ═══ -->
+  <div class="lesson-card" id="c7">
+    <div class="lesson-header" onclick="toggleLesson('body7',this)">
+      <div class="lesson-num">Ch.7</div>
+      <div class="lesson-meta">
+        <h3>Amplificateurs HF et amplificateur de puissance</h3>
+        <div class="tags"><span class="tag">Amplificateur HF</span><span class="tag">Puissance</span><span class="tag">Classe A/B/D</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body7">
+      <div class="sub-section">
+        <div class="sub-title">7.1 — Amplificateurs HF (Haute Fréquence)</div>
+        <div class="content-block">Les <strong>amplificateurs HF</strong> traitent les signaux de radiofréquence (kHz à GHz). Ils sont utilisés dans les étages d'entrée des tuners, les émetteurs radio/TV et les liaisons satellite.</div>
+        <div class="content-block">Caractéristiques clés :<br>
+        • <strong>Gain (dB)</strong> : rapport entre puissance de sortie et d'entrée<br>
+        • <strong>Facteur de bruit (NF)</strong> : bruit ajouté par l'amplificateur<br>
+        • <strong>Bande passante</strong> : plage de fréquences amplifiées<br>
+        • <strong>Impédance</strong> : 50Ω (RF) ou 75Ω (TV/SAT)</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">7.2 — Classes d'amplification</div>
+        <table class="styled-table">
+          <thead><tr><th>Classe</th><th>Rendement</th><th>Distorsion</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Classe A</strong></td><td>25-30%</td><td>Très faible</td><td>Hifi audiophile, préamplification</td></tr>
+            <tr><td><strong>Classe B</strong></td><td>~78%</td><td>Distorsion de croisement</td><td>Amplification puissance</td></tr>
+            <tr><td><strong>Classe AB</strong></td><td>50-70%</td><td>Faible</td><td>Amplificateurs audio grand public</td></tr>
+            <tr><td><strong>Classe D</strong></td><td>90-98%</td><td>Filtrage requis</td><td>Barre de son, subwoofer, voiture</td></tr>
+            <tr><td><strong>Classe C</strong></td><td>>80%</td><td>Forte (signal non sinusoïdal)</td><td>Émetteurs HF, RF</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">7.3 — Amplificateur de puissance audio</div>
+        <div class="content-block">L'amplificateur de puissance fournit l'énergie nécessaire pour alimenter les haut-parleurs. Ses paramètres :<br>
+        • <strong>Puissance RMS (W)</strong> : puissance continue réelle (PAS le chiffre publicitaire peak)<br>
+        • <strong>Impédance de charge (Ω)</strong> : 4Ω, 8Ω selon le haut-parleur<br>
+        • <strong>THD (Distorsion Harmonique Totale)</strong> : < 0,1% en qualité hifi<br>
+        • <strong>Rapport Signal/Bruit (dB)</strong> : > 80 dB pour bonne qualité</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Gain en décibels</div>
+          <div class="formula">G(dB) = 10 × log(Ps/Pe) &nbsp;|&nbsp; G(dB) tension = 20 × log(Vs/Ve)</div>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 7</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle classe d'amplificateur offre le meilleur rendement énergétique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Classe A</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Classe AB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Classe B</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">D</span> Classe D</div>
+          </div>
+          <div class="quiz-feedback">La classe D (amplificateur numérique/switching) atteint 90-98% de rendement. C'est pourquoi elle est utilisée dans les systèmes audio portables, barres de son et subwoofers où l'efficacité énergétique est primordiale.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Un amplificateur a une puissance d'entrée de 1mW et de sortie de 10W. Quel est son gain en dB ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 10 dB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 20 dB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 40 dB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 100 dB</div>
+          </div>
+          <div class="quiz-feedback">G = 10 × log(Ps/Pe) = 10 × log(10W / 0,001W) = 10 × log(10000) = 10 × 4 = 40 dB.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quelle classe d'amplificateur est préférée pour le son hifi audiophile ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> Classe A</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Classe D</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Classe C</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Classe B</div>
+          </div>
+          <div class="quiz-feedback">La classe A offre la distorsion la plus faible car le transistor conduit sur toute la durée du signal (360°). Malgré son mauvais rendement (~25%), elle est préférée en hifi audiophile pour sa pureté sonore.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 7</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 7.1</div>
+          <div class="exo-q">Un amplificateur de classe AB délivre 100W RMS sur une charge de 8Ω. Sa tension d'alimentation est ±40V. Estimez son rendement et la puissance dissipée en chaleur.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Puissance de sortie :</strong> Ps = 100W<br>
+            <strong>Estimation rendement classe AB :</strong> η ≈ 60%<br>
+            <strong>Puissance consommée :</strong> Pconso = Ps / η = 100 / 0,6 ≈ 167W<br>
+            <strong>Puissance dissipée en chaleur :</strong> Pdiss = Pconso − Ps = 167 − 100 = <strong>67W</strong><br><br>
+            Cela justifie l'utilisation d'un radiateur (dissipateur thermique) sur les transistors de sortie d'un amplificateur de puissance.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 8 ═══ -->
+  <div class="lesson-card" id="c8">
+    <div class="lesson-header" onclick="toggleLesson('body8',this)">
+      <div class="lesson-num">Ch.8</div>
+      <div class="lesson-meta">
+        <h3>Transducteurs acoustiques</h3>
+        <div class="tags"><span class="tag">Haut-parleur</span><span class="tag">Microphone</span><span class="tag">Piézo</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body8">
+      <div class="sub-section">
+        <div class="sub-title">8.1 — Définition d'un transducteur acoustique</div>
+        <div class="content-block">Un <strong>transducteur acoustique</strong> est un dispositif qui convertit un signal électrique en onde sonore, ou inversement une onde sonore en signal électrique.</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Conversion</th><th>Exemples</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Haut-parleur</strong></td><td>Électrique → Acoustique</td><td>HP grave, médium, tweeter</td></tr>
+            <tr><td><strong>Microphone</strong></td><td>Acoustique → Électrique</td><td>Micro dynamique, condensateur</td></tr>
+            <tr><td><strong>Casque audio</strong></td><td>Électrique → Acoustique</td><td>Casque HiFi, écouteurs intra</td></tr>
+            <tr><td><strong>Piézoélectrique</strong></td><td>Bidirectionnel</td><td>Buzzer, capteur ultrason</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">8.2 — Le haut-parleur électrodynamique</div>
+        <div class="content-block">Le haut-parleur classique fonctionne par le principe de <strong>Laplace</strong> :<br>
+        Un courant alternatif traverse la <strong>bobine mobile</strong> plongée dans le champ magnétique d'un <strong>aimant permanent</strong>. La force de Laplace fait vibrer la bobine, qui entraîne le <strong>cône (membrane)</strong>, créant les ondes sonores.</div>
+        <div class="content-block">Caractéristiques d'un haut-parleur :<br>
+        • <strong>Impédance (Ω)</strong> : 4Ω, 8Ω — doit correspondre à l'ampli<br>
+        • <strong>Sensibilité (dB/W/m)</strong> : niveau sonore pour 1W à 1m<br>
+        • <strong>Réponse en fréquence</strong> : grave (woofer), médium, aigu (tweeter)<br>
+        • <strong>Puissance max (W)</strong> : puissance nominale admissible</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">8.3 — Types de microphones</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Principe</th><th>Caractéristiques</th><th>Utilisation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dynamique</strong></td><td>Bobine mobile dans aimant</td><td>Robuste, pas d'alimentation</td><td>Scène, karaoké, reportage</td></tr>
+            <tr><td><strong>Condensateur</strong></td><td>Capacité variable</td><td>Très sensible, alimentation 48V</td><td>Studio, enregistrement</td></tr>
+            <tr><td><strong>Ruban</strong></td><td>Ruban métallique dans aimant</td><td>Son chaud, fragile</td><td>Studio haut de gamme</td></tr>
+            <tr><td><strong>Électret</strong></td><td>Condensateur permanent</td><td>Petit, économique</td><td>Smartphones, PC, caméra</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 8</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel est le principe de fonctionnement d'un haut-parleur électrodynamique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Effet piezoélectrique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Force de Laplace sur une bobine dans un champ magnétique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Variation de capacité</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Effet Doppler</div>
+          </div>
+          <div class="quiz-feedback">Le haut-parleur électrodynamique utilise la force de Laplace : un courant dans la bobine mobile crée une force dans le champ magnétique de l'aimant, faisant vibrer le cône qui produit le son.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel type de microphone nécessite une alimentation 48V (alimentation fantôme) ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Microphone dynamique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Microphone à condensateur</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Microphone à ruban</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Microphone électret autonome</div>
+          </div>
+          <div class="quiz-feedback">Le microphone à condensateur nécessite une alimentation "fantôme" (phantom power) de 48V pour polariser sa capsule. Cette alimentation est fournie par la console de mixage via le câble XLR.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel transducteur est utilisé dans les smartphones comme microphone intégré ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Microphone dynamique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Microphone à ruban</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Microphone électret</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Microphone à condensateur grand diaphragme</div>
+          </div>
+          <div class="quiz-feedback">Les smartphones utilisent des capsules électret MEMS (Micro-Electro-Mechanical Systems) : minuscules, peu chères, consommation faible, intégrables directement dans une puce.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 8</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 8.1</div>
+          <div class="exo-q">Un système de sonorisation comporte : 1 microphone dynamique, 1 console de mixage, 1 amplificateur de puissance 200W/8Ω, et 2 haut-parleurs de 100W/8Ω. Décrivez la chaîne de traitement du signal et calculez la puissance reçue par chaque haut-parleur si les deux sont branchés en parallèle.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Chaîne de traitement :</strong><br>
+            1. Microphone dynamique → convertit le son en signal électrique (~5mV)<br>
+            2. Console de mixage → préamplifie (+60dB), mixe et égalise le signal<br>
+            3. Amplificateur de puissance → amplifie jusqu'à 200W pour attaquer les HP<br>
+            4. Haut-parleurs → convertissent le signal électrique en ondes sonores<br><br>
+            <strong>Calcul impédance parallèle :</strong> 2 HP de 8Ω en parallèle → Z = 8/2 = <strong>4Ω</strong><br>
+            <strong>Attention :</strong> L'ampli est dimensionné pour 8Ω. Sur 4Ω, la puissance doublera théoriquement → risque de surcharge. Il faut vérifier que l'ampli est stable à 4Ω ou brancher les HP en série (16Ω).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 9 ═══ -->
+  <div class="lesson-card" id="c9">
+    <div class="lesson-header" onclick="toggleLesson('body9',this)">
+      <div class="lesson-num">Ch.9</div>
+      <div class="lesson-meta">
+        <h3>Les écrans de visualisation</h3>
+        <div class="tags"><span class="tag">LCD</span><span class="tag">OLED</span><span class="tag">4K</span><span class="tag">HDR</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body9">
+      <div class="sub-section">
+        <div class="sub-title">9.1 — Technologies d'affichage</div>
+        <table class="styled-table">
+          <thead><tr><th>Technologie</th><th>Principe</th><th>Avantages</th><th>Inconvénients</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LCD (IPS/VA)</strong></td><td>Cristaux liquides + rétroéclairage</td><td>Économique, lumineux</td><td>Noirs peu profonds</td></tr>
+            <tr><td><strong>OLED</strong></td><td>Diodes organiques auto-émissives</td><td>Noirs parfaits, contraste infini</td><td>Cher, risque de brûlure</td></tr>
+            <tr><td><strong>QLED</strong></td><td>LCD + points quantiques</td><td>Très lumineux, couleurs vives</td><td>Noirs moins bons qu'OLED</td></tr>
+            <tr><td><strong>MicroLED</strong></td><td>LED miniatures auto-émissives</td><td>Luminosité + noirs parfaits</td><td>Très cher, récent</td></tr>
+            <tr><td><strong>Plasma</strong></td><td>Gaz ionisé (obsolète)</td><td>Bon contraste</td><td>Lourd, consomme beaucoup</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">9.2 — Caractéristiques techniques d'un écran</div>
+        <div class="content-block">• <strong>Résolution</strong> : HD (1280×720), FHD (1920×1080), 4K (3840×2160), 8K (7680×4320)<br>
+        • <strong>Taux de rafraîchissement</strong> : 60Hz, 120Hz, 144Hz, 240Hz<br>
+        • <strong>Luminosité (nits)</strong> : 300 nits (standard), 1000+ nits (HDR)<br>
+        • <strong>Contraste</strong> : 1000:1 (LCD), infini (OLED)<br>
+        • <strong>Temps de réponse (ms)</strong> : important pour les jeux vidéo<br>
+        • <strong>HDR</strong> : High Dynamic Range — plage de luminosité étendue</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">9.3 — Standards HDR</div>
+        <div class="content-block">• <strong>HDR10</strong> : standard ouvert, 10 bits, 1000 nits<br>
+        • <strong>Dolby Vision</strong> : propriétaire, 12 bits, 10 000 nits, métadonnées dynamiques<br>
+        • <strong>HDR10+</strong> : HDR10 avec métadonnées dynamiques<br>
+        • <strong>HLG (Hybrid Log Gamma)</strong> : standard diffusion TV (EBU/ARIB)</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 9</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle technologie d'écran produit les noirs les plus profonds ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> LCD IPS</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> QLED</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> OLED</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> LCD VA</div>
+          </div>
+          <div class="quiz-feedback">L'OLED produit des noirs parfaits car chaque pixel peut s'éteindre individuellement. Le contraste est théoriquement infini (pixel noir = 0 nit de luminosité).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est la résolution d'un écran 4K UHD ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 1920 × 1080 pixels</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 2560 × 1440 pixels</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 3840 × 2160 pixels</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 7680 × 4320 pixels</div>
+          </div>
+          <div class="quiz-feedback">4K UHD = 3840 × 2160 pixels (4x la résolution Full HD). Le 8K = 7680 × 4320 pixels (16x le Full HD).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Que signifie HDR pour un écran TV ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> High Definition Resolution</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> High Dynamic Range — plage de luminosité étendue</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Hybrid Digital Rendering</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> High Density Resolution</div>
+          </div>
+          <div class="quiz-feedback">HDR = High Dynamic Range. Un écran HDR peut afficher une plage de luminosité très étendue — des noirs très profonds et des hautes lumières très brillantes simultanément, pour une image plus réaliste.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 9</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 9.1</div>
+          <div class="exo-q">Un client hésite entre un TV OLED 55" et un TV QLED 65". Comparez ces deux technologies sur 4 critères et conseillez le client selon son usage (film en salle obscure vs pièce lumineuse).</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Comparaison :</strong><br>
+            <strong>1. Noirs/Contraste :</strong> OLED ++ (noirs parfaits) vs QLED + (bons mais pas infinis)<br>
+            <strong>2. Luminosité :</strong> QLED ++ (2000+ nits) vs OLED + (900 nits max)<br>
+            <strong>3. Prix :</strong> QLED moins cher à taille égale<br>
+            <strong>4. Risque burn-in :</strong> OLED (risque si image fixe longtemps) vs QLED (aucun risque)<br><br>
+            <strong>Conseil :</strong><br>
+            — <strong>Salle obscure / cinéphile :</strong> OLED 55" → noirs parfaits, contraste infini, meilleure expérience cinématographique<br>
+            — <strong>Pièce lumineuse :</strong> QLED 65" → meilleure luminosité, lisible même avec la lumière du jour, plus grand écran pour même budget
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 10 ═══ -->
+  <div class="lesson-card" id="c10">
+    <div class="lesson-header" onclick="toggleLesson('body10',this)">
+      <div class="lesson-num">Ch.10</div>
+      <div class="lesson-meta">
+        <h3>La compression numérique</h3>
+        <div class="tags"><span class="tag">MPEG</span><span class="tag">H.264</span><span class="tag">H.265</span><span class="tag">Codec</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body10">
+      <div class="sub-section">
+        <div class="sub-title">10.1 — Pourquoi compresser ?</div>
+        <div class="content-block">Une vidéo non compressée en Full HD (1920×1080, 25fps, 24 bits couleur) nécessite :<br>
+        1920 × 1080 × 25 × 24 bits = <strong>1,24 Gbits/s</strong><br>
+        C'est énorme ! La compression réduit ce débit à quelques Mbits/s sans perte visuelle notable.</div>
+        <div class="def-box"><div class="def-title">💡 Compression</div>La compression exploite les <strong>redondances spatiales</strong> (similitudes dans une même image) et <strong>temporelles</strong> (similitudes entre images successives) pour réduire le débit.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">10.2 — Types d'images MPEG</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Nom</th><th>Compression</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td><strong>I</strong></td><td>Intra-frame</td><td>Spatiale uniquement</td><td>Image de référence, point de montage</td></tr>
+            <tr><td><strong>P</strong></td><td>Predicted</td><td>Référence à l'image I ou P précédente</td><td>Différence avec l'image précédente</td></tr>
+            <tr><td><strong>B</strong></td><td>Bidirectionnel</td><td>Référence avant ET après</td><td>Meilleure compression, délai</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">10.3 — Standards de compression</div>
+        <table class="styled-table">
+          <thead><tr><th>Codec</th><th>Standard</th><th>Débit typique HD</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MPEG-2</strong></td><td>ISO/IEC 13818</td><td>6-15 Mbps</td><td>DVD, TNT (SD/HD)</td></tr>
+            <tr><td><strong>H.264 / MPEG-4 AVC</strong></td><td>ISO/IEC 14496-10</td><td>4-8 Mbps (HD)</td><td>Blu-ray, streaming, caméra</td></tr>
+            <tr><td><strong>H.265 / HEVC</strong></td><td>ISO/IEC 23008</td><td>2-4 Mbps (HD)</td><td>4K streaming, DVB-T2</td></tr>
+            <tr><td><strong>AV1</strong></td><td>Alliance for Open Media</td><td>~1-3 Mbps (HD)</td><td>YouTube, Netflix 4K</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 10</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel type d'image MPEG est une image complète sans référence externe ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> Image I (Intra)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Image P (Predicted)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Image B (Bidirectionnel)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Image D (Delta)</div>
+          </div>
+          <div class="quiz-feedback">L'image I (Intra-frame) est codée indépendamment, sans référence à d'autres images. Elle sert de point de synchronisation et est nécessaire pour le montage vidéo.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel codec offre la meilleure compression pour la 4K en streaming ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> MPEG-2</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> H.264</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> H.265 / HEVC</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">D</span> AV1</div>
+          </div>
+          <div class="quiz-feedback">AV1 (Alliance for Open Media) est le codec le plus efficace actuellement, offrant ~30% de compression supplémentaire par rapport à H.265/HEVC. Il est utilisé par YouTube et Netflix pour le streaming 4K.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel débit brut (non compressé) nécessite une vidéo FHD 25fps 24 bits ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 50 Mbits/s</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 500 Mbits/s</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> ~1,24 Gbits/s</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 8 Gbits/s</div>
+          </div>
+          <div class="quiz-feedback">1920×1080×25×24 = 1 244 160 000 bits/s ≈ 1,24 Gbits/s. La compression H.264 réduit cela à ~4-8 Mbits/s soit un facteur de compression de 150 à 300 !</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 10</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 10.1</div>
+          <div class="exo-q">Calculez le débit non compressé d'une vidéo 4K (3840×2160), 50fps, en couleur 10 bits. Comparez avec un flux H.265 à 15 Mbps et calculez le taux de compression.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Débit brut 4K :</strong> 3840 × 2160 × 50 × 30 bits (3 composantes × 10 bits)<br>
+            = 3840 × 2160 × 50 × 30 = <strong>12,44 Gbits/s</strong><br><br>
+            <strong>Débit H.265 :</strong> 15 Mbits/s = 0,015 Gbits/s<br><br>
+            <strong>Taux de compression :</strong> 12,44 / 0,015 = <strong>829 : 1</strong><br><br>
+            Le H.265 compresse la vidéo 4K avec un facteur de ~830, ce qui montre la puissance des algorithmes de compression modernes.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 11 ═══ -->
+  <div class="lesson-card" id="c11">
+    <div class="lesson-header" onclick="toggleLesson('body11',this)">
+      <div class="lesson-num">Ch.11</div>
+      <div class="lesson-meta">
+        <h3>Mélangeurs, filtres, convertisseurs HF/AV, dérivateurs et répartiteurs</h3>
+        <div class="tags"><span class="tag">Mélangeur</span><span class="tag">Dérivateur</span><span class="tag">Répartiteur</span><span class="tag">Distribution</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body11">
+      <div class="sub-section">
+        <div class="sub-title">11.1 — Les mélangeurs (combiners)</div>
+        <div class="content-block">Un <strong>mélangeur</strong> combine plusieurs signaux RF en un seul câble. Il est utilisé pour regrouper plusieurs antennes (TNT + FM + satellite) sur un seul câble d'installation.</div>
+        <div class="content-block">Types : <strong>mélangeur passif</strong> (perte d'insertion ~3dB par entrée) et <strong>mélangeur actif</strong> (amplifié, compense les pertes).</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">11.2 — Dérivateurs et répartiteurs</div>
+        <table class="styled-table">
+          <thead><tr><th>Composant</th><th>Rôle</th><th>Pertes typiques</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Répartiteur (splitter)</strong></td><td>Divise un signal en N sorties égales</td><td>−3dB (2 voies), −6dB (4 voies)</td></tr>
+            <tr><td><strong>Dérivateur (tap)</strong></td><td>Prélève une partie du signal, laisse passer le reste</td><td>Dérivation : −10 à −20dB ; passage : −1 à −2dB</td></tr>
+            <tr><td><strong>Amplificateur de distribution</strong></td><td>Amplifie avant répartition pour compenser les pertes</td><td>Gain : +15 à +30dB</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">11.3 — Convertisseurs HF/AV</div>
+        <div class="content-block">Un <strong>convertisseur HF/AV</strong> convertit un signal RF (HF) en signal vidéo composite (AV) ou HDMI, et inversement. Il est utilisé pour :<br>
+        • Connecter un décodeur ancien à un téléviseur moderne<br>
+        • Moduler un signal AV sur une fréquence UHF pour le distribuer<br>
+        • Les systèmes de distribution collective en immeuble (CATV)</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>Dans un immeuble de 20 appartements, un <strong>amplificateur tête de réseau</strong> reçoit le signal satellite, le convertit en UHF, l'amplifie et le distribue via des dérivateurs à chaque étage. Chaque appartement reçoit le signal via sa prise d'antenne murale.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 11</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la perte d'un répartiteur 4 voies ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> −3 dB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> −6 dB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> −10 dB</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> −12 dB</div>
+          </div>
+          <div class="quiz-feedback">Un répartiteur 4 voies divise la puissance par 4, soit −6 dB (10log(1/4) = −6 dB). Un répartiteur 2 voies donne −3 dB (puissance divisée par 2).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est la différence entre un répartiteur et un dérivateur ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Le répartiteur amplifie le signal, le dérivateur non</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Le répartiteur divise également, le dérivateur prélève une partie en laissant passer le reste</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Le dérivateur combine les signaux, le répartiteur non</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Il n'y a aucune différence</div>
+          </div>
+          <div class="quiz-feedback">Le répartiteur (splitter) divise le signal en sorties égales. Le dérivateur (tap) prélève une faible fraction du signal pour une prise locale et laisse passer la majorité du signal vers la suite du réseau.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. À quoi sert un mélangeur RF dans une installation TV ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> À amplifier le signal de l'antenne</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> À convertir le signal en HDMI</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> À combiner plusieurs sources (TNT + FM + SAT) sur un seul câble</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> À décrypter le signal satellite</div>
+          </div>
+          <div class="quiz-feedback">Le mélangeur RF (combiner) permet de regrouper les signaux de plusieurs antennes (TNT UHF, FM, satellite converti en UHF) sur un seul câble coaxial pour alimenter toute une installation.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 11</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 11.1</div>
+          <div class="exo-q">Un signal d'antenne arrive avec un niveau de 80 dBµV. Il traverse un répartiteur 2 voies (−3,5 dB), puis un dérivateur (−2 dB sur le passage). Quel niveau arrive à la prise TV finale ?</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Niveau initial :</strong> 80 dBµV<br>
+            <strong>Après répartiteur 2 voies :</strong> 80 − 3,5 = 76,5 dBµV<br>
+            <strong>Après dérivateur (passage) :</strong> 76,5 − 2 = <strong>74,5 dBµV</strong><br><br>
+            <strong>Vérification :</strong> Le niveau acceptable pour un téléviseur est entre 47 et 77 dBµV. 74,5 dBµV est dans la plage acceptable — l'installation est correcte sans amplificateur.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 12 ═══ -->
+  <div class="lesson-card" id="c12">
+    <div class="lesson-header" onclick="toggleLesson('body12',this)">
+      <div class="lesson-num">Ch.12</div>
+      <div class="lesson-meta">
+        <h3>La CAG (Commande Automatique de Gain)</h3>
+        <div class="tags"><span class="tag">CAG</span><span class="tag">AGC</span><span class="tag">Régulation</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body12">
+      <div class="sub-section">
+        <div class="sub-title">12.1 — Définition et principe</div>
+        <div class="content-block">La <strong>CAG (Commande Automatique de Gain)</strong>, ou AGC (Automatic Gain Control) en anglais, est un système qui <strong>ajuste automatiquement le gain d'un amplificateur</strong> pour maintenir un niveau de sortie constant, quelle que soit la variation du signal d'entrée.</div>
+        <div class="def-box"><div class="def-title">💡 Principe</div>La CAG compare la <strong>tension de sortie à une référence</strong>. Si la sortie est trop forte → le gain diminue. Si la sortie est trop faible → le gain augmente. C'est une <strong>boucle de contre-réaction negative</strong>.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">12.2 — Applications de la CAG</div>
+        <div class="content-block">• <strong>Tuner TV et radio</strong> : compense les variations de niveau des canaux reçus<br>
+        • <strong>Téléphone portable</strong> : maintient un niveau sonore constant à l'oreille<br>
+        • <strong>Caméra vidéo</strong> : CAG audio — maintient le niveau sonore d'enregistrement<br>
+        • <strong>Radar</strong> : compense les échos de distances variables<br>
+        • <strong>Modem</strong> : adapte le gain selon la qualité de la ligne</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">12.3 — CAG dans un tuner TV</div>
+        <div class="content-block">Dans un récepteur TV, la CAG maintient le signal FI (Fréquence Intermédiaire) à un niveau constant :<br>
+        1. Le détecteur mesure le niveau du signal FI<br>
+        2. La tension CAG est générée (proportionnelle à l'écart)<br>
+        3. Cette tension commande les amplificateurs HF et FI via des varicaps ou FET<br>
+        4. Le gain s'ajuste automatiquement</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>Une antenne TV reçoit des signaux variant de 40 dBµV (canal éloigné) à 80 dBµV (canal local). Sans CAG, les canaux forts satureraient l'étage d'entrée. La CAG réduit automatiquement le gain pour les signaux forts et l'augmente pour les signaux faibles, maintenant un niveau constant de ~60 dBµV en sortie.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 12</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Que signifie CAG en électronique audiovisuelle ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Convertisseur Analogique Graphique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Commande Automatique de Gain</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Circuit d'Amplification Globale</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Contrôle Automatique Global</div>
+          </div>
+          <div class="quiz-feedback">CAG = Commande Automatique de Gain (AGC en anglais : Automatic Gain Control). C'est un système qui ajuste automatiquement le gain pour maintenir un niveau de sortie stable.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel type de boucle de régulation utilise la CAG ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Boucle de contre-réaction positive</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Boucle de contre-réaction négative</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Boucle ouverte sans retour</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Boucle d'oscillation</div>
+          </div>
+          <div class="quiz-feedback">La CAG utilise une contre-réaction négative : si le signal de sortie augmente, la tension CAG réduit le gain (action corrective dans le sens opposé à la perturbation).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Dans un tuner TV, sur quels étages agit la tension CAG ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Uniquement sur l'étage de sortie audio</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Sur les amplificateurs HF et FI</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Sur le décodeur MPEG</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Sur l'alimentation du décodeur</div>
+          </div>
+          <div class="quiz-feedback">Dans un tuner, la tension CAG agit sur les amplificateurs HF (avant le mélangeur) et FI (fréquence intermédiaire) pour réguler le niveau du signal avant démodulation.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 12</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.1</div>
+          <div class="exo-q">Expliquez ce qui se passerait dans un récepteur TV sans système CAG, lorsque l'utilisateur passe d'un canal faible (40 dBµV) à un canal fort (85 dBµV).</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Sans CAG :</strong><br><br>
+            <strong>Canal faible (40 dBµV) :</strong> Le signal est insuffisant → l'image est neigeuse, le son est bruité et de mauvaise qualité. Le rapport signal/bruit (SNR) est trop bas.<br><br>
+            <strong>Canal fort (85 dBµV) :</strong> Le signal sature les amplificateurs d'entrée → distorsion non linéaire → images fantômes, intermodulation entre canaux voisins, image déformée.<br><br>
+            <strong>Avec la CAG :</strong> Le système régule automatiquement. Sur le canal faible, le gain est maximal. Sur le canal fort, la CAG réduit le gain pour éviter la saturation. L'utilisateur perçoit une qualité constante sur tous les canaux.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 13 ═══ -->
+  <div class="lesson-card" id="c13">
+    <div class="lesson-header" onclick="toggleLesson('body13',this)">
+      <div class="lesson-num">Ch.13</div>
+      <div class="lesson-meta">
+        <h3>Les émetteurs/récepteurs optiques</h3>
+        <div class="tags"><span class="tag">Fibre optique</span><span class="tag">LED</span><span class="tag">Laser</span><span class="tag">Photodiode</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body13">
+      <div class="sub-section">
+        <div class="sub-title">13.1 — Principe de la transmission optique</div>
+        <div class="content-block">La transmission optique utilise la <strong>lumière (infrarouge ou visible)</strong> comme support de transmission du signal. Le signal électrique est converti en lumière à l'émission, transmis par fibre optique, puis reconverti en signal électrique à la réception.</div>
+        <div class="def-box"><div class="def-title">💡 Avantages de la fibre optique</div>• Très haut débit (Tbits/s) &nbsp;|&nbsp; Insensible aux perturbations électromagnétiques &nbsp;|&nbsp; Faibles pertes sur longue distance &nbsp;|&nbsp; Sécurité (impossible à intercepter sans coupure)</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">13.2 — Émetteurs optiques</div>
+        <table class="styled-table">
+          <thead><tr><th>Émetteur</th><th>Principe</th><th>Avantages</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LED (Light Emitting Diode)</strong></td><td>Electroluminescence</td><td>Économique, robuste</td><td>Courtes distances (&lt;2km), POF</td></tr>
+            <tr><td><strong>Laser (LD)</strong></td><td>Émission stimulée cohérente</td><td>Très puissant, directif, haut débit</td><td>Longues distances, FTTH, backbone</td></tr>
+            <tr><td><strong>VCSEL</strong></td><td>Laser vertical à cavité de surface</td><td>Compact, rapide, économique</td><td>Datacenters (OM3/OM4 50-100m)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">13.3 — Récepteurs optiques</div>
+        <div class="content-block">Les récepteurs optiques convertissent la lumière en signal électrique :<br>
+        • <strong>Photodiode PIN</strong> : rapide, sensible, utilisée dans les liaisons hauts débits<br>
+        • <strong>Photodiode APD (Avalanche)</strong> : très sensible, utilisée sur longues distances<br>
+        • <strong>Phototransistor</strong> : amplifié, moins rapide, télécommande infrarouge</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>La fibre FTTH (Fiber To The Home) utilise une source laser à 1310nm ou 1550nm et une photodiode PIN. Elle permet des débits de <strong>1 à 10 Gbits/s</strong> jusqu'à votre domicile, avec des pertes de seulement 0,2 dB/km (versus ~30 dB/km pour le câble coaxial).</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 13</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel émetteur optique est utilisé pour les longues distances en fibre optique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> LED infrarouge</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Laser (diode laser LD)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Phototransistor</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Photodiode PIN</div>
+          </div>
+          <div class="quiz-feedback">Le laser (diode laser LD) est utilisé pour les longues distances car il offre une puissance élevée, une émission très directionnelle et peut fonctionner à très haute fréquence (hauts débits). La LED est limitée aux courtes distances.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel composant convertit la lumière en signal électrique en réception ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> LED</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Laser</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Photodiode</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Condensateur</div>
+          </div>
+          <div class="quiz-feedback">La photodiode (PIN ou APD) est le récepteur optique : elle convertit les photons de lumière en courant électrique. Le phototransistor fait de même mais avec amplification intégrée.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel est l'avantage principal de la fibre optique sur le câble coaxial ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Elle est moins chère à installer</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Elle transmet mieux les signaux en courant continu</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Très haut débit, faibles pertes, insensible aux interférences EM</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Elle est plus flexible mécaniquement</div>
+          </div>
+          <div class="quiz-feedback">La fibre optique offre : débit de Tbits/s, pertes très faibles (0,2 dB/km), totalement insensible aux interférences électromagnétiques (orages, moteurs), et sécurisée (impossible d'intercepter sans coupure physique).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 13</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 13.1</div>
+          <div class="exo-q">Expliquez le trajet complet du signal dans une liaison fibre optique FTTH, depuis le central téléphonique jusqu'au téléviseur de l'abonné, en nommant chaque composant optique et électronique.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Central téléphonique (OLT - Optical Line Terminal) :</strong> Le signal numérique est converti en lumière laser (1490nm pour downlink). Multiplexage WDM de plusieurs abonnés.<br>
+            <strong>2. Fibre monomode (G.652) :</strong> Transport sur plusieurs km avec ~0,35 dB/km de perte.<br>
+            <strong>3. Coupleur optique (splitter 1:32 ou 1:64) :</strong> Divise le signal optique vers plusieurs abonnés.<br>
+            <strong>4. Fibre jusqu'au domicile :</strong> Dernier km jusqu'à l'ONT de l'abonné.<br>
+            <strong>5. ONT (Optical Network Terminal / box fibre) :</strong> Photodiode PIN reconvertit la lumière en signal électrique. La box décode et distribue Internet, TV (IPTV) et téléphone.<br>
+            <strong>6. TV de l'abonné :</strong> Reçoit le flux IPTV via le réseau domestique (Ethernet ou WiFi).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 14 ═══ -->
+  <div class="lesson-card" id="c14">
+    <div class="lesson-header" onclick="toggleLesson('body14',this)">
+      <div class="lesson-num">Ch.14</div>
+      <div class="lesson-meta">
+        <h3>La connectique audio et vidéo — Analogique et numérique</h3>
+        <div class="tags"><span class="tag">HDMI</span><span class="tag">RCA</span><span class="tag">XLR</span><span class="tag">SDI</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body14">
+      <div class="sub-section">
+        <div class="sub-title">14.1 — Connectique vidéo analogique</div>
+        <table class="styled-table">
+          <thead><tr><th>Connecteur</th><th>Signal</th><th>Qualité</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RCA (cinch)</strong></td><td>Vidéo composite (CVBS)</td><td>Médiocre</td><td>Ancien magnétoscope, DVD</td></tr>
+            <tr><td><strong>S-Video (4 broches)</strong></td><td>Y/C (luminance + chrominance)</td><td>Moyenne</td><td>Hi8, SVHS</td></tr>
+            <tr><td><strong>Peritel (SCART)</strong></td><td>Composite + RGB + audio</td><td>Bonne (RGB)</td><td>TV Europe, console jeux</td></tr>
+            <tr><td><strong>BNC 75Ω</strong></td><td>Vidéo composite ou composantes</td><td>Pro</td><td>Studio TV, régie</td></tr>
+            <tr><td><strong>VGA (15 broches)</strong></td><td>RGB analogique</td><td>Bonne</td><td>Ordinateur → projecteur</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">14.2 — Connectique numérique</div>
+        <table class="styled-table">
+          <thead><tr><th>Connecteur</th><th>Signal</th><th>Résolution max</th><th>Application</th></tr></thead>
+          <tbody>
+            <tr><td><strong>HDMI 2.1</strong></td><td>Audio + Vidéo numérique</td><td>10K / 120Hz</td><td>TV, console, PC</td></tr>
+            <tr><td><strong>DisplayPort 2.0</strong></td><td>Audio + Vidéo numérique</td><td>16K / 60Hz</td><td>PC, moniteur pro</td></tr>
+            <tr><td><strong>SDI (BNC)</strong></td><td>Vidéo numérique série</td><td>12G-SDI (4K/60fps)</td><td>Studio TV, broadcast pro</td></tr>
+            <tr><td><strong>USB-C (Alt Mode)</strong></td><td>Vidéo + données + charge</td><td>8K</td><td>Laptop, smartphone</td></tr>
+            <tr><td><strong>Optique TOSLINK</strong></td><td>Audio numérique (SPDIF)</td><td>5.1 Dolby/DTS</td><td>TV → ampli home cinema</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">14.3 — Connectique audio professionnelle</div>
+        <div class="content-block">• <strong>XLR (3 broches)</strong> : connexion symétrique professionnelle, rejet du bruit, jusqu'à 100m<br>
+        • <strong>Jack 6,35mm (TRS)</strong> : instrument de musique, amplificateur<br>
+        • <strong>Jack 3,5mm (mini-jack)</strong> : casque, smartphone<br>
+        • <strong>RCA (cinch rouge/blanc)</strong> : audio stéréo grand public<br>
+        • <strong>MIDI (DIN 5 broches)</strong> : instruments numériques, contrôleurs</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 14</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle connectique vidéo numérique est utilisée en studio TV professionnel ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> HDMI</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> SDI (Serial Digital Interface) sur connecteur BNC</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> VGA</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Péritel</div>
+          </div>
+          <div class="quiz-feedback">Le SDI (Serial Digital Interface) est le standard professionnel broadcast. Il utilise des connecteurs BNC 75Ω et peut transporter de la vidéo non compressée jusqu'en 4K/60fps sur 12G-SDI.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel avantage a le câble XLR sur le câble jack non symétrique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Il est moins cher</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Il transmet mieux les basses fréquences</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Il est symétrique : rejet des bruits et parasites sur longue distance</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Il supporte le courant électrique pour alimenter le micro</div>
+          </div>
+          <div class="quiz-feedback">Le câble XLR utilise 2 conducteurs en opposition de phase (symétrique). Les parasites s'ajoutent identiquement sur les 2 conducteurs, et le circuit différentiel les annule — permettant des câbles de 100m sans bruit.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel connecteur audio numérique optique est utilisé pour le home cinema ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> XLR optique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> TOSLINK (SPDIF optique)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> BNC optique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Jack optique 6,35mm</div>
+          </div>
+          <div class="quiz-feedback">TOSLINK est le connecteur optique numérique utilisé pour transmettre l'audio numérique (format SPDIF) entre un TV et un amplificateur home cinema. Il supporte Dolby Digital 5.1 et DTS.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 14</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 14.1</div>
+          <div class="exo-q">Un technicien installe un système de sonorisation dans une salle de conférence de 30m de long. Il doit relier 4 microphones au pupitre de mixage. Quelle connectique audio choisir et pourquoi ? Quelle longueur de câble prévoir ?</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Connectique choisie : XLR symétrique</strong><br><br>
+            <strong>Justification :</strong><br>
+            — La salle de 30m nécessite des câbles longs (5 à 35m selon la position des micros)<br>
+            — En milieu professionnel (conférence), il y a des sources de parasites (éclairage, vidéoprojecteur, Wi-Fi)<br>
+            — Le câble XLR symétrique rejette ces perturbations grâce à son mode différentiel<br>
+            — Les connecteurs XLR sont robustes et verrouillés (sécurité en live)<br><br>
+            <strong>Longueur à prévoir :</strong> 4 câbles XLR de 5 à 35m selon l'emplacement des micros. Prévoir 20% de marge : si distance max = 30m, commander des câbles de 35m.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 15 ═══ -->
+  <div class="lesson-card" id="c15">
+    <div class="lesson-header" onclick="toggleLesson('body15',this)">
+      <div class="lesson-num">Ch.15</div>
+      <div class="lesson-meta">
+        <h3>La connectique mixte — La NVI</h3>
+        <div class="tags"><span class="tag">NVI</span><span class="tag">IP</span><span class="tag">Hybride</span><span class="tag">Ethernet</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body15">
+      <div class="sub-section">
+        <div class="sub-title">15.1 — Définition de la connectique mixte</div>
+        <div class="content-block">La <strong>connectique mixte</strong> désigne les systèmes qui combinent plusieurs types de signaux (analogique, numérique, IP) sur un même support ou un même connecteur. C'est une évolution vers la convergence des réseaux audiovisuels.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">15.2 — La NVI (Numérique Vidéo IP)</div>
+        <div class="content-block">La <strong>NVI</strong> est une infrastructure qui transporte les signaux audiovisuels <strong>sur un réseau IP (Ethernet/IP)</strong>. Elle permet de remplacer les câbles coaxiaux, SDI et XLR par des câbles réseau Ethernet standard.</div>
+        <table class="styled-table">
+          <thead><tr><th>Standard NVI</th><th>Débit</th><th>Utilisation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dante</strong></td><td>Jusqu'à 512 canaux audio</td><td>Audio professionnel sur IP, concerts</td></tr>
+            <tr><td><strong>AES67</strong></td><td>Standard ouvert audio sur IP</td><td>Interopérabilité entre marques</td></tr>
+            <tr><td><strong>NDI (NewTek)</strong></td><td>Vidéo HD/4K sur réseau 1Gbps</td><td>Production TV sur IP, streaming</td></tr>
+            <tr><td><strong>SMPTE 2110</strong></td><td>Vidéo non compressée sur IP</td><td>Studios broadcast professionnels</td></tr>
+            <tr><td><strong>AVB (Audio Video Bridging)</strong></td><td>Standard IEEE 802.1</td><td>AV sur réseau avec QoS garantie</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">15.3 — Avantages de la NVI</div>
+        <div class="content-block">• <strong>Flexibilité</strong> : reconfiguration logicielle sans recâblage<br>
+        • <strong>Économie</strong> : câbles Ethernet moins chers que SDI ou XLR<br>
+        • <strong>Distance</strong> : fibre Ethernet jusqu'à 10 km, extensible avec switches<br>
+        • <strong>Monitoring</strong> : supervision centralisée du réseau audiovisuel<br>
+        • <strong>Redondance</strong> : plusieurs chemins réseau pour la fiabilité</div>
+        <div class="example-box">
+          <div class="ex-title">📺 Exemple concret</div>
+          <p>Le stade de France utilise un réseau <strong>SMPTE 2110</strong> pour distribuer tous ses signaux vidéo et audio. Les caméras envoient leur signal vidéo non compressé sur le réseau IP 10 Gbps. La régie centrale reçoit et traite tous les flux à distance via des interfaces logicielles.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 15</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Qu'est-ce que la NVI dans le contexte audiovisuel ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Nouveau Variateur d'Intensité</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Infrastructure de transport des signaux audiovisuels sur réseau IP</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Norme de compression vidéo</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Connecteur numérique à haute vitesse</div>
+          </div>
+          <div class="quiz-feedback">La NVI (Numérique Vidéo IP) désigne les systèmes qui transportent les signaux audiovisuels (son et image) sur des réseaux IP Ethernet, remplaçant les câblages traditionnels SDI, XLR, coaxiaux.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel standard NVI est utilisé pour l'audio professionnel en réseau ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> NDI</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Dante / AES67</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> SMPTE 2110</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> H.265</div>
+          </div>
+          <div class="quiz-feedback">Dante (Audinate) et AES67 sont les standards d'audio sur IP les plus utilisés en production professionnelle. Dante est le plus répandu dans les consoles de mixage numériques (Yamaha, Allen &amp; Heath, DiGiCo...).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel avantage principal la NVI offre-t-elle par rapport au câblage SDI traditionnel ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Meilleure qualité d'image</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Moins de latence</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Flexibilité et reconfiguration logicielle sans recâblage</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Compatible avec les équipements analogiques</div>
+          </div>
+          <div class="quiz-feedback">La NVI permet de reconfigurer toute la distribution des signaux par logiciel, sans toucher aux câbles. On peut changer le routage, ajouter des signaux ou monitorer depuis une interface web — impossible avec le SDI classique.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 15</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 15.1</div>
+          <div class="exo-q">Comparez une installation de régie TV traditionnelle (câblage SDI + XLR) avec une installation NVI (SMPTE 2110 + AES67) sur 4 critères.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Câblage :</strong> SDI/XLR = câble dédié par signal (coûteux, rigide) vs NVI = câbles Ethernet standardisés partagés (économique, flexible)<br>
+            <strong>2. Reconfiguration :</strong> SDI = recâblage physique requis vs NVI = reconfiguration logicielle en quelques clics<br>
+            <strong>3. Distance :</strong> SDI = max ~100m (3G-SDI) vs NVI sur fibre = jusqu'à 10 km sans amplification<br>
+            <strong>4. Coût d'investissement :</strong> NVI nécessite des switchs réseau pro avec QoS (coûteux initialement), mais l'infrastructure est partageable avec l'IT de l'entreprise, réduisant le coût total.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAPITRE 16 ═══ -->
+  <div class="lesson-card" id="c16">
+    <div class="lesson-header" onclick="toggleLesson('body16',this)">
+      <div class="lesson-num">Ch.16</div>
+      <div class="lesson-meta">
+        <h3>Télédistribution par satellite</h3>
+        <div class="tags"><span class="tag">DVB-S2</span><span class="tag">LNB</span><span class="tag">Parabole</span><span class="tag">VSAT</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body16">
+      <div class="sub-section">
+        <div class="sub-title">16.1 — Architecture d'un système satellite</div>
+        <div class="content-block">Un système de télédistribution par satellite comprend :<br>
+        • <strong>Le segment spatial</strong> : satellite géostationnaire à 36 000 km<br>
+        • <strong>Le segment sol montant (uplink)</strong> : station terrestre émettrice<br>
+        • <strong>Le segment sol descendant (downlink)</strong> : récepteurs chez les abonnés</div>
+        <div class="def-box"><div class="def-title">💡 Satellite géostationnaire</div>Un satellite géostationnaire orbite à <strong>36 000 km</strong> d'altitude sur l'équateur. Sa vitesse de rotation est égale à celle de la Terre → il semble immobile dans le ciel. Une antenne fixe peut donc le viser en permanence.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">16.2 — Le LNB (Low Noise Block)</div>
+        <div class="content-block">Le <strong>LNB</strong> est placé au foyer de la parabole. Il effectue :<br>
+        • <strong>Amplification à faible bruit</strong> : amplifie le signal satellite reçu (très faible : ~10⁻¹² W)<br>
+        • <strong>Conversion de fréquence</strong> : Ku-Band (10,7-12,75 GHz) → FI (950-2150 MHz)<br>
+        • Cette FI peut ensuite transiter sur câble coaxial jusqu'au décodeur</div>
+        <div class="formula-box">
+          <div class="f-title">📐 Fréquence intermédiaire LNB</div>
+          <div class="formula">FI = f_satellite − f_OL &nbsp;(OL universel = 9750 MHz ou 10600 MHz)</div>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">16.3 — Standard DVB-S2 et réception collective</div>
+        <div class="content-block">Le standard <strong>DVB-S2 (Digital Video Broadcasting – Satellite, 2ème génération)</strong> est le standard actuel pour la TV par satellite. Il utilise la modulation <strong>QPSK/8PSK/16APSK</strong> avec le code correcteur d'erreur <strong>LDPC + BCH</strong>.</div>
+        <div class="content-block">La <strong>réception collective (SMATV)</strong> distribue un ou plusieurs bouquets satellite à plusieurs logements via :<br>
+        • <strong>LNB multi-sorties ou Quattro LNB</strong> + multicommutateur<br>
+        • <strong>Amplificateur tête de réseau</strong> + dérivateurs + répartiteurs<br>
+        • <strong>Câble coaxial 75Ω</strong> jusqu'à chaque logement</div>
+        <div class="example-box">
+          <div class="ex-title">📡 Exemple concret</div>
+          <p>Un immeuble de 40 appartements dispose d'une seule parabole orientée vers Astra 19,2°E. Un <strong>Quattro LNB</strong> fournit 4 sorties (Bas/Haut × Horizontal/Vertical). Un <strong>multicommutateur 4×40</strong> distribue les 40 décodeurs, chacun pouvant accéder à n'importe quel transpondeur de manière indépendante.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 16</div>
+        <div class="quiz-item">
+          <div class="q-text">1. À quelle altitude orbite un satellite géostationnaire ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 500 km</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 2 000 km</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 20 000 km</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">D</span> 36 000 km</div>
+          </div>
+          <div class="quiz-feedback">Les satellites géostationnaires orbitent à exactement 35 786 km (≈ 36 000 km) d'altitude sur l'orbite géostationnaire (GEO). A cette altitude, leur période de révolution = 24h = rotation de la Terre → ils semblent immobiles.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est la fonction principale du LNB sur la parabole ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Décrypter le signal satellite</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Orienter automatiquement la parabole</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Amplifier à faible bruit et convertir la fréquence Ku-Band en FI</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Compresser le signal en MPEG</div>
+          </div>
+          <div class="quiz-feedback">Le LNB (Low Noise Block) amplifie le signal satellite très faible (~10⁻¹² W) avec le moins de bruit possible, puis convertit la fréquence Ku-Band (10-12 GHz) en fréquence intermédiaire (950-2150 MHz) transportable par câble coaxial.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel standard de modulation utilise DVB-S2 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> COFDM</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> QAM-256</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> QPSK / 8PSK / 16APSK</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> FM stéréo</div>
+          </div>
+          <div class="quiz-feedback">DVB-S2 utilise QPSK (robuste, faible débit), 8PSK (compromis) et 16APSK/32APSK (haut débit, canal de qualité) selon les conditions du lien satellite. COFDM est pour la TNT terrestre.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 16</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 16.1</div>
+          <div class="exo-q">Un transpondeur satellite émet sur 11,727 GHz. Le LNB universel a un oscillateur local de 9,750 GHz. Calculez la fréquence intermédiaire (FI) reçue par le décodeur.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Formule :</strong> FI = f_satellite − f_OL<br><br>
+            <strong>FI = 11 727 MHz − 9 750 MHz = 1 977 MHz</strong><br><br>
+            Cette fréquence intermédiaire de 1977 MHz est dans la plage 950-2150 MHz transportable par câble coaxial depuis le LNB jusqu'au décodeur. Le décodeur syntonise sa fréquence à 1977 MHz pour recevoir ce transpondeur.
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 16.2</div>
+          <div class="exo-q">Un immeuble de 16 appartements souhaite recevoir les bouquets de deux satellites différents (Astra 19,2°E et Hotbird 13°E) avec une installation collective. Décrivez l'architecture de l'installation.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Architecture :</strong><br><br>
+            <strong>1. 2 paraboles</strong> (ou 1 parabole multi-focus) orientées vers Astra et Hotbird<br>
+            <strong>2. 1 Quattro LNB par parabole</strong> (4 sorties : BH, BV, HH, HV) → total 8 câbles<br>
+            <strong>3. Multicommutateur 8×16</strong> (8 entrées LNB × 16 sorties abonnés) — pièce centrale de l'installation<br>
+            <strong>4. 16 câbles coaxiaux 75Ω</strong> depuis le multicommutateur jusqu'à chaque appartement<br>
+            <strong>5. 16 décodeurs</strong> (1 par appartement) reliés à leur prise murale<br><br>
+            <strong>Avantage :</strong> Chaque abonné peut indépendamment choisir n'importe quel transpondeur de l'un des deux satellites.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:40px 0 60px;color:var(--text3);font-size:.83rem">
+    📺 SAV · Programme Annuel · M. GWETH · Classe de Première · 2025–2026<br>
+    <span style="color:var(--accent)">📚 STUDYBOARD</span> · NDJANPA Alex
+  </div>
+
+</div>
+
+<script>
+function toggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  updateProgress();
+}
+
+function checkQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.style.pointerEvents = 'none');
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  updateProgress();
+}
+
+function toggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.quiz-item').length;
+  const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const target = document.querySelector(pill.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      const id = target.querySelector('.lesson-body')?.id;
+      const header = target.querySelector('.lesson-header');
+      if (id && header) {
+        const body = document.getElementById(id);
+        if (!body.classList.contains('open')) toggleLesson(id, header);
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>

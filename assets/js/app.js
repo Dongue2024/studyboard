@@ -3100,7 +3100,7 @@ window.showSubj = function(s) {
     return;
   }
   // Redirection vers pages autonomes pour math/sav/sas/info
-  const redirectSubjects = { math:'cours/maths.html', sav:'cours/sav.html', sas:'cours/sas.html', info:'cours/info.html' };
+  const redirectSubjects = { math:'cours/maths.html', sav:'cours/sav.html', sas:'cours/sas.html', info:'cours/info.html', chim:'cours/chim.html' };
   if (redirectSubjects[s]) { window.location.href = redirectSubjects[s]; return; }
 
   _origShowSubjFinal(s);

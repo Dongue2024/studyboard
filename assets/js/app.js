@@ -3090,6 +3090,54 @@ function loadMaths() {
     });
 }
 
+/* ══ LOAD CHIM — fetch dynamique depuis cours/chim.html ══ */
+let _chimLoaded = false;
+function loadChim() {
+  const homeEl = document.getElementById('home-chim');
+  if (!homeEl || _chimLoaded) return;
+  fetch('cours/chim.html')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(html) {
+      homeEl.innerHTML = html;
+      _chimLoaded = true;
+      chimInitPills();
+    })
+    .catch(function(err) {
+      homeEl.innerHTML = '<div style="padding:40px;text-align:center;color:#f87171;">⚠️ Impossible de charger les cours de Chimie.<br><small>' + err.message + '</small></div>';
+    });
+}
+function chimInitPills() {
+  const homeEl = document.getElementById('home-chim');
+  if (!homeEl) return;
+  homeEl.querySelectorAll('.pill').forEach(function(pill) {
+    pill.addEventListener('click', function(e) {
+      e.preventDefault();
+      homeEl.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      const target = homeEl.querySelector(pill.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+        const id = target.querySelector('.lesson-body') && target.querySelector('.lesson-body').id;
+        const header = target.querySelector('.lesson-header');
+        if (id && header) {
+          const body = document.getElementById(id);
+          if (!body.classList.contains('open')) chimToggleLesson(id, header);
+        }
+      }
+    });
+  });
+}
+function chimToggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
 /* ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══ */
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
@@ -3099,8 +3147,8 @@ window.showSubj = function(s) {
     showUpgrade();
     return;
   }
-  // Redirection vers pages autonomes pour math/sav/sas/info
-  const redirectSubjects = { math:'cours/maths.html', sav:'cours/sav.html', sas:'cours/sas.html', info:'cours/info.html', chim:'cours/chim.html' };
+  // Redirection vers pages autonomes pour sav/sas/info
+  const redirectSubjects = { sav:'cours/sav.html', sas:'cours/sas.html', info:'cours/info.html' };
   if (redirectSubjects[s]) { window.location.href = redirectSubjects[s]; return; }
 
   _origShowSubjFinal(s);
@@ -3110,6 +3158,8 @@ window.showSubj = function(s) {
     var homeCeln = document.getElementById('home-celn');
     if (homeCeln) homeCeln.style.display = 'block';
   }
+  // CHIM : chargement dynamique comme maths
+  if (s === 'chim') loadChim();
 };
 
 /* ══ Appelé par Firebase après que l'app est visible ══ */

@@ -3136,6 +3136,34 @@ function chimToggleLesson(id, header) {
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  chimUpdateProgress();
+}
+function chimCheckQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  allOpts.forEach(function(o) { o.style.pointerEvents = 'none'; });
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  chimUpdateProgress();
+}
+function chimToggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+function chimUpdateProgress() {
+  const chimSection = document.getElementById('home-chim');
+  const total = chimSection ? chimSection.querySelectorAll('.quiz-item').length : 0;
+  const answered = chimSection ? chimSection.querySelectorAll('.quiz-item[data-answered]').length : 0;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  const fill = document.getElementById('chimProgressFill');
+  const pctEl = document.getElementById('chimProgressPct');
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
 }
 
 /* ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══ */
@@ -3158,6 +3186,8 @@ window.showSubj = function(s) {
     var homeCeln = document.getElementById('home-celn');
     if (homeCeln) homeCeln.style.display = 'block';
   }
+  // MATHS : chargement dynamique
+  if (s === 'math') loadMaths();
   // CHIM : chargement dynamique comme maths
   if (s === 'chim') loadChim();
 };

@@ -3094,7 +3094,7 @@ function loadMaths() {
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
   const plan = window.USER_PLAN || 'free';
-  const premiumSubjects = ['elec','chim','fran','srt','irt','celn','info','gm'];
+  const premiumSubjects = ['elec','math','chim','fran','srt','irt','sav','celn','info','sas','gm'];
   if (plan === 'free' && premiumSubjects.includes(s)) {
     showUpgrade();
     return;

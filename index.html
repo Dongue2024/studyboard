@@ -65,7 +65,7 @@
     <button class="sb-btn locked" id="snav-irt" onclick="showUpgrade()"><span class="sb-num">💻</span>IRT</button>
     <button class="sb-btn locked" id="snav-sav" onclick="window.location='cours/sav.html'"><span class="sb-num">🔧</span>SAV</button>
     <button class="sb-btn" id="snav-celn" onclick="showSubj('celn')"><span class="sb-num">⚡</span>Circuit Électronique</button>
-    <button class="sb-btn locked" id="snav-info" onclick="showUpgrade()"><span class="sb-num">🖥️</span>Informatique</button>
+    <button class="sb-btn locked" id="snav-info" onclick="window.location='cours/info.html'"><span class="sb-num">🖥️</span>Informatique</button>
     <button class="sb-btn locked" id="snav-sas" onclick="window.location='cours/sas.html'"><span class="sb-num">📊</span>SAS</button>
     <button class="sb-btn locked" id="snav-gm" onclick="showUpgrade()"><span class="sb-num">⚙️</span>GM</button>
   </nav>
@@ -149,7 +149,7 @@
     <button class="sj-btn" id="sj-irt" onclick="showSubj('irt')">💻 IRT</button>
     <a class="sj-btn" id="sj-sav" href="cours/sav.html" style="text-decoration:none;">🔧 SAV</a>
     <button class="sj-btn" id="sj-celn" onclick="showSubj('celn')">⚡ Électronique</button>
-    <button class="sj-btn" id="sj-info" onclick="showSubj('info')">🖥️ Info</button>
+    <a class="sj-btn" id="sj-info" href="cours/info.html" style="text-decoration:none;">🖥️ Info</a>
     <a class="sj-btn" id="sj-sas" href="cours/sas.html" style="text-decoration:none;">📊 SAS</a>
     <button class="sj-btn" id="sj-gm" onclick="showSubj('gm')">⚙️ GM</button>
   </div>
@@ -7675,7 +7675,7 @@ function _buildAccordion(subj) {
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
   const plan = window.USER_PLAN || 'free';
-  const premiumSubjects = ['elec','chim','fran','srt','irt','celn','info','gm'];
+  const premiumSubjects = ['elec','math','chim','fran','srt','irt','sav','celn','info','sas','gm'];
   if (plan === 'free' && premiumSubjects.includes(s)) {
     showUpgrade();
     return;

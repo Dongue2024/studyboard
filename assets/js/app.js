@@ -3099,13 +3099,12 @@ window.showSubj = function(s) {
     showUpgrade();
     return;
   }
+  // Redirection vers pages autonomes pour math/sav/sas/info
+  const redirectSubjects = { math:'cours/maths.html', sav:'cours/sav.html', sas:'cours/sas.html', info:'cours/info.html' };
+  if (redirectSubjects[s]) { window.location.href = redirectSubjects[s]; return; }
+
   _origShowSubjFinal(s);
   if (s === 'phys' || s === 'elec') _buildAccordion(s);
-  // MATH : contenu statique dans #home-math, forcé visible après showSubj qui le cache
-  if (s === 'math') {
-    var homeMath = document.getElementById('home-math');
-    if (homeMath) homeMath.style.display = 'block';
-  }
   // CELN : contenu statique dans #home-celn, forcé visible après showSubj qui le cache
   if (s === 'celn') {
     var homeCeln = document.getElementById('home-celn');

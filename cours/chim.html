@@ -1,9 +1,30 @@
-<!-- ═══════════════════════════════════════════════════════════
-     cours/chim.html — FRAGMENT PUR (pas de html/head/body)
-     Styles scopés sous #home-chim · JS préfixé chim_
-     ═══════════════════════════════════════════════════════════ -->
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Chimie — Programme Annuel · StudyBoard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #22263a;
+  --border: #2e3350;
+  --accent: #00b4d8;
+  --text: #e8eaf6;
+  --text2: #9fa8da;
+  --text3: #616a9e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans','Segoe UI',sans-serif;min-height:100vh}
+/* Bouton retour */
+.back-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px;position:sticky;top:0;z-index:100}
+.back-bar a{display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:.85rem;text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:8px;transition:all .2s}
+.back-bar a:hover{color:var(--accent);border-color:var(--accent)}
+/* Wrapper pour activer les styles scopés #home-chim */
+#home-chim{padding:0 16px 40px}
+
 /* ── Scoped sous #home-chim pour éviter tout conflit avec Studyboard ── */
 #home-chim .ch-hero{background:linear-gradient(135deg,#1a1d27 0%,#0a1628 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden;border-radius:16px;margin-bottom:24px}
 #home-chim .ch-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,180,216,.18) 0%,transparent 70%);pointer-events:none}
@@ -97,7 +118,20 @@
   #home-chim .ch-hero-stats{gap:12px}
   #home-chim .ch-stat{padding:8px 16px}
 }
+
 </style>
+</head>
+<body>
+<div class="back-bar">
+  <a href="../index.html">← Retour à l'accueil</a>
+</div>
+<div id="home-chim">
+<!-- ═══════════════════════════════════════════════════════════
+     cours/chim.html — FRAGMENT PUR (pas de html/head/body)
+     Styles scopés sous #home-chim · JS préfixé chim_
+     ═══════════════════════════════════════════════════════════ -->
+
+
 
 <!-- HERO -->
 <div class="ch-hero">
@@ -716,8 +750,9 @@
   ⚗️ Chimie · Programme Oxydoréduction · M. TCHOUADJEU NUI GOUA DONALD · 2025–2026<br>
   <span style="color:#00b4d8">📚 STUDYBOARD</span>
 </div>
-
+</div>
 <script>
+
 /* ── Fonctions Chimie — préfixées chim_ pour éviter conflits avec app.js ── */
 function chimToggleLesson(id, header) {
   var body = document.getElementById(id);
@@ -758,4 +793,7 @@ function chimUpdateProgress() {
   if (fill) fill.style.width = pct + '%';
   if (pctEl) pctEl.textContent = pct + '%';
 }
+
 </script>
+</body>
+</html>

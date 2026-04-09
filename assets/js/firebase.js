@@ -49,6 +49,7 @@ onAuthStateChanged(auth, async (user) => {
   // ── Vérifier si Premium ──
   const plan = PREMIUM_EMAILS.includes(email.toLowerCase()) ? 'premium' : 'free';
   window.USER_PLAN = plan;
+  sessionStorage.setItem('sf_plan', plan);
   console.log('Plan:', plan, 'pour', email);
 
   // ── Afficher l'app ──

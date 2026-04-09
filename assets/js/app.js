@@ -2828,7 +2828,7 @@ window.unlockPremium = function() {
 // Intercept openLesson for free users
 const _origOpenLesson = openLesson;
 window.openLesson = function(n, subj) {
-  const plan = window.USER_PLAN || 'free';
+  const plan = window.USER_PLAN || sessionStorage.getItem('sf_plan') || 'free';
   if (plan === 'free') {
     // Free: only phys lesson 1 is allowed
     if (subj === 'phys' && n === 1) {
@@ -2970,7 +2970,7 @@ function accScrollTo(subj, k) {
 
 /* accOpen — checks plan at click time, never at build time */
 function accOpen(k, subj, isFreeLesson, tab) {
-  const plan = window.USER_PLAN || 'free';
+  const plan = window.USER_PLAN || sessionStorage.getItem('sf_plan') || 'free';
   if (!isFreeLesson && plan === 'free') {
     showUpgrade();
     return;
@@ -3093,7 +3093,7 @@ function loadMaths() {
 /* ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══ */
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
-  const plan = window.USER_PLAN || 'free';
+  const plan = window.USER_PLAN || sessionStorage.getItem('sf_plan') || 'free';
   const premiumSubjects = ['elec','math','chim','fran','srt','irt','sav','celn','info','sas','gm'];
   if (plan === 'free' && premiumSubjects.includes(s)) {
     showUpgrade();

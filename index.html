@@ -149,7 +149,7 @@
     <button class="sj-btn" id="sj-irt" onclick="showSubj('irt')">💻 IRT</button>
     <button class="sj-btn" id="sj-sav" onclick="showSubj('sav')">🔧 SAV</button>
     <button class="sj-btn" id="sj-celn" onclick="showSubj('celn')">⚡ Électronique</button>
-    <button class="sj-btn" id="sj-info" onclick="showSubj('info')">🖥️ Info</button>
+    <a class="sj-btn" id="sj-info" href="cours/info.html" style="text-decoration:none;">🖥️ Info</a>
     <button class="sj-btn" id="sj-sas" onclick="showSubj('sas')">📊 SAS</button>
     <button class="sj-btn" id="sj-gm" onclick="showSubj('gm')">⚙️ GM</button>
   </div>
@@ -1528,7 +1528,21 @@
 
   <!-- ═══ CHIMIE ═══ -->
   <div class="spage" id="spage-chim">
-    <div class="hpage" id="home-chim" style="padding:0;">
+    <div class="hpage" id="home-chim">
+      <div class="greet-card fu">
+        <div class="gr-av" style="background:linear-gradient(135deg,#10b981,#059669)">🧪</div>
+        <div>
+          <div class="gr-hello" style="color:#10b981">Chimie</div>
+          <div class="gr-name">Programme <em style="color:#10b981">Première</em></div>
+          <div class="gr-sub">Leçons à venir · 2025–2026</div>
+        </div>
+      </div>
+      <div class="hero fu" style="border-color:rgba(16,185,129,.3)">
+        <div class="hero-tag" style="color:#10b981">🧪 Chimie · Classe de Première</div>
+        <div class="hero-h1">Programme Annuel<br><em style="color:#10b981">de Chimie</em></div>
+        <div class="hero-desc">Les leçons seront ajoutées prochainement. Reste connecté !</div>
+      </div>
+      <div class="info" style="margin-top:16px"><span class="ii">🔔</span><div class="it">Les cours de Chimie sont en cours de préparation. Ils seront disponibles très bientôt !</div></div>
     </div>
     <div class="lpage" id="lpage-chim"></div>
   </div>
@@ -7657,102 +7671,6 @@ function _buildAccordion(subj) {
   });
 }
 
-/* ══ LOAD MATHS — fetch dynamique depuis cours/maths.html ══ */
-let _mathsLoaded = false;
-function loadMaths() {
-  const homeEl = document.getElementById('home-math');
-  if (!homeEl || _mathsLoaded) return;
-  fetch('cours/maths.html')
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
-    .then(function(html) {
-      homeEl.innerHTML = html;
-      _mathsLoaded = true;
-      mathInitPills();
-    })
-    .catch(function(err) {
-      homeEl.innerHTML = '<div style="padding:40px;text-align:center;color:#f87171;">⚠️ Impossible de charger les cours de Maths.<br><small>' + err.message + '</small></div>';
-    });
-}
-
-/* ══ LOAD CHIM — fetch dynamique depuis cours/chim.html ══ */
-let _chimLoaded = false;
-function loadChim() {
-  const homeEl = document.getElementById('home-chim');
-  if (!homeEl || _chimLoaded) return;
-  fetch('cours/chim.html')
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
-    .then(function(html) {
-      homeEl.innerHTML = html;
-      _chimLoaded = true;
-      chimInitPills();
-    })
-    .catch(function(err) {
-      homeEl.innerHTML = '<div style="padding:40px;text-align:center;color:#f87171;">⚠️ Impossible de charger les cours de Chimie.<br><small>' + err.message + '</small></div>';
-    });
-}
-function chimInitPills() {
-  const homeEl = document.getElementById('home-chim');
-  if (!homeEl) return;
-  homeEl.querySelectorAll('.pill').forEach(function(pill) {
-    pill.addEventListener('click', function(e) {
-      e.preventDefault();
-      homeEl.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('active'); });
-      pill.classList.add('active');
-      const target = homeEl.querySelector(pill.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({behavior:'smooth', block:'start'});
-        const id = target.querySelector('.lesson-body') && target.querySelector('.lesson-body').id;
-        const header = target.querySelector('.lesson-header');
-        if (id && header) {
-          const body = document.getElementById(id);
-          if (!body.classList.contains('open')) chimToggleLesson(id, header);
-        }
-      }
-    });
-  });
-}
-function chimToggleLesson(id, header) {
-  const body = document.getElementById(id);
-  const icon = header.querySelector('.toggle-icon');
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-  chimUpdateProgress();
-}
-function chimCheckQuiz(opt, result) {
-  const parent = opt.closest('.quiz-item');
-  if (parent.dataset.answered) return;
-  parent.dataset.answered = '1';
-  const feedback = parent.querySelector('.quiz-feedback');
-  const allOpts = parent.querySelectorAll('.quiz-opt');
-  allOpts.forEach(function(o) { o.style.pointerEvents = 'none'; });
-  opt.classList.add(result);
-  feedback.classList.add('show', result);
-  chimUpdateProgress();
-}
-function chimToggleAnswer(btn) {
-  const block = btn.nextElementSibling;
-  const isShown = block.classList.contains('show');
-  block.classList.toggle('show', !isShown);
-  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
-}
-function chimUpdateProgress() {
-  const chimSection = document.getElementById('home-chim');
-  const total = chimSection ? chimSection.querySelectorAll('.quiz-item').length : 0;
-  const answered = chimSection ? chimSection.querySelectorAll('.quiz-item[data-answered]').length : 0;
-  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
-  const fill = document.getElementById('chimProgressFill');
-  const pctEl = document.getElementById('chimProgressPct');
-  if (fill) fill.style.width = pct + '%';
-  if (pctEl) pctEl.textContent = pct + '%';
-}
-
 /* ══ SHOWSUBJ UNIFIÉ — freemium + accordion + transitions ══ */
 const _origShowSubjFinal = showSubj;
 window.showSubj = function(s) {
@@ -7769,10 +7687,6 @@ window.showSubj = function(s) {
     var homeCeln = document.getElementById('home-celn');
     if (homeCeln) homeCeln.style.display = 'block';
   }
-  // MATHS : chargement dynamique
-  if (s === 'math') loadMaths();
-  // CHIM : chargement dynamique
-  if (s === 'chim') loadChim();
 };
 
 /* ══ Appelé par Firebase après que l'app est visible ══ */

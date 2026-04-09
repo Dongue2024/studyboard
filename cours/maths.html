@@ -1,0 +1,1352 @@
+<!-- ══════════════════════════════════════
+     STUDYBOARD — cours/maths.html
+     Contenu injecté dans #home-math de index.html
+     Généré automatiquement
+══════════════════════════════════════ -->
+
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --text: #e8eaf6;
+    --text2: #9fa8da;
+    --text3: #616a9e;
+    --gold: #ffd700;
+    --card-radius: 16px;
+    --shadow: 0 4px 32px rgba(108,99,255,0.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+  /* ── HEADER ── */
+  .site-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+  .site-header .logo{font-size:1.3rem;font-weight:800;color:var(--accent);letter-spacing:-1px}
+  .site-header .breadcrumb{color:var(--text3);font-size:.85rem}
+  .site-header .breadcrumb span{color:var(--accent2)}
+  .badge-premium{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto}
+
+  /* ── HERO ── */
+  .hero{background:linear-gradient(135deg,#1a1d27 0%,#12162b 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(108,99,255,.18) 0%,transparent 70%);pointer-events:none}
+  .hero-icon{font-size:3.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .hero h1{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#a78bfa,#6c63ff,#43e97b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+  .hero p{color:var(--text2);font-size:1rem;max-width:600px;margin:0 auto 20px}
+  .hero-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+  .stat{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 24px;text-align:center}
+  .stat .num{font-size:1.6rem;font-weight:800;color:var(--accent)}
+  .stat .lbl{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+
+  /* ── LAYOUT ── */
+  .container{max-width:1100px;margin:0 auto;padding:0 16px}
+
+  /* ── NAV PILLS ── */
+  .lesson-nav{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 8px;justify-content:center}
+  .pill{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap}
+  .pill:hover,.pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* ── SECTION TITLE ── */
+  .section-title{font-size:1.5rem;font-weight:800;color:var(--text);margin:36px 0 20px;padding-left:16px;border-left:4px solid var(--accent)}
+
+  /* ── LESSON CARD ── */
+  .lesson-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);margin-bottom:20px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s}
+  .lesson-card:hover{box-shadow:0 8px 40px rgba(108,99,255,.22)}
+  .lesson-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
+  .lesson-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:.85rem;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lesson-meta{flex:1}
+  .lesson-meta h3{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:4px}
+  .lesson-meta .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:.7rem;padding:2px 8px;border-radius:10px}
+  .toggle-icon{color:var(--text3);font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+  .lesson-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+  .lesson-body.open{display:block}
+
+  /* ── SUBTITLES / SECTIONS ── */
+  .sub-section{margin-top:20px}
+  .sub-title{font-size:.95rem;font-weight:700;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .sub-title::before{content:'';display:block;width:3px;height:16px;background:var(--accent2);border-radius:2px}
+  .content-block{color:var(--text2);font-size:.9rem;line-height:1.75;margin-bottom:12px}
+  .content-block strong{color:var(--text)}
+
+  /* ── DEFINITION BOX ── */
+  .def-box{background:var(--surface2);border-left:4px solid var(--accent3);border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0;font-size:.88rem;color:var(--text2)}
+  .def-box .def-title{color:var(--accent3);font-weight:700;margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+
+  /* ── EXAMPLE BOX ── */
+  .example-box{background:rgba(67,233,123,.07);border:1px solid rgba(67,233,123,.2);border-radius:12px;padding:16px;margin:12px 0}
+  .example-box .ex-title{color:var(--accent3);font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase}
+  .example-box p{color:var(--text2);font-size:.88rem;line-height:1.7}
+
+  /* ── FORMULA BOX ── */
+  .formula-box{background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.3);border-radius:12px;padding:16px;margin:12px 0;text-align:center}
+  .formula-box .f-title{color:var(--accent);font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .formula-box .f-content{color:var(--text);font-size:1rem;font-family:'Courier New',monospace;line-height:2}
+
+  /* ── TABLE ── */
+  .styled-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+  .styled-table th{background:var(--surface2);color:var(--accent);padding:10px 14px;text-align:left;border-bottom:2px solid var(--border)}
+  .styled-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)}
+  .styled-table tr:hover td{background:var(--surface2)}
+
+  /* ── CODE ── */
+  .code-block{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#79c0ff;overflow-x:auto;margin:12px 0;line-height:1.8}
+
+  /* ── QUIZ ── */
+  .quiz-section{margin-top:28px}
+  .quiz-title{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .quiz-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .quiz-item .q-text{color:var(--text);font-size:.9rem;font-weight:600;margin-bottom:12px}
+  .quiz-options{display:flex;flex-direction:column;gap:8px}
+  .quiz-opt{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text2);font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+  .quiz-opt:hover{border-color:var(--accent);color:var(--text)}
+  .quiz-opt.correct{background:rgba(67,233,123,.15);border-color:var(--accent3);color:var(--accent3)}
+  .quiz-opt.wrong{background:rgba(255,101,132,.12);border-color:var(--accent2);color:var(--accent2)}
+  .quiz-opt .opt-letter{background:var(--surface2);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+  .quiz-feedback{margin-top:10px;font-size:.83rem;padding:8px 12px;border-radius:8px;display:none}
+  .quiz-feedback.show{display:block}
+  .quiz-feedback.correct{background:rgba(67,233,123,.1);color:var(--accent3);border:1px solid rgba(67,233,123,.25)}
+  .quiz-feedback.wrong{background:rgba(255,101,132,.1);color:var(--accent2);border:1px solid rgba(255,101,132,.25)}
+
+  /* ── EXERCICES ── */
+  .exo-section{margin-top:28px}
+  .exo-title{font-size:1rem;font-weight:800;color:var(--accent2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .exo-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .exo-item .exo-num{color:var(--accent);font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .exo-item .exo-q{color:var(--text);font-size:.88rem;margin-bottom:10px;line-height:1.6}
+  .show-answer-btn{background:var(--surface);border:1px solid var(--border);color:var(--accent);padding:7px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s}
+  .show-answer-btn:hover{background:var(--accent);color:#fff}
+  .answer-block{display:none;margin-top:12px;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:12px;color:var(--text2);font-size:.85rem;line-height:1.7}
+  .answer-block.show{display:block}
+  .answer-block strong{color:var(--accent3)}
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .progress-label{font-size:.8rem;color:var(--text3);white-space:nowrap}
+  .progress-bar{flex:1;min-width:120px;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:3px;transition:width .4s}
+  .progress-pct{font-size:.8rem;color:var(--accent);font-weight:700;white-space:nowrap}
+
+  /* ── BACK BUTTON ── */
+  .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:.85rem;text-decoration:none;padding:8px 16px;border:1px solid var(--border);border-radius:8px;margin:16px 0;transition:all .2s}
+  .back-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:600px){
+    .hero h1{font-size:1.4rem}
+    .lesson-header{padding:14px 16px;gap:10px}
+    .lesson-body{padding:0 14px 16px}
+    .hero-stats{gap:12px}
+    .stat{padding:8px 16px}
+  }
+</style>
+
+
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <span class="progress-label">📐 Maths — Progression Quiz</span>
+  <div class="progress-bar"><div class="progress-fill" id="mathProgressFill" style="width:0%"></div></div>
+  <span class="progress-pct" id="mathProgressPct">0%</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icon">📐</div>
+  <h1>Mathématiques — Programme Annuel</h1>
+  <p>Terminale · Cours détaillés · Quiz interactifs · Exercices corrigés<br>12 chapitres · 2025–2026</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">12</div><div class="lbl">Chapitres</div></div>
+    <div class="stat"><div class="num">36</div><div class="lbl">Quiz</div></div>
+    <div class="stat"><div class="num">24</div><div class="lbl">Exercices</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+  
+
+  <!-- NAV PILLS -->
+  <div class="lesson-nav" id="lessonNav">
+    <a class="pill active" href="#c1">Ch.1</a>
+    <a class="pill" href="#c2">Ch.2</a>
+    <a class="pill" href="#c3">Ch.3</a>
+    <a class="pill" href="#c4">Ch.4</a>
+    <a class="pill" href="#c5">Ch.5</a>
+    <a class="pill" href="#c6">Ch.6</a>
+    <a class="pill" href="#c7">Ch.7</a>
+    <a class="pill" href="#c8">Ch.8</a>
+    <a class="pill" href="#c9">Ch.9</a>
+    <a class="pill" href="#c10">Ch.10</a>
+    <a class="pill" href="#c11">Ch.11</a>
+    <a class="pill" href="#c12">Ch.12</a>
+  </div>
+
+  <div class="section-title">📖 Les 12 Chapitres du Programme</div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 1 — Équations, Inéquations, Systèmes
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c1">
+    <div class="lesson-header" onclick="mathToggleLesson('body1',this)">
+      <div class="lesson-num">C1</div>
+      <div class="lesson-meta">
+        <h3>Équations, Inéquations et Systèmes linéaires</h3>
+        <div class="tags"><span class="tag">Équations</span><span class="tag">Inéquations</span><span class="tag">Systèmes</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body1">
+
+      <div class="sub-section">
+        <div class="sub-title">1.1 — Équations du second degré</div>
+        <div class="content-block">Une <strong>équation du second degré</strong> est de la forme <em>ax² + bx + c = 0</em> avec a ≠ 0. La résolution passe par le calcul du <strong>discriminant Δ</strong>.</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Formule clé — Discriminant</div>
+          <div class="f-content">Δ = b² − 4ac<br>
+          Si Δ &gt; 0 : deux solutions x₁ = (−b − √Δ) / 2a  et  x₂ = (−b + √Δ) / 2a<br>
+          Si Δ = 0 : une solution double x₀ = −b / 2a<br>
+          Si Δ &lt; 0 : pas de solution réelle</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.2 — Inéquations</div>
+        <div class="content-block">Une <strong>inéquation</strong> est une inégalité comportant une inconnue. Attention : <strong>multiplier ou diviser par un nombre négatif inverse le sens de l'inégalité</strong>.<br>
+        • Résoudre 2x − 3 &gt; 7 → 2x &gt; 10 → x &gt; 5 → solution : ]5 ; +∞[<br>
+        • Pour les inéquations du second degré, on utilise le <strong>signe du trinôme</strong> en étudiant les racines et le signe de a.</div>
+        <div class="def-box"><div class="def-title">💡 Règle du signe</div>Si a &gt; 0 : ax² + bx + c &gt; 0 pour x &lt; x₁ ou x &gt; x₂ (à l'extérieur des racines).<br>Si a &gt; 0 : ax² + bx + c &lt; 0 pour x₁ &lt; x &lt; x₂ (entre les racines).</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">1.3 — Systèmes linéaires</div>
+        <div class="content-block">Un système de deux équations à deux inconnues peut être résolu par <strong>substitution</strong> ou <strong>combinaison linéaire (addition)</strong>. On peut aussi utiliser la <strong>méthode de Cramer</strong> en classe de Terminale.</div>
+        <div class="example-box">
+          <div class="ex-title">🔢 Exemple — Résolution par combinaison</div>
+          <p>Système : { 2x + y = 5 et x − y = 1 }<br>
+          Addition : 3x = 6 → <strong>x = 2</strong><br>
+          Substitution : 2 − y = 1 → <strong>y = 1</strong><br>
+          Solution : (2 ; 1)</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 1</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel est le discriminant de x² − 5x + 6 = 0 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 1  (Δ = 25 − 24 = 1)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −24</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 0</div>
+          </div>
+          <div class="quiz-feedback">Δ = b² − 4ac = (−5)² − 4×1×6 = 25 − 24 = 1 &gt; 0 → deux solutions réelles distinctes x₁=2 et x₂=3.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Résoudre −2x + 4 ≥ 0. Quelle est la solution ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> x ≥ 2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> x ≤ 2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> x ≥ −2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> x ≤ −2</div>
+          </div>
+          <div class="quiz-feedback">−2x ≥ −4 → on divise par −2 (on inverse) → x ≤ 2. Solution : ]−∞ ; 2].</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Un système a Δ = 0. Combien de solutions admet l'équation associée ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Aucune</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Deux solutions distinctes</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Une solution double</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Une infinité</div>
+          </div>
+          <div class="quiz-feedback">Δ = 0 → une seule solution appelée racine double : x₀ = −b / 2a.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 1</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.1</div>
+          <div class="exo-q">Résoudre dans ℝ l'équation 2x² − 7x + 3 = 0, puis indiquer l'ensemble solution de 2x² − 7x + 3 ≤ 0.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Calcul du discriminant :</strong> Δ = (−7)² − 4×2×3 = 49 − 24 = 25 &gt; 0<br>
+            <strong>Racines :</strong> x₁ = (7 − 5) / 4 = <strong>1/2</strong> et x₂ = (7 + 5) / 4 = <strong>3</strong><br>
+            <strong>Inéquation ≤ 0 :</strong> Comme a = 2 &gt; 0, le trinôme est négatif entre les racines.<br>
+            Solution : <strong>[1/2 ; 3]</strong>
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.2</div>
+          <div class="exo-q">Résoudre le système : { 3x + 2y = 12 et 5x − y = 1 } par la méthode de combinaison.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            On multiplie la 2ème équation par 2 : 10x − 2y = 2<br>
+            Addition avec la 1ère : 13x = 14 → <strong>x = 14/13</strong><br>
+            On substitue : y = 5×(14/13) − 1 = 70/13 − 13/13 = <strong>57/13</strong><br>
+            Solution : (14/13 ; 57/13)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 2 — Calculs Barycentriques
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c2">
+    <div class="lesson-header" onclick="mathToggleLesson('body2',this)">
+      <div class="lesson-num">C2</div>
+      <div class="lesson-meta">
+        <h3>Calculs barycentriques</h3>
+        <div class="tags"><span class="tag">Barycentre</span><span class="tag">Vecteurs</span><span class="tag">Géométrie</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body2">
+
+      <div class="sub-section">
+        <div class="sub-title">2.1 — Définition du barycentre</div>
+        <div class="content-block">Le <strong>barycentre</strong> G de points A₁, A₂, ..., Aₙ affectés de coefficients (masses) α₁, α₂, ..., αₙ est le point tel que :<br></div>
+        <div class="formula-box">
+          <div class="f-title">📌 Relation fondamentale</div>
+          <div class="f-content">α₁·GA₁ + α₂·GA₂ + ... + αₙ·GAₙ = 0⃗<br>
+          avec α₁ + α₂ + ... + αₙ ≠ 0</div>
+        </div>
+        <div class="def-box"><div class="def-title">💡 Cas particulier — Milieu</div>Le milieu I de [AB] est le barycentre de (A, 1) et (B, 1). On a IA⃗ + IB⃗ = 0⃗.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">2.2 — Propriétés et associativité</div>
+        <div class="content-block">Le barycentre possède une propriété d'<strong>associativité</strong> : on peut calculer un barycentre global en regroupant les points.<br>
+        Si G₁ est le barycentre de (A, α) et (B, β), alors le barycentre de (A, α), (B, β) et (C, γ) est aussi le barycentre de (G₁, α+β) et (C, γ).</div>
+        <div class="example-box">
+          <div class="ex-title">📐 Exemple — Barycentre de 3 points</div>
+          <p>G = barycentre de A(1;0), B(3;2), C(2;4) avec coefficients 2, 1, 1.<br>
+          Σα = 2+1+1 = 4<br>
+          x_G = (2×1 + 1×3 + 1×2) / 4 = 7/4<br>
+          y_G = (2×0 + 1×2 + 1×4) / 4 = 6/4 = 3/2</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">2.3 — Applications géométriques</div>
+        <div class="content-block">
+        • Le <strong>centre de gravité</strong> d'un triangle ABC est le barycentre de (A,1), (B,1), (C,1).<br>
+        • Ses coordonnées sont : G = ((xA+xB+xC)/3 ; (yA+yB+yC)/3)<br>
+        • Le barycentre d'un ensemble de points est invariant par translation.</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 2</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Le barycentre de (A, 1) et (B, 1) est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Le point A</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Le milieu de [AB]</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Le point B</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Un point extérieur à [AB]</div>
+          </div>
+          <div class="quiz-feedback">Avec des coefficients égaux, le barycentre est le milieu du segment. GA⃗ + GB⃗ = 0⃗ ↔ G est le milieu de [AB].</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Pour que le barycentre existe, la somme des coefficients doit être :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Égale à 1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Positive</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Différente de 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Égale à 0</div>
+          </div>
+          <div class="quiz-feedback">La somme des coefficients doit être ≠ 0, sinon le barycentre n'est pas défini (point à l'infini).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Les coordonnées du centre de gravité G du triangle A(0,0), B(6,0), C(0,6) sont :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> (3 ; 3)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> (2 ; 2)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> (6 ; 6)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> (1 ; 1)</div>
+          </div>
+          <div class="quiz-feedback">G = ((0+6+0)/3 ; (0+0+6)/3) = (6/3 ; 6/3) = (2 ; 2).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 2</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 2.1</div>
+          <div class="exo-q">Calculer le barycentre G de A(−1 ; 2), B(3 ; 0) et C(1 ; 4) affectés des coefficients respectifs 3, 1 et 2.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Somme des coefficients :</strong> 3 + 1 + 2 = 6<br>
+            <strong>x_G</strong> = (3×(−1) + 1×3 + 2×1) / 6 = (−3 + 3 + 2) / 6 = 2/6 = <strong>1/3</strong><br>
+            <strong>y_G</strong> = (3×2 + 1×0 + 2×4) / 6 = (6 + 0 + 8) / 6 = 14/6 = <strong>7/3</strong><br>
+            G = (1/3 ; 7/3)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 3 — Angles orientés et Trigonométrie
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c3">
+    <div class="lesson-header" onclick="mathToggleLesson('body3',this)">
+      <div class="lesson-num">C3</div>
+      <div class="lesson-meta">
+        <h3>Angles orientés et Trigonométrie</h3>
+        <div class="tags"><span class="tag">Cercle trigonométrique</span><span class="tag">Radians</span><span class="tag">Formules</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body3">
+
+      <div class="sub-section">
+        <div class="sub-title">3.1 — Cercle trigonométrique & angles orientés</div>
+        <div class="content-block">Le <strong>cercle trigonométrique</strong> est le cercle de centre O et de rayon 1. On y mesure les angles en <strong>radians</strong> dans le sens direct (sens antihoraire).<br>
+        • 180° = π rad &nbsp;|&nbsp; 90° = π/2 rad &nbsp;|&nbsp; 60° = π/3 rad &nbsp;|&nbsp; 45° = π/4 rad &nbsp;|&nbsp; 30° = π/6 rad</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Valeurs remarquables</div>
+          <div class="f-content">cos(0) = 1, sin(0) = 0<br>
+          cos(π/6) = √3/2, sin(π/6) = 1/2<br>
+          cos(π/4) = √2/2, sin(π/4) = √2/2<br>
+          cos(π/3) = 1/2, sin(π/3) = √3/2<br>
+          cos(π/2) = 0, sin(π/2) = 1</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.2 — Formules d'addition et de duplication</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Formules d'addition</div>
+          <div class="f-content">cos(a + b) = cos a · cos b − sin a · sin b<br>
+          sin(a + b) = sin a · cos b + cos a · sin b<br>
+          cos(2a) = cos²a − sin²a = 1 − 2sin²a = 2cos²a − 1<br>
+          sin(2a) = 2 sin a · cos a</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">3.3 — Équations trigonométriques</div>
+        <div class="content-block">Résolution des équations du type cos(x) = k ou sin(x) = k pour k ∈ [−1 ; 1].<br>
+        • <strong>cos(x) = cos(a)</strong> → x = a + 2kπ ou x = −a + 2kπ (k ∈ ℤ)<br>
+        • <strong>sin(x) = sin(a)</strong> → x = a + 2kπ ou x = π − a + 2kπ (k ∈ ℤ)</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 3</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la valeur de sin(π/3) ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1/2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> √3/2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> √2/2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
+          </div>
+          <div class="quiz-feedback">sin(π/3) = sin(60°) = √3/2 ≈ 0,866. À retenir absolument dans le tableau des valeurs remarquables.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Combien de radians correspond à 270° ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> π</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 2π</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> 3π/2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> π/2</div>
+          </div>
+          <div class="quiz-feedback">270° × (π/180°) = 270π/180 = 3π/2 radians.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quelle est la formule de cos(2a) ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 2cos(a)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 2sin(a)cos(a)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> cos²a − sin²a</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> sin²a − cos²a</div>
+          </div>
+          <div class="quiz-feedback">cos(2a) = cos²a − sin²a. On peut aussi écrire 1 − 2sin²a ou 2cos²a − 1 (formes équivalentes).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 3</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 3.1</div>
+          <div class="exo-q">Résoudre dans ℝ l'équation : sin(x) = √3/2</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            sin(x) = √3/2 → sin(x) = sin(π/3)<br>
+            <strong>Solution :</strong><br>
+            x = π/3 + 2kπ &nbsp;ou&nbsp; x = π − π/3 + 2kπ = 2π/3 + 2kπ &nbsp;(k ∈ ℤ)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 4 — Nombres complexes
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c4">
+    <div class="lesson-header" onclick="mathToggleLesson('body4',this)">
+      <div class="lesson-num">C4</div>
+      <div class="lesson-meta">
+        <h3>Nombres complexes</h3>
+        <div class="tags"><span class="tag">Forme algébrique</span><span class="tag">Module</span><span class="tag">Argument</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body4">
+
+      <div class="sub-section">
+        <div class="sub-title">4.1 — Définition et forme algébrique</div>
+        <div class="content-block">Un <strong>nombre complexe</strong> est un nombre de la forme <em>z = a + bi</em>, où a et b sont des réels et i est l'imaginaire pur tel que <strong>i² = −1</strong>.<br>
+        • a = Re(z) : partie réelle &nbsp;|&nbsp; b = Im(z) : partie imaginaire<br>
+        • Le <strong>conjugué</strong> de z = a + bi est z̄ = a − bi</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Propriété fondamentale</div>
+          <div class="f-content">i² = −1 &nbsp;|&nbsp; i³ = −i &nbsp;|&nbsp; i⁴ = 1<br>
+          z × z̄ = a² + b² = |z|²</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">4.2 — Module et argument — Forme trigonométrique</div>
+        <div class="content-block">Le <strong>module</strong> de z = a + bi est |z| = √(a² + b²).<br>
+        L'<strong>argument</strong> est l'angle θ tel que cos θ = a/|z| et sin θ = b/|z|.<br>
+        <strong>Forme trigonométrique :</strong> z = |z|(cos θ + i sin θ)</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Formule d'Euler</div>
+          <div class="f-content">z = |z| · e^(iθ) = r·e^(iθ)<br>
+          Multiplication : |z₁z₂| = |z₁|·|z₂| &nbsp;et&nbsp; arg(z₁z₂) = arg(z₁) + arg(z₂)</div>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 4</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la valeur de i² ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> −1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> i</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 0</div>
+          </div>
+          <div class="quiz-feedback">Par définition de l'unité imaginaire, i² = −1. C'est la base de tout le chapitre sur les complexes.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Le module de z = 3 + 4i est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 7</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 5</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 25</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 1</div>
+          </div>
+          <div class="quiz-feedback">|z| = √(3² + 4²) = √(9 + 16) = √25 = 5. C'est un triplet pythagoricien classique (3, 4, 5).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Le conjugué de z = 2 − 3i est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> −2 + 3i</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 2 + 3i</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −2 − 3i</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3 − 2i</div>
+          </div>
+          <div class="quiz-feedback">Le conjugué s'obtient en changeant le signe de la partie imaginaire : z̄ = 2 + 3i.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 4</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 4.1</div>
+          <div class="exo-q">Écrire z = (1 + i)² sous forme algébrique, puis calculer son module et son argument.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Forme algébrique :</strong> (1+i)² = 1 + 2i + i² = 1 + 2i − 1 = <strong>2i</strong><br>
+            <strong>Module :</strong> |2i| = 2<br>
+            <strong>Argument :</strong> arg(2i) = π/2 (le nombre est pur imaginaire positif)<br>
+            <strong>Forme trigonométrique :</strong> z = 2(cos(π/2) + i·sin(π/2))
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 5 — Statistiques
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c5">
+    <div class="lesson-header" onclick="mathToggleLesson('body5',this)">
+      <div class="lesson-num">C5</div>
+      <div class="lesson-meta">
+        <h3>Statistiques</h3>
+        <div class="tags"><span class="tag">Moyenne</span><span class="tag">Variance</span><span class="tag">Écart-type</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body5">
+
+      <div class="sub-section">
+        <div class="sub-title">5.1 — Indicateurs de position</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Moyenne et médiane</div>
+          <div class="f-content">Moyenne : x̄ = (Σ nᵢ·xᵢ) / N &nbsp;(N = effectif total)<br>
+          Médiane : valeur qui partage la série en deux moitiés égales<br>
+          Mode : valeur de plus grande fréquence</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">5.2 — Indicateurs de dispersion</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Variance et écart-type</div>
+          <div class="f-content">Variance : V = (Σ nᵢ·(xᵢ − x̄)²) / N = (Σ nᵢ·xᵢ²)/N − x̄²<br>
+          Écart-type : σ = √V<br>
+          Étendue : max − min</div>
+        </div>
+        <div class="def-box"><div class="def-title">💡 Interprétation</div>Un écart-type faible indique que les valeurs sont concentrées autour de la moyenne. Un écart-type élevé indique une forte dispersion.</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">5.3 — Statistiques à deux variables (Corrélation linéaire)</div>
+        <div class="content-block">On étudie la relation entre deux caractères X et Y. La <strong>droite de régression</strong> de y en x est : y = ax + b.<br>
+        • Coefficient de corrélation linéaire r ∈ [−1 ; 1]<br>
+        • |r| proche de 1 : forte corrélation linéaire</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 5</div>
+        <div class="quiz-item">
+          <div class="q-text">1. La série : 2, 4, 4, 6, 8, 10. Quelle est la moyenne ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 5</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 5,67</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 4</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 6</div>
+          </div>
+          <div class="quiz-feedback">x̄ = (2+4+4+6+8+10)/6 = 34/6 ≈ 5,67.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. L'écart-type est la racine carrée de :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> La moyenne</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> La variance</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> La médiane</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> L'étendue</div>
+          </div>
+          <div class="quiz-feedback">σ = √V où V est la variance. L'écart-type est l'indicateur de dispersion le plus utilisé.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Un coefficient de corrélation r = −0,95 indique :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Pas de corrélation</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Forte corrélation positive</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Forte corrélation négative</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Corrélation nulle</div>
+          </div>
+          <div class="quiz-feedback">|r| = 0,95 proche de 1 → forte corrélation. Le signe négatif indique que quand X augmente, Y diminue.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 5</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 5.1</div>
+          <div class="exo-q">Calculer la variance et l'écart-type de la série : 3, 5, 7, 9, 11.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Moyenne :</strong> x̄ = (3+5+7+9+11)/5 = 35/5 = 7<br>
+            <strong>Variance :</strong> V = [(3−7)²+(5−7)²+(7−7)²+(9−7)²+(11−7)²]/5<br>
+            = [16+4+0+4+16]/5 = 40/5 = <strong>8</strong><br>
+            <strong>Écart-type :</strong> σ = √8 = 2√2 ≈ <strong>2,83</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 6 — Généralités sur les fonctions
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c6">
+    <div class="lesson-header" onclick="mathToggleLesson('body6',this)">
+      <div class="lesson-num">C6</div>
+      <div class="lesson-meta">
+        <h3>Généralités sur les fonctions</h3>
+        <div class="tags"><span class="tag">Parité</span><span class="tag">Monotonie</span><span class="tag">Composition</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body6">
+
+      <div class="sub-section">
+        <div class="sub-title">6.1 — Rappels et vocabulaire</div>
+        <div class="content-block">Une <strong>fonction</strong> f associe à tout x du domaine de définition Df une unique valeur f(x). On note f : Df → ℝ.<br>
+        • <strong>Image</strong> de a par f : f(a)<br>
+        • <strong>Antécédent</strong> de b par f : tout x tel que f(x) = b</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">6.2 — Parité, imparité, périodicité</div>
+        <div class="content-block">
+        • f est <strong>paire</strong> si ∀x ∈ Df : f(−x) = f(x) → symétrie par rapport à l'axe des ordonnées.<br>
+        • f est <strong>impaire</strong> si ∀x ∈ Df : f(−x) = −f(x) → symétrie par rapport à l'origine.<br>
+        • f est <strong>périodique</strong> de période T si f(x + T) = f(x) pour tout x.</div>
+        <div class="example-box">
+          <div class="ex-title">📊 Exemples</div>
+          <p>• cos est paire (cos(−x) = cos x) | sin est impaire (sin(−x) = −sin x)<br>
+          • sin et cos sont périodiques de période 2π</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">6.3 — Monotonie et extrema</div>
+        <div class="content-block">f est <strong>croissante</strong> sur I si : x₁ &lt; x₂ ⟹ f(x₁) &lt; f(x₂).<br>
+        f est <strong>décroissante</strong> sur I si : x₁ &lt; x₂ ⟹ f(x₁) &gt; f(x₂).<br>
+        Un <strong>extremum</strong> (maximum ou minimum) est un point où f change de monotonie.</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 6</div>
+        <div class="quiz-item">
+          <div class="q-text">1. f(x) = x² est une fonction :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> Paire</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Impaire</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Ni paire ni impaire</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Périodique</div>
+          </div>
+          <div class="quiz-feedback">f(−x) = (−x)² = x² = f(x) → f est paire. Sa courbe est symétrique par rapport à l'axe des ordonnées.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelle est la période de la fonction sinus ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> π</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 2π</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> π/2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 4π</div>
+          </div>
+          <div class="quiz-feedback">sin(x + 2π) = sin(x). La période de sin et cos est 2π.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. f est croissante sur [a, b] signifie que pour x₁ &lt; x₂ on a :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> f(x₁) &lt; f(x₂)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> f(x₁) &gt; f(x₂)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> f(x₁) = f(x₂)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> f(x₁) ≤ f(x₂)</div>
+          </div>
+          <div class="quiz-feedback">Croissante signifie que la fonction "monte" : plus x est grand, plus f(x) est grand (strictement).</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 6</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 6.1</div>
+          <div class="exo-q">Déterminer si f(x) = x³ − x est paire, impaire ou ni l'une ni l'autre. Préciser la symétrie de sa courbe.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            f(−x) = (−x)³ − (−x) = −x³ + x = −(x³ − x) = −f(x)<br>
+            <strong>Conclusion :</strong> f est <strong>impaire</strong>.<br>
+            Sa courbe est symétrique par rapport à l'<strong>origine O</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 7 — Limites et Continuité
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c7">
+    <div class="lesson-header" onclick="mathToggleLesson('body7',this)">
+      <div class="lesson-num">C7</div>
+      <div class="lesson-meta">
+        <h3>Limites et continuité</h3>
+        <div class="tags"><span class="tag">Limites</span><span class="tag">Asymptotes</span><span class="tag">TVI</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body7">
+
+      <div class="sub-section">
+        <div class="sub-title">7.1 — Notion de limite</div>
+        <div class="content-block">La limite de f(x) quand x → a est ℓ si f(x) se rapproche de ℓ lorsque x se rapproche de a.<br>
+        On note : lim(x→a) f(x) = ℓ<br>
+        • <strong>Formes indéterminées :</strong> ∞ − ∞, 0 × ∞, ∞/∞, 0/0 → nécessitent une levée d'indétermination.</div>
+        <div class="example-box">
+          <div class="ex-title">🔢 Exemples de limites usuelles</div>
+          <p>• lim(x→+∞) 1/x = 0<br>
+          • lim(x→0⁺) ln(x) = −∞<br>
+          • lim(x→+∞) eˣ = +∞<br>
+          • lim(x→+∞) xⁿ = +∞ (n ∈ ℕ*)</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">7.2 — Asymptotes</div>
+        <div class="content-block">
+        • <strong>Asymptote horizontale</strong> y = ℓ : si lim(x→±∞) f(x) = ℓ<br>
+        • <strong>Asymptote verticale</strong> x = a : si lim(x→a) f(x) = ±∞<br>
+        • <strong>Asymptote oblique</strong> y = ax + b : si lim(x→±∞) [f(x) − ax − b] = 0</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">7.3 — Théorème des valeurs intermédiaires (TVI)</div>
+        <div class="def-box"><div class="def-title">📌 Théorème (TVI)</div>Si f est continue sur [a ; b] et si f(a) et f(b) sont de signes contraires, alors il existe au moins un c ∈ ]a ; b[ tel que f(c) = 0.</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 7</div>
+        <div class="quiz-item">
+          <div class="q-text">1. lim(x→+∞) (3x² + 2x − 1) / x² est égal à :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> +∞</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 3</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 2</div>
+          </div>
+          <div class="quiz-feedback">On divise par x² : (3 + 2/x − 1/x²) → 3 quand x → +∞. C'est la méthode du terme dominant.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. f(x) = 1/(x−2). Quelle est l'asymptote verticale ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> y = 2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> x = 2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> x = 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> y = 0</div>
+          </div>
+          <div class="quiz-feedback">f(x) → ±∞ quand x → 2, donc x = 2 est l'asymptote verticale. y = 0 est l'asymptote horizontale.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Le TVI garantit l'existence d'une solution à condition que f soit :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Dérivable</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Continue</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Croissante</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Paire</div>
+          </div>
+          <div class="quiz-feedback">Le TVI requiert uniquement la continuité sur [a,b]. Une fonction dérivable est continue, mais la réciproque est fausse.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 7</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 7.1</div>
+          <div class="exo-q">Montrer que l'équation x³ − 3x + 1 = 0 admet au moins une solution dans [1 ; 2].</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            Soit f(x) = x³ − 3x + 1. f est continue sur ℝ (polynôme).<br>
+            <strong>f(1)</strong> = 1 − 3 + 1 = <strong>−1 &lt; 0</strong><br>
+            <strong>f(2)</strong> = 8 − 6 + 1 = <strong>3 &gt; 0</strong><br>
+            f(1) et f(2) sont de signes opposés → par le TVI, il existe c ∈ ]1 ; 2[ tel que f(c) = 0. ✓
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 8 — Dérivation
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c8">
+    <div class="lesson-header" onclick="mathToggleLesson('body8',this)">
+      <div class="lesson-num">C8</div>
+      <div class="lesson-meta">
+        <h3>Dérivation</h3>
+        <div class="tags"><span class="tag">Dérivée</span><span class="tag">Tangente</span><span class="tag">Règles</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body8">
+
+      <div class="sub-section">
+        <div class="sub-title">8.1 — Définition et interprétation</div>
+        <div class="content-block">La <strong>dérivée</strong> de f en a est : f'(a) = lim(h→0) [f(a+h) − f(a)] / h<br>
+        Interprétation : f'(a) est le <strong>coefficient directeur de la tangente</strong> à la courbe en A(a, f(a)).<br>
+        Équation de la tangente en A : <strong>y = f'(a)(x − a) + f(a)</strong></div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">8.2 — Tableau des dérivées usuelles</div>
+        <table class="styled-table">
+          <thead><tr><th>f(x)</th><th>f'(x)</th></tr></thead>
+          <tbody>
+            <tr><td>k (constante)</td><td>0</td></tr>
+            <tr><td>xⁿ</td><td>n·xⁿ⁻¹</td></tr>
+            <tr><td>√x</td><td>1 / (2√x)</td></tr>
+            <tr><td>1/x</td><td>−1/x²</td></tr>
+            <tr><td>eˣ</td><td>eˣ</td></tr>
+            <tr><td>ln(x)</td><td>1/x</td></tr>
+            <tr><td>sin(x)</td><td>cos(x)</td></tr>
+            <tr><td>cos(x)</td><td>−sin(x)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">8.3 — Règles de calcul</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Règles opératoires</div>
+          <div class="f-content">(u + v)' = u' + v'<br>
+          (k·u)' = k·u'<br>
+          (u·v)' = u'·v + u·v'<br>
+          (u/v)' = (u'·v − u·v') / v²<br>
+          (f∘g)'(x) = g'(x) · f'(g(x)) &nbsp;[dérivée composée]</div>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 8</div>
+        <div class="quiz-item">
+          <div class="q-text">1. La dérivée de f(x) = x⁴ est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> x³</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 4x³</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 4x⁴</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> x⁵/5</div>
+          </div>
+          <div class="quiz-feedback">Règle : (xⁿ)' = n·xⁿ⁻¹. Donc (x⁴)' = 4·x³.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. La dérivée de f(x) = eˣ est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> xeˣ⁻¹</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> eˣ</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> x·eˣ</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> ln(x)</div>
+          </div>
+          <div class="quiz-feedback">La fonction exponentielle est sa propre dérivée : (eˣ)' = eˣ. C'est une propriété remarquable.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. L'équation de la tangente à f(x) = x² en x = 1 est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> y = x</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> y = 2x − 1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> y = 2x + 1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> y = x + 1</div>
+          </div>
+          <div class="quiz-feedback">f'(x) = 2x → f'(1) = 2. Point A(1, 1). Tangente : y = 2(x−1) + 1 = 2x − 1.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 8</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 8.1</div>
+          <div class="exo-q">Calculer la dérivée de f(x) = (2x + 1)·eˣ, puis écrire l'équation de la tangente au point d'abscisse x = 0.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            Produit u·v avec u = 2x+1 et v = eˣ<br>
+            u' = 2, v' = eˣ<br>
+            <strong>f'(x)</strong> = 2·eˣ + (2x+1)·eˣ = eˣ(2x + 3)<br>
+            En x=0 : f(0) = 1·1 = 1 et f'(0) = 1·3 = 3<br>
+            <strong>Tangente :</strong> y = 3(x − 0) + 1 = <strong>3x + 1</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 9 — Étude des fonctions
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c9">
+    <div class="lesson-header" onclick="mathToggleLesson('body9',this)">
+      <div class="lesson-num">C9</div>
+      <div class="lesson-meta">
+        <h3>Étude des fonctions</h3>
+        <div class="tags"><span class="tag">Tableau de variation</span><span class="tag">Extrema</span><span class="tag">Graphe</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body9">
+
+      <div class="sub-section">
+        <div class="sub-title">9.1 — Méthode d'étude complète</div>
+        <div class="content-block">Pour étudier une fonction, on suit ces étapes :<br>
+        <strong>1.</strong> Déterminer le domaine de définition Df<br>
+        <strong>2.</strong> Étudier la parité ou la périodicité<br>
+        <strong>3.</strong> Calculer les limites aux bornes<br>
+        <strong>4.</strong> Calculer f'(x) et étudier son signe<br>
+        <strong>5.</strong> Dresser le tableau de variation<br>
+        <strong>6.</strong> Identifier les extrema et tracer la courbe</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.2 — Lien dérivée–monotonie</div>
+        <div class="def-box"><div class="def-title">📌 Règle fondamentale</div>
+        • Si f'(x) &gt; 0 sur I : f est <strong>strictement croissante</strong> sur I<br>
+        • Si f'(x) &lt; 0 sur I : f est <strong>strictement décroissante</strong> sur I<br>
+        • Si f'(a) = 0 avec changement de signe : f admet un <strong>extremum local</strong> en a</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">9.3 — Convexité et point d'inflexion</div>
+        <div class="content-block">• f est <strong>convexe</strong> sur I si f''(x) ≥ 0 sur I (courbe au-dessus de ses tangentes)<br>
+        • f est <strong>concave</strong> sur I si f''(x) ≤ 0 sur I<br>
+        • Un <strong>point d'inflexion</strong> est un point où f'' change de signe.</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 9</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Si f'(x) &lt; 0 sur ]a ; b[, alors f est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Croissante</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Décroissante</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Constante</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Nulle</div>
+          </div>
+          <div class="quiz-feedback">Une dérivée négative signifie que la fonction "descend" : elle est strictement décroissante.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. f(x) = −x² + 4x. En quel point f admet-elle son maximum ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> x = 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> x = 4</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> x = 2</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> x = −2</div>
+          </div>
+          <div class="quiz-feedback">f'(x) = −2x + 4 = 0 → x = 2. Comme f'' = −2 &lt; 0, c'est bien un maximum. f(2) = −4 + 8 = 4.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Un point d'inflexion se trouve là où :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> f'(x) = 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> f''(x) change de signe</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> f(x) = 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> f est continue</div>
+          </div>
+          <div class="quiz-feedback">Un point d'inflexion est un point de la courbe où la convexité change, c'est-à-dire où f'' change de signe.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 9</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 9.1</div>
+          <div class="exo-q">Étudier les variations de f(x) = x³ − 3x + 2 sur ℝ et dresser son tableau de variation.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            f'(x) = 3x² − 3 = 3(x² − 1) = 3(x−1)(x+1)<br>
+            f'(x) = 0 pour x = −1 et x = 1<br>
+            • f'(x) &gt; 0 sur ]−∞ ; −1[ et ]1 ; +∞[ → <strong>croissante</strong><br>
+            • f'(x) &lt; 0 sur ]−1 ; 1[ → <strong>décroissante</strong><br>
+            <strong>Extrema :</strong> f(−1) = −1 + 3 + 2 = <strong>4 (maximum local)</strong><br>
+            f(1) = 1 − 3 + 2 = <strong>0 (minimum local)</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 10 — Suites numériques
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c10">
+    <div class="lesson-header" onclick="mathToggleLesson('body10',this)">
+      <div class="lesson-num">C10</div>
+      <div class="lesson-meta">
+        <h3>Suites numériques</h3>
+        <div class="tags"><span class="tag">Arithmétique</span><span class="tag">Géométrique</span><span class="tag">Convergence</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body10">
+
+      <div class="sub-section">
+        <div class="sub-title">10.1 — Suites arithmétiques</div>
+        <div class="content-block">Une suite (uₙ) est <strong>arithmétique</strong> de raison r si : uₙ₊₁ = uₙ + r.</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Formules — Suite arithmétique</div>
+          <div class="f-content">Terme général : uₙ = u₀ + n·r<br>
+          Somme des n+1 premiers termes : Sₙ = (n+1)·(u₀ + uₙ) / 2</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">10.2 — Suites géométriques</div>
+        <div class="content-block">Une suite (uₙ) est <strong>géométrique</strong> de raison q si : uₙ₊₁ = q·uₙ (avec q ≠ 0 et u₀ ≠ 0).</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Formules — Suite géométrique</div>
+          <div class="f-content">Terme général : uₙ = u₀ · qⁿ<br>
+          Somme : Sₙ = u₀·(1 − qⁿ⁺¹) / (1 − q) &nbsp;si q ≠ 1</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">10.3 — Convergence et limites</div>
+        <div class="content-block">
+        • Suite arithmétique : diverge vers ±∞ si r ≠ 0<br>
+        • Suite géométrique : converge vers 0 si |q| &lt; 1 ; diverge si |q| &gt; 1<br>
+        • Une suite croissante et majorée est convergente (théorème de la limite monotone)</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 10</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Suite arithmétique de raison 3 avec u₀ = 2. Quelle est u₅ ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 13</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 17</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 15</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 20</div>
+          </div>
+          <div class="quiz-feedback">uₙ = u₀ + n·r → u₅ = 2 + 5×3 = 2 + 15 = 17.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Une suite géométrique de raison q = 1/2 est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Divergente</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Convergente vers 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Croissante</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Constante</div>
+          </div>
+          <div class="quiz-feedback">|q| = 1/2 &lt; 1 → la suite converge vers 0. uₙ = u₀ × (1/2)ⁿ → 0.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. La somme 1 + 2 + 3 + ... + 100 est égale à :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 1000</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> 5000</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> 5050</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 10000</div>
+          </div>
+          <div class="quiz-feedback">Suite arith. r=1, u₁=1, u₁₀₀=100. S = 100×(1+100)/2 = 100×101/2 = 5050.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 10</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 10.1</div>
+          <div class="exo-q">Un capital de 1000 € est placé à 5% d'intérêts composés. Exprimer le capital Cₙ après n années, puis calculer C₁₀.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            Chaque année on multiplie par 1,05 → suite géométrique de raison q = 1,05.<br>
+            <strong>Cₙ = 1000 × (1,05)ⁿ</strong><br>
+            <strong>C₁₀</strong> = 1000 × (1,05)¹⁰ ≈ 1000 × 1,6289 ≈ <strong>1628,89 €</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 11 — Géométrie dans l'espace
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c11">
+    <div class="lesson-header" onclick="mathToggleLesson('body11',this)">
+      <div class="lesson-num">C11</div>
+      <div class="lesson-meta">
+        <h3>Géométrie dans l'espace</h3>
+        <div class="tags"><span class="tag">Plans</span><span class="tag">Droites</span><span class="tag">Vecteurs 3D</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body11">
+
+      <div class="sub-section">
+        <div class="sub-title">11.1 — Repère de l'espace</div>
+        <div class="content-block">Dans l'espace, un point M est repéré par ses coordonnées (x ; y ; z) dans un repère orthonormé (O ; i⃗, j⃗, k⃗).<br>
+        <strong>Distance</strong> entre A(x₁,y₁,z₁) et B(x₂,y₂,z₂) :<br>
+        AB = √[(x₂−x₁)² + (y₂−y₁)² + (z₂−z₁)²]</div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">11.2 — Vecteurs et produit scalaire dans l'espace</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Produit scalaire 3D</div>
+          <div class="f-content">u⃗·v⃗ = x₁x₂ + y₁y₂ + z₁z₂<br>
+          u⃗·v⃗ = |u⃗|·|v⃗|·cos(θ)<br>
+          u⃗ ⊥ v⃗ ↔ u⃗·v⃗ = 0</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">11.3 — Plans et droites dans l'espace</div>
+        <div class="content-block">
+        • <strong>Équation d'un plan :</strong> ax + by + cz + d = 0 où (a, b, c) est un vecteur normal au plan.<br>
+        • <strong>Droite paramétrée :</strong> { x = x₀ + at ; y = y₀ + bt ; z = z₀ + ct } (t ∈ ℝ)<br>
+        • Deux plans sont <strong>parallèles</strong> si leurs vecteurs normaux sont colinéaires.<br>
+        • Deux plans sont <strong>perpendiculaires</strong> si leurs vecteurs normaux sont orthogonaux.</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 11</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Distance entre A(1,0,0) et B(4,3,0) :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 5</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> √18 ≈ 4,24</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 7</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3</div>
+          </div>
+          <div class="quiz-feedback">AB = √[(4−1)² + (3−0)² + 0²] = √[9 + 9] = √18 = 3√2 ≈ 4,24.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. u⃗(1,2,3) et v⃗(−3,0,1). Leur produit scalaire est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> 6</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> −6</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> 3</div>
+          </div>
+          <div class="quiz-feedback">u⃗·v⃗ = 1×(−3) + 2×0 + 3×1 = −3 + 0 + 3 = 0 → les vecteurs sont perpendiculaires !</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. L'équation d'un plan de vecteur normal n⃗(2,−1,3) passant par O est :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> 2x − y + 3z = 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> x + y + z = 0</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> 2x + y − 3z = 1</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> −x + 2y + z = 0</div>
+          </div>
+          <div class="quiz-feedback">Un plan de normale (a,b,c) passant par l'origine a pour équation ax + by + cz = 0.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 11</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 11.1</div>
+          <div class="exo-q">Déterminer une équation du plan passant par A(1,2,3), B(0,1,1) et C(2,0,1).</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            AB⃗ = (−1,−1,−2) et AC⃗ = (1,−2,−2)<br>
+            <strong>Vecteur normal</strong> n⃗ = AB⃗ × AC⃗ :<br>
+            n⃗ = ((-1)(−2)−(−2)(−2) ; (−2)(1)−(−1)(−2) ; (−1)(−2)−(−1)(1))<br>
+            = (2−4 ; −2−2 ; 2+1) = <strong>(−2, −4, 3)</strong><br>
+            Équation : −2(x−1) − 4(y−2) + 3(z−3) = 0<br>
+            → <strong>−2x − 4y + 3z + 1 = 0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHAPITRE 12 — Transformation du plan
+  ════════════════════════════════════════════════════ -->
+  <div class="lesson-card" id="c12">
+    <div class="lesson-header" onclick="mathToggleLesson('body12',this)">
+      <div class="lesson-num">C12</div>
+      <div class="lesson-meta">
+        <h3>Transformation du plan</h3>
+        <div class="tags"><span class="tag">Translation</span><span class="tag">Rotation</span><span class="tag">Homothétie</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body12">
+
+      <div class="sub-section">
+        <div class="sub-title">12.1 — Isométries du plan</div>
+        <div class="content-block">Une <strong>isométrie</strong> est une transformation qui conserve les distances. Les isométries du plan sont :<br>
+        • La <strong>translation</strong> de vecteur u⃗<br>
+        • La <strong>rotation</strong> de centre O et d'angle α<br>
+        • La <strong>réflexion</strong> (symétrie axiale) par rapport à une droite d</div>
+        <div class="formula-box">
+          <div class="f-title">📌 Translation de vecteur u⃗(a,b)</div>
+          <div class="f-content">M(x,y) → M'(x+a, y+b)</div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">12.2 — Rotation</div>
+        <div class="content-block">La <strong>rotation</strong> de centre O et d'angle θ transforme M(x,y) en M'(x',y') avec :<br>
+        x' = x·cos θ − y·sin θ<br>
+        y' = x·sin θ + y·cos θ</div>
+        <div class="example-box">
+          <div class="ex-title">🔄 Exemple — Rotation de 90° autour de O</div>
+          <p>M(3, 1) → M'(−1, 3)<br>
+          x' = 3·cos90° − 1·sin90° = 0 − 1 = −1<br>
+          y' = 3·sin90° + 1·cos90° = 3 + 0 = 3</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <div class="sub-title">12.3 — Homothétie</div>
+        <div class="content-block">L'<strong>homothétie</strong> de centre O et de rapport k transforme M en M' tel que OM'⃗ = k·OM⃗.<br>
+        • Si k &gt; 0 : M' du même côté que M par rapport à O<br>
+        • Si k &lt; 0 : M' du côté opposé<br>
+        • |k| = 1 : isométrie (symétrie centrale si k = −1)</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — Chapitre 12</div>
+        <div class="quiz-item">
+          <div class="q-text">1. La translation de vecteur u⃗(3,−2) envoie A(1,4) sur :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">A</span> A'(4, 2)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> A'(−2, 6)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> A'(3, −2)</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> A'(1, 4)</div>
+          </div>
+          <div class="quiz-feedback">A'(1+3 ; 4+(−2)) = A'(4 ; 2).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Une isométrie est une transformation qui conserve :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Les angles seulement</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">B</span> Les distances</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">C</span> Les orientations</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Les aires seulement</div>
+          </div>
+          <div class="quiz-feedback">Par définition, une isométrie conserve les distances. Elle conserve aussi les angles et les aires en conséquence.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. L'homothétie de centre O et de rapport k = −1 est équivalente à :</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">A</span> Une translation</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">B</span> Une réflexion axiale</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'correct')"><span class="opt-letter">C</span> Une symétrie centrale par rapport à O</div>
+            <div class="quiz-opt" onclick="mathCheckQuiz(this,'wrong')"><span class="opt-letter">D</span> Une rotation de 90°</div>
+          </div>
+          <div class="quiz-feedback">Quand k = −1, OM'⃗ = −OM⃗, ce qui signifie que O est le milieu de [MM'] → symétrie centrale de centre O.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — Chapitre 12</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.1</div>
+          <div class="exo-q">Trouver l'image du triangle A(2,0), B(4,0), C(3,2) par la rotation de centre O d'angle 90°. Quelles sont les coordonnées des images A', B', C' ?</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            Pour une rotation de 90° : (x,y) → (−y, x)<br>
+            <strong>A(2,0)</strong> → A'(0, 2)<br>
+            <strong>B(4,0)</strong> → B'(0, 4)<br>
+            <strong>C(3,2)</strong> → C'(−2, 3)<br>
+            Le triangle image A'B'C' est congruent au triangle ABC (même longueurs de côtés).
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.2</div>
+          <div class="exo-q">Déterminer l'image de A(3, 1) par l'homothétie de centre O(0,0) et de rapport k = 2, puis par celle de rapport k = −1/2.</div>
+          <button class="show-answer-btn" onclick="mathToggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>k = 2 :</strong> A'(2×3 ; 2×1) = <strong>A'(6 ; 2)</strong><br>
+            <strong>k = −1/2 :</strong> A''(−1/2×3 ; −1/2×1) = <strong>A''(−3/2 ; −1/2)</strong><br>
+            Pour k = −1/2, le point est dans le sens opposé de OA et deux fois plus proche de O.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:40px 0 60px;color:var(--text3);font-size:.83rem">
+    📐 Mathématiques · Programme Annuel · Classe de Terminale · 2025–2026<br>
+    <span style="color:var(--accent)">📚 STUDYBOARD</span> · NDJANPA Alex
+  </div>
+
+</div><!-- /container -->

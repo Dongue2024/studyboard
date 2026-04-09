@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ══ STUDYBOARD — Premium Guard ══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
+  authDomain: "studyboard-ffc3c.firebaseapp.com",
+  projectId: "studyboard-ffc3c",
+  storageBucket: "studyboard-ffc3c.firebasestorage.app",
+  messagingSenderId: "539310334923",
+  appId: "1:539310334923:web:0db4eef8b49cd93d440c4e"
+};
+
+const PREMIUM_EMAILS = [
+  "ndjanpaalex@gmail.com",
+  "sergebelibi05@icloud.com",
+];
+
+// Cacher le contenu pendant la vérification
+document.body.style.visibility = 'hidden';
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = '../login.html';
+    return;
+  }
+  const plan = PREMIUM_EMAILS.includes(user.email.toLowerCase()) ? 'premium' : 'free';
+  if (plan !== 'premium') {
+    window.location.href = '../index.html';
+    return;
+  }
+  // ✅ Premium confirmé — afficher le contenu
+  document.body.style.visibility = 'visible';
+});
+</script>
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Informatique — Sécurité & Réseaux · StudyBoard</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #00b4d8;
+    --accent2: #0077b6;
+    --accent3: #43e97b;
+    --text: #e8eaf6;
+    --text2: #9fa8da;
+    --text3: #616a9e;
+    --gold: #ffd700;
+    --card-radius: 16px;
+    --shadow: 0 4px 32px rgba(0,180,216,0.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+  .site-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+  .site-header .logo{font-size:1.3rem;font-weight:800;color:var(--accent);letter-spacing:-1px}
+  .site-header .breadcrumb{color:var(--text3);font-size:.85rem}
+  .site-header .breadcrumb span{color:var(--accent)}
+  .badge-premium{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto}
+
+  .hero{background:linear-gradient(135deg,#1a1d27 0%,#0a1220 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,180,216,.18) 0%,transparent 70%);pointer-events:none}
+  .hero-icon{font-size:3.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .hero h1{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#00b4d8,#0096c7,#0077b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+  .hero p{color:var(--text2);font-size:1rem;max-width:600px;margin:0 auto 20px}
+  .hero-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+  .stat{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 24px;text-align:center}
+  .stat .num{font-size:1.6rem;font-weight:800;color:var(--accent)}
+  .stat .lbl{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+
+  .container{max-width:1100px;margin:0 auto;padding:0 16px}
+
+  .chapter-banner{background:linear-gradient(90deg,rgba(0,180,216,.13),rgba(0,180,216,.02));border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:32px 0 16px;display:flex;align-items:center;gap:12px}
+  .chapter-banner .ch-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:.8rem;padding:4px 12px;border-radius:20px}
+  .chapter-banner .ch-title{font-size:1.1rem;font-weight:800;color:var(--text)}
+
+  .lesson-nav{display:flex;flex-wrap:wrap;gap:8px;padding:24px 0 8px;justify-content:center}
+  .pill{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:7px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap}
+  .pill:hover,.pill.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+
+  .section-title{font-size:1.5rem;font-weight:800;color:var(--text);margin:36px 0 20px;padding-left:16px;border-left:4px solid var(--accent)}
+
+  .lesson-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);margin-bottom:20px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s}
+  .lesson-card:hover{box-shadow:0 8px 40px rgba(0,180,216,.22)}
+  .lesson-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
+  .lesson-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:.85rem;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lesson-meta{flex:1}
+  .lesson-meta h3{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:4px}
+  .lesson-meta .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:.7rem;padding:2px 8px;border-radius:10px}
+  .toggle-icon{color:var(--text3);font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+  .lesson-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+  .lesson-body.open{display:block}
+
+  .sub-section{margin-top:20px}
+  .sub-title{font-size:.95rem;font-weight:700;color:#00b4d8;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .sub-title::before{content:'';display:block;width:3px;height:16px;background:#00b4d8;border-radius:2px}
+  .content-block{color:var(--text2);font-size:.9rem;line-height:1.75;margin-bottom:12px}
+  .content-block strong{color:var(--text)}
+
+  .def-box{background:var(--surface2);border-left:4px solid var(--accent3);border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0;font-size:.88rem;color:var(--text2)}
+  .def-box .def-title{color:var(--accent3);font-weight:700;margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+
+  .example-box{background:rgba(67,233,123,.07);border:1px solid rgba(67,233,123,.2);border-radius:12px;padding:16px;margin:12px 0}
+  .example-box .ex-title{color:var(--accent3);font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase}
+  .example-box p{color:var(--text2);font-size:.88rem;line-height:1.7}
+
+  .formula-box{background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.25);border-radius:12px;padding:16px;margin:12px 0}
+  .formula-box .f-title{color:var(--accent);font-weight:700;font-size:.82rem;margin-bottom:10px;text-transform:uppercase}
+  .formula{font-size:1rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace;letter-spacing:.3px}
+
+  .styled-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+  .styled-table th{background:var(--surface2);color:var(--accent);padding:10px 14px;text-align:left;border-bottom:2px solid var(--border)}
+  .styled-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)}
+  .styled-table tr:hover td{background:var(--surface2)}
+
+  .code-block{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#79c0ff;overflow-x:auto;margin:12px 0}
+
+  .quiz-section{margin-top:28px}
+  .quiz-title{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .quiz-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .quiz-item .q-text{color:var(--text);font-size:.9rem;font-weight:600;margin-bottom:12px}
+  .quiz-options{display:flex;flex-direction:column;gap:8px}
+  .quiz-opt{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text2);font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+  .quiz-opt:hover{border-color:var(--accent);color:var(--text)}
+  .quiz-opt.correct{background:rgba(67,233,123,.15);border-color:var(--accent3);color:var(--accent3)}
+  .quiz-opt.wrong{background:rgba(255,101,132,.12);border-color:#ff6584;color:#ff6584}
+  .quiz-opt .opt-letter{background:var(--surface2);border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+  .quiz-feedback{margin-top:10px;font-size:.83rem;padding:8px 12px;border-radius:8px;display:none}
+  .quiz-feedback.show{display:block}
+  .quiz-feedback.correct{background:rgba(67,233,123,.1);color:var(--accent3);border:1px solid rgba(67,233,123,.25)}
+  .quiz-feedback.wrong{background:rgba(255,101,132,.1);color:#ff6584;border:1px solid rgba(255,101,132,.25)}
+
+  .exo-section{margin-top:28px}
+  .exo-title{font-size:1rem;font-weight:800;color:#00b4d8;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .exo-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+  .exo-item .exo-num{color:var(--accent);font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .exo-item .exo-q{color:var(--text);font-size:.88rem;margin-bottom:10px;line-height:1.6}
+  .show-answer-btn{background:var(--surface);border:1px solid var(--border);color:var(--accent);padding:7px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s}
+  .show-answer-btn:hover{background:var(--accent);color:#fff}
+  .answer-block{display:none;margin-top:12px;background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.18);border-radius:8px;padding:12px;color:var(--text2);font-size:.85rem;line-height:1.7}
+  .answer-block.show{display:block}
+  .answer-block strong{color:var(--accent3)}
+
+  .progress-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .progress-label{font-size:.8rem;color:var(--text3);white-space:nowrap}
+  .progress-bar{flex:1;min-width:120px;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .4s}
+  .progress-pct{font-size:.8rem;color:var(--accent);font-weight:700;white-space:nowrap}
+
+  .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:.85rem;text-decoration:none;padding:8px 16px;border:1px solid var(--border);border-radius:8px;margin:16px 0;transition:all .2s}
+  .back-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+  @media(max-width:600px){
+    .hero h1{font-size:1.4rem}
+    .lesson-header{padding:14px 16px;gap:10px}
+    .lesson-body{padding:0 14px 16px}
+    .hero-stats{gap:12px}
+    .stat{padding:8px 16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="logo">📚 STUDYBOARD</span>
+  <span class="breadcrumb">Accueil › <span>Informatique</span></span>
+  <span class="badge-premium">👑 PREMIUM</span>
+</header>
+<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px;">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:.85rem;text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:8px;" onmouseover="this.style.color='#00b4d8';this.style.borderColor='#00b4d8'" onmouseout="this.style.color='';this.style.borderColor=''">← Retour à l'accueil</a>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label">💻 INFO — Progression</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<div class="hero">
+  <div class="hero-icon">💻</div>
+  <h1>Informatique — Sécurité & Réseaux</h1>
+  <p>Programme Annuel · M. GWETH · Classe de Première · 2025–2026<br>3 U.A. · 12 UE · cours détaillés · quiz interactifs · exercices corrigés</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">12</div><div class="lbl">Chapitres (UE)</div></div>
+    <div class="stat"><div class="num">36</div><div class="lbl">Quiz</div></div>
+    <div class="stat"><div class="num">24</div><div class="lbl">Exercices</div></div>
+  </div>
+</div>
+
+<div class="container">
+  <a href="#" class="back-btn">← Retour à l'accueil</a>
+
+  <div class="lesson-nav">
+    <a class="pill active" href="#ue1">UE1</a>
+    <a class="pill" href="#ue2">UE2</a>
+    <a class="pill" href="#ue3">UE3</a>
+    <a class="pill" href="#ue4">UE4</a>
+    <a class="pill" href="#ue5">UE5</a>
+    <a class="pill" href="#ue6">UE6</a>
+    <a class="pill" href="#ue7">UE7</a>
+    <a class="pill" href="#ue8">UE8</a>
+    <a class="pill" href="#ue9">UE9</a>
+    <a class="pill" href="#ue10">UE10</a>
+    <a class="pill" href="#ue11">UE11</a>
+    <a class="pill" href="#ue12">UE12</a>
+  </div>
+
+  <!-- ═══ U.A.1 BANNER ═══ -->
+  <div class="chapter-banner">
+    <span class="ch-num">U.A.1</span>
+    <span class="ch-title">🔒 Concept et pratique de la sécurité informatique</span>
+  </div>
+
+  <div class="section-title">📖 U.A.1 — Sécurité Informatique (UE1–UE4)</div>
+
+  <!-- ═══ UE 1 ═══ -->
+  <div class="lesson-card" id="ue1">
+    <div class="lesson-header" onclick="toggleLesson('body1',this)">
+      <div class="lesson-num">UE1</div>
+      <div class="lesson-meta">
+        <h3>Concept et pratique de la sécurité informatique</h3>
+        <div class="tags"><span class="tag">Sécurité</span><span class="tag">Menaces</span><span class="tag">Virus</span><span class="tag">Pare-feu</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body1">
+      <div class="sub-section">
+        <div class="sub-title">1.1 — Définition et enjeux de la sécurité informatique</div>
+        <div class="content-block">La sécurité informatique désigne l'ensemble des moyens techniques, organisationnels et humains mis en place pour protéger les systèmes d'information contre les accès non autorisés, les altérations et les destructions. Elle repose sur trois piliers fondamentaux :<br>
+        • <strong>Confidentialité</strong> : seules les personnes autorisées accèdent à l'information<br>
+        • <strong>Intégrité</strong> : les données ne sont pas modifiées de façon non autorisée<br>
+        • <strong>Disponibilité</strong> : le système est accessible quand l'utilisateur en a besoin</div>
+        <div class="def-box"><div class="def-title">💡 Définition</div>La <strong>sécurité informatique</strong> est l'ensemble des pratiques et technologies visant à protéger les systèmes, réseaux et données contre les attaques, les dommages ou les accès non autorisés.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">1.2 — Les principales menaces</div>
+        <table class="styled-table">
+          <thead><tr><th>Menace</th><th>Description</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Virus</strong></td><td>Programme qui se réplique et infecte d'autres fichiers</td><td>ILOVEYOU, Melissa</td></tr>
+            <tr><td><strong>Cheval de Troie</strong></td><td>Logiciel malveillant déguisé en programme légitime</td><td>Back Orifice</td></tr>
+            <tr><td><strong>Ransomware</strong></td><td>Chiffre les données et demande une rançon</td><td>WannaCry, Locky</td></tr>
+            <tr><td><strong>Phishing</strong></td><td>Usurpation d'identité pour voler des informations</td><td>Faux e-mail bancaire</td></tr>
+            <tr><td><strong>Spyware</strong></td><td>Espionne l'activité de l'utilisateur</td><td>Keyloggers</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">1.3 — Moyens de protection</div>
+        <div class="content-block">• <strong>Antivirus</strong> : détecte et supprime les logiciels malveillants<br>
+        • <strong>Pare-feu (Firewall)</strong> : filtre les connexions entrantes et sortantes<br>
+        • <strong>Mises à jour</strong> : corrigent les failles de sécurité connues<br>
+        • <strong>Sauvegarde (backup)</strong> : copie de sécurité des données importantes<br>
+        • <strong>Sensibilisation</strong> : formation des utilisateurs aux bonnes pratiques</div>
+        <div class="example-box">
+          <div class="ex-title">💡 Exemple concret</div>
+          <p>En 2017, le ransomware WannaCry a chiffré les fichiers de plus de 200 000 ordinateurs dans 150 pays, causant des milliards de dollars de dégâts. Les machines utilisant des systèmes non mis à jour étaient vulnérables, montrant l'importance des mises à jour régulières.</p>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE1</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quels sont les trois piliers fondamentaux de la sécurité informatique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Vitesse, puissance, stockage</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Confidentialité, intégrité, disponibilité</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Antivirus, pare-feu, mot de passe</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Réseau, serveur, client</div>
+          </div>
+          <div class="quiz-feedback">Les trois piliers (CIA) sont : Confidentialité (seules les personnes autorisées accèdent aux données), Intégrité (les données ne sont pas altérées) et Disponibilité (le système est accessible quand nécessaire).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Qu'est-ce qu'un ransomware ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Un logiciel qui accélère l'ordinateur</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Un programme qui espionne l'utilisateur</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Un logiciel qui chiffre les données et demande une rançon</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Un virus qui se réplique dans les fichiers</div>
+          </div>
+          <div class="quiz-feedback">Un ransomware (rançongiciel) chiffre les fichiers de la victime et réclame le paiement d'une rançon (souvent en cryptomonnaie) pour fournir la clé de déchiffrement. WannaCry est l'exemple le plus célèbre.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel outil filtre les connexions réseau entrantes et sortantes ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> L'antivirus</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Le spyware</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Le pare-feu (Firewall)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Le keylogger</div>
+          </div>
+          <div class="quiz-feedback">Le pare-feu (firewall) analyse et filtre le trafic réseau selon des règles prédéfinies. Il bloque les connexions non autorisées et protège le réseau interne des attaques extérieures.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE1</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.1</div>
+          <div class="exo-q">Un employé reçoit un email lui demandant de cliquer sur un lien pour confirmer ses identifiants bancaires. Identifiez le type d'attaque et proposez 3 mesures de protection.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Type d'attaque :</strong> Phishing (hameçonnage) — usurpation d'identité par email pour voler des identifiants.<br><br>
+            <strong>Mesures de protection :</strong><br>
+            <strong>1.</strong> Ne jamais cliquer sur des liens suspects dans les emails<br>
+            <strong>2.</strong> Vérifier l'adresse email de l'expéditeur (domaine officiel ?)<br>
+            <strong>3.</strong> Utiliser une authentification à deux facteurs (2FA) sur les comptes bancaires<br>
+            <strong>Bonus :</strong> Signaler l'email au service informatique et former les employés à reconnaître ces tentatives.
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 1.2</div>
+          <div class="exo-q">Classifiez les actions suivantes selon le pilier de sécurité qu'elles protègent (Confidentialité / Intégrité / Disponibilité) : (a) Chiffrement des données, (b) Signature numérique, (c) Sauvegarde régulière, (d) Contrôle d'accès par mot de passe.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>(a) Chiffrement des données</strong> → <strong>Confidentialité</strong> : seuls ceux possédant la clé peuvent lire les données.<br>
+            <strong>(b) Signature numérique</strong> → <strong>Intégrité</strong> : garantit que le document n'a pas été modifié depuis sa signature.<br>
+            <strong>(c) Sauvegarde régulière</strong> → <strong>Disponibilité</strong> : permet de restaurer les données en cas de panne ou d'attaque.<br>
+            <strong>(d) Contrôle d'accès par mot de passe</strong> → <strong>Confidentialité</strong> : limite l'accès aux personnes autorisées.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ UE 2 ═══ -->
+  <div class="lesson-card" id="ue2">
+    <div class="lesson-header" onclick="toggleLesson('body2',this)">
+      <div class="lesson-num">UE2</div>
+      <div class="lesson-meta">
+        <h3>La protection des données</h3>
+        <div class="tags"><span class="tag">Données</span><span class="tag">Chiffrement</span><span class="tag">RGPD</span><span class="tag">Backup</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body2">
+      <div class="sub-section">
+        <div class="sub-title">2.1 — Les techniques de protection des données</div>
+        <div class="content-block">La protection des données englobe toutes les techniques permettant de sécuriser les informations stockées ou transmises :<br>
+        • <strong>Chiffrement (cryptage)</strong> : transforme les données en un format illisible sans la clé<br>
+        • <strong>Hachage</strong> : génère une empreinte numérique unique et irréversible (SHA-256, MD5)<br>
+        • <strong>Sauvegarde (3-2-1)</strong> : 3 copies, sur 2 supports différents, dont 1 hors site<br>
+        • <strong>Contrôle d'accès</strong> : droits attribués selon le rôle (lecture, écriture, exécution)</div>
+        <div class="def-box"><div class="def-title">💡 Règle 3-2-1</div>Pour une sauvegarde efficace : conserver <strong>3 copies</strong> des données, sur <strong>2 types de supports différents</strong> (ex : disque dur + cloud), dont <strong>1 copie hors site</strong> (autre bâtiment ou cloud distant).</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">2.2 — Le chiffrement symétrique et asymétrique</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Principe</th><th>Avantage</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Symétrique</strong></td><td>Une seule clé pour chiffrer et déchiffrer</td><td>Rapide, efficace pour les grands volumes</td><td>AES-256</td></tr>
+            <tr><td><strong>Asymétrique</strong></td><td>Clé publique (chiffrement) + clé privée (déchiffrement)</td><td>Sécurisé, pas de partage de clé secrète</td><td>RSA, ECC</td></tr>
+            <tr><td><strong>Hybride</strong></td><td>Asymétrique pour échanger la clé, symétrique pour les données</td><td>Sécurisé ET rapide</td><td>HTTPS/TLS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">2.3 — Le RGPD et la protection légale des données</div>
+        <div class="content-block">Le <strong>RGPD</strong> (Règlement Général sur la Protection des Données) est entré en vigueur en mai 2018 dans l'UE. Il impose aux organisations de :<br>
+        • Obtenir le <strong>consentement explicite</strong> des utilisateurs<br>
+        • Permettre le <strong>droit à l'effacement</strong> ("droit à l'oubli")<br>
+        • Notifier les failles de sécurité sous <strong>72 heures</strong><br>
+        • Désigner un <strong>DPO</strong> (Délégué à la Protection des Données) si nécessaire</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE2</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Dans le chiffrement asymétrique, quelle clé est utilisée pour chiffrer un message ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> La clé privée du destinataire</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> La clé publique du destinataire</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> La clé privée de l'expéditeur</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Une clé partagée unique</div>
+          </div>
+          <div class="quiz-feedback">Dans le chiffrement asymétrique, on utilise la clé PUBLIQUE du destinataire pour chiffrer. Seul le destinataire peut déchiffrer avec sa clé PRIVÉE qu'il garde secrète. C'est le principe de RSA et des certificats SSL.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Que signifie la règle de sauvegarde 3-2-1 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 3 antivirus, 2 pare-feux, 1 mot de passe fort</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 3 copies, 2 supports différents, 1 copie hors site</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 3 sauvegardes/jour, 2 fois/semaine, 1 fois/mois</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 3 utilisateurs max, 2 accès simultanés, 1 admin</div>
+          </div>
+          <div class="quiz-feedback">La règle 3-2-1 est la norme de sauvegarde professionnelle : 3 copies des données, stockées sur 2 types de supports différents (ex: HDD + cloud), avec 1 copie conservée hors du site principal pour résister aux sinistres.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Dans quel délai le RGPD impose-t-il de notifier une faille de sécurité ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 24 heures</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 72 heures</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 7 jours</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 30 jours</div>
+          </div>
+          <div class="quiz-feedback">Le RGPD impose de notifier la CNIL (autorité de protection des données) dans un délai de 72 heures après la découverte d'une violation de données personnelles. Cette notification doit décrire la nature de la faille et les mesures prises.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE2</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 2.1</div>
+          <div class="exo-q">Une entreprise stocke les données de 10 000 clients (nom, email, numéro de carte bancaire). Proposez une stratégie complète de protection de ces données en appliquant les principes vus en cours.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Stratégie de protection :</strong><br><br>
+            <strong>1. Chiffrement :</strong> Stocker les numéros de carte chiffrés (AES-256). Ne jamais stocker les CVV.<br>
+            <strong>2. Contrôle d'accès :</strong> Seuls les employés autorisés accèdent aux données clients (principe du moindre privilège).<br>
+            <strong>3. Sauvegarde 3-2-1 :</strong> 3 copies, sur HDD + cloud + site distant, mises à jour quotidiennement.<br>
+            <strong>4. Conformité RGPD :</strong> Obtenir le consentement, permettre le droit à l'effacement, désigner un DPO.<br>
+            <strong>5. Audit et logs :</strong> Enregistrer tous les accès aux données sensibles.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ UE 3 ═══ -->
+  <div class="lesson-card" id="ue3">
+    <div class="lesson-header" onclick="toggleLesson('body3',this)">
+      <div class="lesson-num">UE3</div>
+      <div class="lesson-meta">
+        <h3>La protection de l'espace de travail</h3>
+        <div class="tags"><span class="tag">Espace travail</span><span class="tag">Session</span><span class="tag">Antivirus</span><span class="tag">Mise à jour</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body3">
+      <div class="sub-section">
+        <div class="sub-title">3.1 — Sécurisation du poste de travail</div>
+        <div class="content-block">L'espace de travail informatique regroupe l'ordinateur, les périphériques et les données de l'utilisateur. Sa protection comprend :<br>
+        • <strong>Verrouillage automatique</strong> : l'écran se verrouille après inactivité (timeout)<br>
+        • <strong>Compte utilisateur limité</strong> : travailler sans droits administrateur au quotidien<br>
+        • <strong>Antivirus actif et à jour</strong> : protection en temps réel contre les menaces<br>
+        • <strong>Mises à jour système</strong> : patcher les failles de sécurité régulièrement<br>
+        • <strong>Chiffrement du disque</strong> : BitLocker (Windows), FileVault (macOS)</div>
+        <div class="def-box"><div class="def-title">💡 Principe du moindre privilège</div>Un utilisateur ne doit disposer que des droits <strong>strictement nécessaires</strong> à l'accomplissement de ses tâches. Travailler en compte administrateur au quotidien est une pratique dangereuse.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">3.2 — Bonnes pratiques de l'utilisateur</div>
+        <div class="content-block">• <strong>Ne pas laisser son poste déverrouillé</strong> en son absence (Windows + L)<br>
+        • <strong>Ne pas connecter de clés USB inconnues</strong> (risque de malware)<br>
+        • <strong>Ne pas télécharger de logiciels non officiels</strong> (sources non vérifiées)<br>
+        • <strong>Utiliser un VPN</strong> sur les réseaux Wi-Fi publics<br>
+        • <strong>Vider la corbeille et les fichiers temporaires</strong> régulièrement</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">3.3 — Les mises à jour de sécurité</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Rôle</th><th>Fréquence recommandée</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Patch de sécurité</strong></td><td>Corrige une faille critique découverte</td><td>Dès que disponible (immédiat)</td></tr>
+            <tr><td><strong>Mise à jour système</strong></td><td>Améliore l'OS et corrige les bugs</td><td>Mensuelle (Patch Tuesday pour Windows)</td></tr>
+            <tr><td><strong>Mise à jour antivirus</strong></td><td>Ajoute les nouvelles signatures de virus</td><td>Quotidienne (automatique)</td></tr>
+            <tr><td><strong>Mise à jour applicative</strong></td><td>Corrige les failles des logiciels installés</td><td>Dès que disponible</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE3</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel raccourci clavier permet de verrouiller rapidement une session Windows ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Ctrl + Alt + Suppr</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Windows + L</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Alt + F4</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Ctrl + Echap</div>
+          </div>
+          <div class="quiz-feedback">Le raccourci Windows + L verrouille immédiatement la session Windows, affichant l'écran de connexion. C'est le réflexe à adopter chaque fois qu'on quitte son poste, même brièvement.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Pourquoi est-il déconseillé de travailler en compte administrateur au quotidien ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> L'ordinateur devient plus lent</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Un malware aurait automatiquement les droits admin pour s'installer</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Windows interdit cette pratique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Les mises à jour ne fonctionnent plus</div>
+          </div>
+          <div class="quiz-feedback">Si un malware s'exécute sous un compte administrateur, il hérite de tous ses droits et peut s'installer, modifier le système et se propager librement. Avec un compte limité, ses actions sont restreintes par le principe du moindre privilège.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. À quelle fréquence les bases de signatures de l'antivirus doivent-elles être mises à jour ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Une fois par mois</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Une fois par semaine</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Quotidiennement (automatique)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Une fois par an lors du renouvellement de licence</div>
+          </div>
+          <div class="quiz-feedback">Les bases de signatures antivirus doivent être mises à jour quotidiennement, voire plusieurs fois par jour. Des milliers de nouveaux malwares apparaissent chaque jour, donc un antivirus non mis à jour récemment est rapidement obsolète.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE3</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 3.1</div>
+          <div class="exo-q">Vous êtes technicien informatique dans une entreprise. Un employé vous signale que son ordinateur est lent et affiche des publicités intempestives. Décrivez la procédure de diagnostic et de nettoyage de son poste de travail.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Procédure de diagnostic et nettoyage :</strong><br><br>
+            <strong>1. Isoler le poste :</strong> Déconnecter du réseau pour éviter la propagation.<br>
+            <strong>2. Scanner avec antivirus :</strong> Lancer un scan complet en mode sans échec avec l'antivirus à jour.<br>
+            <strong>3. Scanner avec anti-malware :</strong> Utiliser Malwarebytes pour détecter les adwares/spywares non détectés par l'antivirus.<br>
+            <strong>4. Vérifier les extensions navigateur :</strong> Supprimer toute extension suspecte installée récemment.<br>
+            <strong>5. Nettoyer les programmes :</strong> Désinstaller les logiciels inconnus dans "Ajout/Suppression de programmes".<br>
+            <strong>6. Mettre à jour le système :</strong> Appliquer tous les correctifs en attente.<br>
+            <strong>7. Sensibiliser l'employé :</strong> Expliquer les bonnes pratiques pour éviter la récidive.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ UE 4 ═══ -->
+  <div class="lesson-card" id="ue4">
+    <div class="lesson-header" onclick="toggleLesson('body4',this)">
+      <div class="lesson-num">UE4</div>
+      <div class="lesson-meta">
+        <h3>Protection d'un fichier par mot de passe</h3>
+        <div class="tags"><span class="tag">Mot de passe</span><span class="tag">Chiffrement</span><span class="tag">PDF</span><span class="tag">Word</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body4">
+      <div class="sub-section">
+        <div class="sub-title">4.1 — Créer un mot de passe fort</div>
+        <div class="content-block">Un mot de passe fort respecte les critères suivants :<br>
+        • <strong>Longueur</strong> : au moins 12 caractères (16+ recommandé)<br>
+        • <strong>Complexité</strong> : majuscules + minuscules + chiffres + symboles (!@#$)<br>
+        • <strong>Unicité</strong> : un mot de passe différent par compte/fichier<br>
+        • <strong>Imprévisibilité</strong> : pas de mots du dictionnaire, pas de dates personnelles</div>
+        <div class="formula-box">
+          <div class="f-title">🔑 Entropie d'un mot de passe</div>
+          <div class="formula">Entropie (bits) = log₂(N^L)</div>
+          <div style="color:var(--text2);font-size:.85rem;margin-top:8px">N = taille de l'alphabet utilisé, L = longueur du mot de passe<br>
+          Exemple : 12 caractères avec 95 symboles possibles → log₂(95¹²) ≈ 79 bits (très sûr)</div>
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">4.2 — Protection d'un fichier Word / PDF</div>
+        <div class="content-block">
+        <strong>Microsoft Word :</strong> Fichier → Informations → Protéger le document → Chiffrer avec un mot de passe<br>
+        <strong>PDF (Adobe Acrobat) :</strong> Outils → Protéger → Chiffrer → Chiffrer avec un mot de passe<br>
+        <strong>Archive ZIP :</strong> WinRAR ou 7-Zip → Définir un mot de passe avec chiffrement AES-256<br><br>
+        <strong>⚠️ Important :</strong> Si le mot de passe est perdu, le fichier est irrécupérable. Il faut utiliser un gestionnaire de mots de passe (Bitwarden, KeePass).
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">4.3 — Gestionnaires de mots de passe</div>
+        <table class="styled-table">
+          <thead><tr><th>Outil</th><th>Type</th><th>Avantage principal</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bitwarden</strong></td><td>Cloud / Open source</td><td>Gratuit, multi-appareils, audité</td></tr>
+            <tr><td><strong>KeePass</strong></td><td>Local</td><td>100% hors-ligne, aucune donnée cloud</td></tr>
+            <tr><td><strong>1Password</strong></td><td>Cloud commercial</td><td>Interface très intuitive, équipes</td></tr>
+            <tr><td><strong>Dashlane</strong></td><td>Cloud commercial</td><td>Surveillance du dark web incluse</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE4</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Parmi ces mots de passe, lequel est le plus sûr ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> password123</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Jean1995!</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> MonMotDePasse</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">D</span> X#7mK!qP2@nL9w</div>
+          </div>
+          <div class="quiz-feedback">X#7mK!qP2@nL9w est le plus sûr : 14 caractères, mélange de majuscules, minuscules, chiffres et symboles spéciaux, sans mot du dictionnaire ni information personnelle. Les autres contiennent des mots courants ou des données personnelles facilement devinables.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Dans Word, où se trouve l'option pour chiffrer un document avec un mot de passe ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Accueil → Police → Chiffrer</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Fichier → Informations → Protéger le document → Chiffrer avec un mot de passe</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Révision → Protéger → Mot de passe</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Affichage → Sécurité → Chiffrement</div>
+          </div>
+          <div class="quiz-feedback">Dans Microsoft Word, le chiffrement se trouve dans Fichier → Informations → Protéger le document → Chiffrer avec un mot de passe. Cette option utilise le chiffrement AES-128 ou AES-256 selon la version de Word.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Que se passe-t-il si l'on perd le mot de passe d'un fichier chiffré ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> On peut le récupérer via son adresse email</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Microsoft peut le réinitialiser à distance</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Le fichier est définitivement inaccessible</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Le fichier se déchiffre automatiquement après 24h</div>
+          </div>
+          <div class="quiz-feedback">Un fichier correctement chiffré est inaccessible sans la clé / le mot de passe. Il n'existe pas de "mot de passe maître" ou de récupération. C'est pourquoi l'utilisation d'un gestionnaire de mots de passe (KeePass, Bitwarden) est indispensable.</div>
+        </div>
+      </div>
+
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE4</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 4.1</div>
+          <div class="exo-q">Évaluez la force des mots de passe suivants et justifiez : (a) "azerty", (b) "C@meroun2025!", (c) "mP#9kL!2xQ@5nY". Pour chacun, estimez si un attaquant pourrait le deviner facilement.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>(a) "azerty"</strong> → <strong>Très faible</strong> : 6 caractères, séquence de clavier, figure dans tous les dictionnaires d'attaque. Cassé en quelques secondes.<br><br>
+            <strong>(b) "C@meroun2025!"</strong> → <strong>Moyen</strong> : 13 caractères avec symboles et chiffres, mais contient un mot géographique et une date récente. Vulnérable aux attaques par dictionnaire ciblées.<br><br>
+            <strong>(c) "mP#9kL!2xQ@5nY"</strong> → <strong>Très fort</strong> : 14 caractères entièrement aléatoires, aucun mot reconnaissable, mélange de tous les types de caractères. Résiste aux attaques par force brute pendant des milliards d'années.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ U.A.2 BANNER ═══ -->
+  <div class="chapter-banner" style="background:linear-gradient(90deg,rgba(114,9,183,.13),rgba(114,9,183,.02));border-left-color:#7209b7">
+    <span class="ch-num" style="background:linear-gradient(135deg,#7209b7,#560bad)">U.A.2</span>
+    <span class="ch-title">🛒 Détermination d'un état de besoin en matériels et logiciel</span>
+  </div>
+
+  <div class="section-title">📖 U.A.2 — Besoins Matériels & Logiciels (UE5–UE6)</div>
+
+  <!-- ═══ UE 5 ═══ -->
+  <div class="lesson-card" id="ue5">
+    <div class="lesson-header" onclick="toggleLesson('body5',this)">
+      <div class="lesson-num">UE5</div>
+      <div class="lesson-meta">
+        <h3>Détermination d'un état de besoin — Choix du matériel requis selon le cas</h3>
+        <div class="tags"><span class="tag">Matériel</span><span class="tag">Cahier des charges</span><span class="tag">Processeur</span><span class="tag">RAM</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body5">
+      <div class="sub-section">
+        <div class="sub-title">5.1 — L'état de besoin en matériel</div>
+        <div class="content-block">Avant d'acquérir du matériel informatique, il faut effectuer une analyse des besoins :<br>
+        • <strong>Identifier l'usage</strong> : bureautique, graphisme, gaming, serveur…<br>
+        • <strong>Définir le budget</strong> : contrainte financière de l'organisation<br>
+        • <strong>Évaluer les performances requises</strong> : charge de travail, nombre d'utilisateurs<br>
+        • <strong>Compatibilité</strong> : avec l'infrastructure existante<br>
+        • <strong>Évolutivité</strong> : possibilité d'upgrade futur (RAM, stockage)</div>
+        <div class="def-box"><div class="def-title">💡 Cahier des charges</div>Le <strong>cahier des charges</strong> est un document qui recense tous les besoins techniques et fonctionnels d'un projet informatique. Il permet de comparer objectivement les solutions disponibles sur le marché.</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">5.2 — Choix du matériel selon l'usage</div>
+        <table class="styled-table">
+          <thead><tr><th>Usage</th><th>Processeur</th><th>RAM</th><th>Stockage</th><th>GPU</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bureautique</strong></td><td>Intel i3 / Ryzen 3</td><td>8 Go</td><td>256 Go SSD</td><td>Intégré</td></tr>
+            <tr><td><strong>Graphisme/Vidéo</strong></td><td>Intel i7 / Ryzen 7</td><td>32 Go</td><td>1 To SSD</td><td>NVIDIA RTX 3060+</td></tr>
+            <tr><td><strong>Serveur web</strong></td><td>Xeon / EPYC</td><td>64 Go+</td><td>RAID SSD</td><td>Non nécessaire</td></tr>
+            <tr><td><strong>Gaming</strong></td><td>Intel i5/i7 / Ryzen 5/7</td><td>16 Go</td><td>500 Go SSD</td><td>NVIDIA RTX 4070+</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">5.3 — Les critères de sélection du matériel</div>
+        <div class="content-block">• <strong>Fréquence du processeur (GHz)</strong> : rapidité de traitement des instructions<br>
+        • <strong>Nombre de cœurs</strong> : capacité de multitâche (4, 8, 16 cœurs)<br>
+        • <strong>RAM</strong> : mémoire vive pour les opérations en cours<br>
+        • <strong>Type de stockage</strong> : SSD (rapide) vs HDD (grande capacité, économique)<br>
+        • <strong>Consommation électrique</strong> : critère important pour les entreprises (TDP)</div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE5</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle quantité de RAM est recommandée pour un poste de travail de montage vidéo professionnel ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 4 Go</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 8 Go</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 32 Go ou plus</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 16 Go suffit toujours</div>
+          </div>
+          <div class="quiz-feedback">Le montage vidéo en 4K/8K nécessite au minimum 32 Go de RAM. Les logiciels comme Premiere Pro ou DaVinci Resolve chargent de grandes quantités de données en mémoire vive pour les prévisualisations et le rendu.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Qu'est-ce qu'un cahier des charges informatique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> La facture d'achat du matériel</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Un document recensant les besoins techniques et fonctionnels d'un projet</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Le manuel d'utilisation d'un logiciel            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> La liste des employés du service informatique</div>
+          </div>
+          <div class="quiz-feedback">Le cahier des charges est le document de référence qui décrit précisément les besoins du client : performances requises, budget, contraintes techniques, délais. Il permet de sélectionner objectivement le matériel adapté.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Quel avantage principal présente un SSD par rapport à un HDD ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">A</span> Vitesse de lecture/écriture beaucoup plus rapide</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Plus grande capacité de stockage</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Moins cher au gigaoctet</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Fonctionne sans électricité</div>
+          </div>
+          <div class="quiz-feedback">Le SSD est 5 à 10 fois plus rapide qu'un HDD (500-7000 MB/s vs 50-150 MB/s), plus résistant aux chocs, mais plus cher au Go.</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE5</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 5.1</div>
+          <div class="exo-q">Une école de 50 élèves souhaite équiper une salle informatique pour des cours de bureautique. Budget : 15 000 000 FCFA. Rédigez l'état de besoin en matériel.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Configuration recommandée par poste :</strong><br>
+            • Processeur : Intel Core i3 (12ème génération)<br>
+            • RAM : 8 Go DDR4<br>
+            • Stockage : 256 Go SSD<br>
+            • Écran : 21,5 pouces Full HD<br><br>
+            <strong>Budget :</strong> 50 postes × 250 000 FCFA = 12 500 000 FCFA<br>
+            <strong>Reste :</strong> 2 500 000 FCFA pour switch, câblage, onduleurs, imprimante.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UE 6 -->
+  <div class="lesson-card" id="ue6">
+    <div class="lesson-header" onclick="toggleLesson('body6',this)">
+      <div class="lesson-num">UE6</div>
+      <div class="lesson-meta">
+        <h3>Choix du logiciel requis selon le cas</h3>
+        <div class="tags"><span class="tag">Logiciel</span><span class="tag">Licence</span><span class="tag">Open source</span><span class="tag">SaaS</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body6">
+      <div class="sub-section">
+        <div class="sub-title">6.1 — Types de logiciels selon la licence</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Code source</th><th>Coût</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Propriétaire</strong></td><td>Non</td><td>Payant</td><td>Microsoft Office, Adobe CC</td></tr>
+            <tr><td><strong>Open Source</strong></td><td>Oui</td><td>Gratuit</td><td>LibreOffice, GIMP</td></tr>
+            <tr><td><strong>Freeware</strong></td><td>Non</td><td>Gratuit</td><td>VLC, 7-Zip</td></tr>
+            <tr><td><strong>SaaS</strong></td><td>Non</td><td>Abonnement</td><td>Google Workspace, M365</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">6.2 — Critères de choix d'un logiciel</div>
+        <div class="content-block">• <strong>Compatibilité OS</strong> : Windows, macOS, Linux<br>
+        • <strong>Configuration minimale requise</strong> : RAM, processeur, espace disque<br>
+        • <strong>Facilité de prise en main</strong> : courbe d'apprentissage<br>
+        • <strong>Support technique</strong> : documentation, communauté, éditeur<br>
+        • <strong>Coût total de possession (TCO)</strong> : achat + formation + maintenance</div>
+        <div class="def-box"><div class="def-title">💡 TCO — Total Cost of Ownership</div>Le <strong>coût total de possession</strong> inclut le prix d'achat, les coûts de formation, de maintenance et de support sur toute la durée de vie du logiciel.</div>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE6</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Qu'est-ce qu'un logiciel SaaS ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Un logiciel installé sur DVD</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Un logiciel accessible via internet par abonnement, hébergé dans le cloud</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Un logiciel gratuit open source</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Un logiciel développé par l'utilisateur</div>
+          </div>
+          <div class="quiz-feedback">SaaS (Software as a Service) : logiciel hébergé dans le cloud, accessible via navigateur, facturé par abonnement. Google Workspace et Microsoft 365 sont les exemples les plus répandus.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Qu'inclut le TCO d'un logiciel ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Uniquement le prix d'achat</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Achat + formation + maintenance + support sur toute la durée de vie</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Le prix d'achat + le matériel</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Uniquement les coûts de maintenance</div>
+          </div>
+          <div class="quiz-feedback">Le TCO est une vision économique globale. Un logiciel "gratuit" open source peut coûter cher en formation et intégration. Un logiciel commercial peut être rentable si la formation est rapide et le support excellent.</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE6</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 6.1</div>
+          <div class="exo-q">Une PME de 20 employés hésite entre Microsoft 365 (300 000 FCFA/an) et LibreOffice (gratuit). Analysez les deux options en tenant compte du TCO.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Microsoft 365 :</strong> Abonnement prévisible, inclut Teams + OneDrive, formation minimale, support officiel.<br><br>
+            <strong>LibreOffice :</strong> Licence 0 FCFA, mais formation estimée à 100 000 FCFA, support communautaire seulement.<br><br>
+            <strong>Recommandation :</strong> Si les employés utilisent déjà Office, choisir M365 pour éviter la perte de productivité. Si le budget est très contraint, LibreOffice reste viable.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UA3 BANNER -->
+  <div class="chapter-banner" style="background:linear-gradient(90deg,rgba(67,233,123,.10),rgba(67,233,123,.02));border-left-color:#43e97b">
+    <span class="ch-num" style="background:linear-gradient(135deg,#43e97b,#38f9d7);color:#0a2a1a">U.A.3</span>
+    <span class="ch-title">🌐 Réseau informatique</span>
+  </div>
+  <div class="section-title">📖 U.A.3 — Réseau Informatique (UE7–UE12)</div>
+
+  <!-- UE 7 -->
+  <div class="lesson-card" id="ue7">
+    <div class="lesson-header" onclick="toggleLesson('body7',this)">
+      <div class="lesson-num">UE7</div>
+      <div class="lesson-meta">
+        <h3>Fonction et rôle des réseaux informatiques</h3>
+        <div class="tags"><span class="tag">Réseau</span><span class="tag">LAN</span><span class="tag">WAN</span><span class="tag">Internet</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body7">
+      <div class="sub-section">
+        <div class="sub-title">7.1 — Définition et utilité d'un réseau</div>
+        <div class="content-block">Un <strong>réseau informatique</strong> est un ensemble d'appareils interconnectés permettant l'échange de données et le partage de ressources :<br>
+        • <strong>Partage de ressources</strong> : imprimantes, fichiers, connexion internet<br>
+        • <strong>Communication</strong> : messagerie, visioconférence, VoIP<br>
+        • <strong>Centralisation</strong> : données sur serveur, accessibles partout<br>
+        • <strong>Sécurité</strong> : gestion centralisée des accès</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">7.2 — Types de réseaux selon leur étendue</div>
+        <table class="styled-table">
+          <thead><tr><th>Type</th><th>Étendue</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PAN</strong></td><td>Quelques mètres</td><td>Bluetooth PC ↔ smartphone</td></tr>
+            <tr><td><strong>LAN</strong></td><td>Bâtiment / campus</td><td>Réseau d'une école</td></tr>
+            <tr><td><strong>MAN</strong></td><td>Ville / agglomération</td><td>Réseau métropolitain de Yaoundé</td></tr>
+            <tr><td><strong>WAN</strong></td><td>Pays / continent</td><td>Réseau d'une multinationale</td></tr>
+            <tr><td><strong>Internet</strong></td><td>Monde entier</td><td>Le Web, email mondial</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE7</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quel type de réseau relie les ordinateurs d'une même école ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> WAN</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> LAN</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> MAN</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> PAN</div>
+          </div>
+          <div class="quiz-feedback">Un LAN (Local Area Network) est un réseau local couvrant un bâtiment ou un campus. Le WAN couvre des distances nationales ou intercontinentales.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quelles sont les deux architectures réseau principales ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> LAN et WAN</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Client/Serveur et Poste à poste (P2P)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Étoile et Bus</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> IPv4 et IPv6</div>
+          </div>
+          <div class="quiz-feedback">Les deux architectures principales sont Client/Serveur (un serveur central fournit des services aux clients) et Poste à poste / P2P (chaque machine est à la fois client et serveur). Client/Serveur est préféré pour les grandes organisations.</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE7</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 7.1</div>
+          <div class="exo-q">Donnez 3 avantages du réseau Client/Serveur par rapport au P2P pour une entreprise de 50 employés.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Sécurité centralisée :</strong> Droits d'accès gérés sur le serveur depuis un seul point.<br>
+            <strong>2. Sauvegarde simplifiée :</strong> Données centralisées → une seule politique de sauvegarde.<br>
+            <strong>3. Administration efficace :</strong> Mises à jour et configurations déployées sur tous les postes simultanément.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UE 8 -->
+  <div class="lesson-card" id="ue8">
+    <div class="lesson-header" onclick="toggleLesson('body8',this)">
+      <div class="lesson-num">UE8</div>
+      <div class="lesson-meta">
+        <h3>Topologie et architecture réseau</h3>
+        <div class="tags"><span class="tag">Topologie</span><span class="tag">Bus</span><span class="tag">Étoile</span><span class="tag">Anneau</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body8">
+      <div class="sub-section">
+        <div class="sub-title">8.1 — Les topologies réseau</div>
+        <table class="styled-table">
+          <thead><tr><th>Topologie</th><th>Description</th><th>Avantage</th><th>Inconvénient</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Bus</strong></td><td>Tous sur un câble unique</td><td>Simple, peu coûteux</td><td>Panne du câble = réseau hors service</td></tr>
+            <tr><td><strong>Étoile</strong></td><td>Chaque poste relié à un switch central</td><td>Panne isolée, facile à gérer</td><td>Dépendant du switch central</td></tr>
+            <tr><td><strong>Anneau</strong></td><td>Postes reliés en boucle fermée</td><td>Débit garanti</td><td>Panne d'un poste interrompt l'anneau</td></tr>
+            <tr><td><strong>Maillée</strong></td><td>Chaque poste relié à plusieurs autres</td><td>Très fiable</td><td>Très coûteuse, complexe</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE8</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle topologie est la plus utilisée dans les réseaux locaux modernes ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Bus</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Étoile</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Anneau</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Maillée complète</div>
+          </div>
+          <div class="quiz-feedback">La topologie en étoile domine les réseaux Ethernet modernes : pannes isolées, facile à administrer, compatible IEEE 802.3.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Combien de liaisons pour relier 6 ordinateurs en maillage complet ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 6 liaisons</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 12 liaisons</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 15 liaisons</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 30 liaisons</div>
+          </div>
+          <div class="quiz-feedback">Formule maillage complet : n×(n-1)/2 = 6×5/2 = 15 liaisons. La topologie étoile n'en nécessite que 6 (une par poste vers le switch central).</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE8</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 8.1</div>
+          <div class="exo-q">Calculez le nombre de liaisons pour 6 ordinateurs en topologie maillée complète. Comparez avec l'étoile.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Maillée :</strong> n×(n-1)/2 = 6×5/2 = <strong>15 liaisons</strong><br>
+            <strong>Étoile :</strong> 1 switch + 6 câbles = <strong>6 liaisons</strong><br><br>
+            La maillée nécessite 2,5× plus de câbles. Pour 20 postes : 190 liaisons (maillé) vs 20 (étoile).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UE 9 -->
+  <div class="lesson-card" id="ue9">
+    <div class="lesson-header" onclick="toggleLesson('body9',this)">
+      <div class="lesson-num">UE9</div>
+      <div class="lesson-meta">
+        <h3>Les équipements réseau</h3>
+        <div class="tags"><span class="tag">Switch</span><span class="tag">Routeur</span><span class="tag">Hub</span><span class="tag">Modem</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body9">
+      <div class="sub-section">
+        <div class="sub-title">9.1 — Les équipements d'interconnexion</div>
+        <table class="styled-table">
+          <thead><tr><th>Équipement</th><th>Couche OSI</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Hub</strong></td><td>Couche 1</td><td>Diffuse le signal vers tous les ports (obsolète)</td></tr>
+            <tr><td><strong>Switch</strong></td><td>Couche 2</td><td>Commute les trames selon l'adresse MAC</td></tr>
+            <tr><td><strong>Routeur</strong></td><td>Couche 3</td><td>Achemine les paquets entre réseaux (IP)</td></tr>
+            <tr><td><strong>Modem</strong></td><td>Couche 1</td><td>Modulation/démodulation (analogique ↔ numérique)</td></tr>
+            <tr><td><strong>Point d'accès Wi-Fi</strong></td><td>Couche 2</td><td>Connecte les appareils sans fil au réseau câblé</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">9.2 — Switch vs Hub</div>
+        <div class="content-block">• <strong>Hub</strong> : diffuse chaque trame vers TOUS les ports → collisions fréquentes → bande passante gaspillée.<br>
+        • <strong>Switch</strong> : mémorise les adresses MAC et envoie chaque trame uniquement au port destinataire → pas de collision → très performant.<br>
+        Le hub est <strong>obsolète</strong> depuis les années 2000.</div>
+        <div class="def-box"><div class="def-title">💡 Adresse MAC</div>Identifiant unique de 48 bits (ex: AC:DE:48:00:11:22) gravé dans la carte réseau. Le switch l'utilise pour acheminer précisément les trames.</div>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE9</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la différence principale entre un switch et un hub ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Le hub est plus rapide que le switch</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Le switch envoie les données uniquement au destinataire, le hub diffuse à tous les ports</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Le switch ne fonctionne qu'en Wi-Fi</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Le hub utilise des adresses IP</div>
+          </div>
+          <div class="quiz-feedback">Le switch est intelligent : il apprend les adresses MAC et envoie chaque trame UNIQUEMENT au port concerné. Le hub envoie tout à tous (broadcast), causant des collisions et réduisant les performances.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. À quelle couche du modèle OSI fonctionne un routeur ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Couche 1 (Physique)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Couche 2 (Liaison)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Couche 3 (Réseau)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Couche 4 (Transport)</div>
+          </div>
+          <div class="quiz-feedback">Le routeur opère à la couche 3 (Réseau) du modèle OSI. Il utilise les adresses IP pour acheminer les paquets entre réseaux différents.</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE9</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 9.1</div>
+          <div class="exo-q">Citez les équipements nécessaires pour connecter 10 ordinateurs d'un lycée à Internet via ADSL.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>1. Modem ADSL :</strong> Convertit le signal numérique pour la ligne téléphonique.<br>
+            <strong>2. Routeur :</strong> Assigne des IP privées (DHCP), route les paquets LAN ↔ Internet (NAT).<br>
+            <strong>3. Switch 12 ports :</strong> Interconnecte les 10 ordinateurs.<br>
+            <strong>4. Câbles RJ45 Cat5e/Cat6 :</strong> 10 câbles PC→switch + 1 switch→routeur + 1 routeur→modem.<br>
+            <strong>Note :</strong> Aujourd'hui modem + routeur sont souvent combinés dans une box opérateur.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UE 10 -->
+  <div class="lesson-card" id="ue10">
+    <div class="lesson-header" onclick="toggleLesson('body10',this)">
+      <div class="lesson-num">UE10</div>
+      <div class="lesson-meta">
+        <h3>Les supports de transmission</h3>
+        <div class="tags"><span class="tag">RJ45</span><span class="tag">Fibre optique</span><span class="tag">Wi-Fi</span><span class="tag">Débit</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body10">
+      <div class="sub-section">
+        <div class="sub-title">10.1 — Les supports filaires</div>
+        <table class="styled-table">
+          <thead><tr><th>Support</th><th>Débit max</th><th>Distance max</th><th>Utilisation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cat5e (RJ45)</strong></td><td>1 Gbps</td><td>100 m</td><td>LAN standard</td></tr>
+            <tr><td><strong>Cat6 (RJ45)</strong></td><td>10 Gbps</td><td>55 m (10G)</td><td>LAN haute perf.</td></tr>
+            <tr><td><strong>Câble coaxial</strong></td><td>10 Mbps</td><td>500 m</td><td>Ancien réseau bus</td></tr>
+            <tr><td><strong>Fibre monomode</strong></td><td>100 Gbps+</td><td>40-80 km</td><td>Liaisons longue distance</td></tr>
+            <tr><td><strong>Fibre multimode</strong></td><td>10 Gbps</td><td>550 m</td><td>Campus, datacenters</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">10.2 — Les supports sans fil</div>
+        <table class="styled-table">
+          <thead><tr><th>Technologie</th><th>Norme</th><th>Débit max</th><th>Portée</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Wi-Fi 4</strong></td><td>802.11n</td><td>600 Mbps</td><td>70 m intérieur</td></tr>
+            <tr><td><strong>Wi-Fi 5</strong></td><td>802.11ac</td><td>3,5 Gbps</td><td>35 m intérieur</td></tr>
+            <tr><td><strong>Wi-Fi 6</strong></td><td>802.11ax</td><td>9,6 Gbps</td><td>30 m intérieur</td></tr>
+            <tr><td><strong>Bluetooth</strong></td><td>802.15.1</td><td>2-50 Mbps</td><td>10-100 m</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE10</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelle est la distance maximale d'un câble RJ45 Cat5e/Cat6 sans répéteur ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 500 mètres</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> 50 mètres</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> 100 mètres</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 1 kilomètre</div>
+          </div>
+          <div class="quiz-feedback">La norme Ethernet impose 100 mètres maximum pour les câbles à paires torsadées. Au-delà, le signal s'affaiblit. On utilise alors des switches répéteurs ou de la fibre optique.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel support est insensible aux interférences électromagnétiques ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Câble coaxial</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Paire torsadée Cat6</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Fibre optique</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Wi-Fi</div>
+          </div>
+          <div class="quiz-feedback">La fibre optique transmet de la lumière, non des signaux électriques. Elle est donc totalement insensible aux interférences électromagnétiques.</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE10</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 10.1</div>
+          <div class="exo-q">Un lycée souhaite relier sa salle informatique au serveur du directeur à 250 mètres. Justifiez le support de transmission le plus adapté.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Analyse :</strong> 250 m > limite de 100 m du câble RJ45.<br><br>
+            <strong>Solution : Fibre optique multimode</strong> (limite 550 m, débit 10 Gbps, insensible aux intempéries).<br><br>
+            <strong>Alternative économique :</strong> 2 segments Cat6 de 100 m + 50 m avec switch répéteur intermédiaire, mais la fibre reste plus propre et pérenne.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UE 11 -->
+  <div class="lesson-card" id="ue11">
+    <div class="lesson-header" onclick="toggleLesson('body11',this)">
+      <div class="lesson-num">UE11</div>
+      <div class="lesson-meta">
+        <h3>Les adresses IP</h3>
+        <div class="tags"><span class="tag">IPv4</span><span class="tag">Masque</span><span class="tag">DHCP</span><span class="tag">Sous-réseau</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body11">
+      <div class="sub-section">
+        <div class="sub-title">11.1 — Qu'est-ce qu'une adresse IP ?</div>
+        <div class="content-block">Une <strong>adresse IPv4</strong> est composée de <strong>4 octets (32 bits)</strong> notés en décimal séparés par des points.<br>Exemple : <strong>192.168.1.10</strong> (chaque nombre entre 0 et 255)</div>
+        <div class="def-box"><div class="def-title">💡 Adresses privées (RFC 1918)</div>• 10.0.0.0/8 — Classe A privée<br>• 172.16.0.0/12 — Classe B privée<br>• <strong>192.168.0.0/16</strong> — Classe C privée (la plus répandue à la maison)</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">11.2 — Masque de sous-réseau et DHCP</div>
+        <div class="content-block">Le <strong>masque de sous-réseau</strong> détermine quelle partie de l'adresse IP identifie le réseau et quelle partie identifie l'hôte.<br>
+        Exemple : IP = 192.168.1.10, Masque = /24 → Réseau : 192.168.1.0, Hôte : .10<br><br>
+        Le <strong>DHCP</strong> attribue automatiquement des adresses IP aux appareils connectés au réseau.</div>
+        <div class="formula-box">
+          <div class="f-title">🔢 Nombre d'hôtes dans un sous-réseau</div>
+          <div class="formula">Nombre d'hôtes = 2^n − 2</div>
+          <div style="color:var(--text2);font-size:.85rem;margin-top:8px">n = bits hôtes (bits à 0 dans le masque)<br>
+          Exemple : /24 → 2^8 − 2 = 254 hôtes utilisables</div>
+        </div>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE11</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Combien d'octets compose une adresse IPv4 ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 2 octets</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 4 octets (32 bits)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 6 octets</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 16 octets</div>
+          </div>
+          <div class="quiz-feedback">Une adresse IPv4 est codée sur 32 bits = 4 octets, notés en décimal séparés par des points (ex: 192.168.1.1). IPv6 utilise 128 bits pour remédier à l'épuisement des adresses IPv4.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Avec un masque /24, combien d'hôtes peut-on adresser ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> 256</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> 254</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> 255</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> 512</div>
+          </div>
+          <div class="quiz-feedback">Avec /24, 8 bits hôtes → 2^8 = 256 adresses − 2 (réseau + broadcast) = 254 hôtes utilisables.</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE11</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 11.1</div>
+          <div class="exo-q">Pour 192.168.10.0/24 : (a) adresse réseau, (b) broadcast, (c) plage des hôtes, (d) nombre d'hôtes max.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>(a) Adresse réseau :</strong> 192.168.10.0<br>
+            <strong>(b) Broadcast :</strong> 192.168.10.255<br>
+            <strong>(c) Plage des hôtes :</strong> 192.168.10.1 à 192.168.10.254<br>
+            <strong>(d) Nombre d'hôtes :</strong> 2^8 − 2 = <strong>254 hôtes</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UE 12 -->
+  <div class="lesson-card" id="ue12">
+    <div class="lesson-header" onclick="toggleLesson('body12',this)">
+      <div class="lesson-num">UE12</div>
+      <div class="lesson-meta">
+        <h3>Les algorithmes</h3>
+        <div class="tags"><span class="tag">Algorithme</span><span class="tag">Pseudo-code</span><span class="tag">Tri</span><span class="tag">Boucle</span></div>
+      </div>
+      <div class="toggle-icon">▼</div>
+    </div>
+    <div class="lesson-body" id="body12">
+      <div class="sub-section">
+        <div class="sub-title">12.1 — Définition et caractéristiques d'un algorithme</div>
+        <div class="content-block">Un <strong>algorithme</strong> est une suite finie et ordonnée d'instructions permettant de résoudre un problème. Il doit être :<br>
+        • <strong>Fini</strong> : se termine après un nombre fini d'étapes<br>
+        • <strong>Précis</strong> : chaque instruction est sans ambiguïté<br>
+        • <strong>Efficace</strong> : produit le bon résultat en temps raisonnable<br>
+        • <strong>Général</strong> : applicable à tous les cas du même type</div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">12.2 — Structures de base</div>
+        <div class="content-block">• <strong>Séquence</strong> : instructions exécutées les unes après les autres<br>
+        • <strong>Condition</strong> (Si...Alors...Sinon) : exécution conditionnelle<br>
+        • <strong>Répétition</strong> (Boucle TantQue, Pour) : instructions répétées</div>
+        <div class="code-block">
+ALGORITHME calculer_moyenne<br>
+VARIABLES : note1, note2, note3, moyenne : Réel<br>
+DEBUT<br>
+&nbsp;&nbsp;LIRE note1, note2, note3<br>
+&nbsp;&nbsp;moyenne ← (note1 + note2 + note3) / 3<br>
+&nbsp;&nbsp;SI moyenne >= 10 ALORS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ECRIRE "Admis : ", moyenne<br>
+&nbsp;&nbsp;SINON<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ECRIRE "Ajourné : ", moyenne<br>
+&nbsp;&nbsp;FIN SI<br>
+FIN
+        </div>
+      </div>
+      <div class="sub-section">
+        <div class="sub-title">12.3 — Algorithmes de tri courants</div>
+        <table class="styled-table">
+          <thead><tr><th>Algorithme</th><th>Complexité</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Tri à bulles</strong></td><td>O(n²)</td><td>Pédagogie, petites listes</td></tr>
+            <tr><td><strong>Tri par sélection</strong></td><td>O(n²)</td><td>Simple à comprendre</td></tr>
+            <tr><td><strong>Tri rapide (Quicksort)</strong></td><td>O(n log n)</td><td>Usage général, langages modernes</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 Quiz — UE12</div>
+        <div class="quiz-item">
+          <div class="q-text">1. Quelles sont les trois structures de base d'un algorithme ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Entrée, traitement, sortie</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">B</span> Séquence, condition, répétition</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">C</span> Variables, fonctions, tableaux</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Début, corps, fin</div>
+          </div>
+          <div class="quiz-feedback">Les trois structures algorithmiques fondamentales : séquence (instructions en ordre), condition (Si...Alors...Sinon) et répétition (boucles TantQue, Pour). Tout algorithme est une combinaison de ces trois structures.</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">2. Quel algorithme de tri est le plus efficace pour les grandes listes ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Tri à bulles</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Tri par sélection</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Tri rapide (Quicksort)</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Tri par insertion</div>
+          </div>
+          <div class="quiz-feedback">Le Quicksort est en moyenne O(n log n), bien plus efficace que les tris quadratiques O(n²). Pour 1 million d'éléments : ~20M opérations (Quicksort) vs ~1 000 milliards (tri à bulles).</div>
+        </div>
+        <div class="quiz-item">
+          <div class="q-text">3. Qu'est-ce qu'un algorithme ?</div>
+          <div class="quiz-options">
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">A</span> Un langage de programmation</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">B</span> Un programme compilé prêt à l'emploi</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'correct')"><span class="opt-letter">C</span> Une suite finie et ordonnée d'instructions pour résoudre un problème</div>
+            <div class="quiz-opt" onclick="checkQuiz(this,'wrong')"><span class="opt-letter">D</span> Un tableau de données trié</div>
+          </div>
+          <div class="quiz-feedback">Un algorithme est une description abstraite et logique, indépendante de tout langage de programmation. Il peut être exprimé en pseudo-code, organigramme ou traduit en Python, C++, Java...</div>
+        </div>
+      </div>
+      <div class="exo-section">
+        <div class="exo-title">✏️ Exercices — UE12</div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.1</div>
+          <div class="exo-q">Écrivez un algorithme qui lit 5 notes, calcule la moyenne et affiche "Admis" (≥10), "Ajourné" (5≤moy&lt;10) ou "Redoublant" (&lt;5).</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <div style="font-family:'Courier New',monospace;font-size:.84rem;line-height:1.9;color:#79c0ff">
+ALGORITHME bulletin_eleve<br>
+VARIABLES : note, somme, moyenne : Réel ; i : Entier<br>
+DEBUT<br>
+&nbsp;&nbsp;somme ← 0<br>
+&nbsp;&nbsp;POUR i DE 1 À 5 FAIRE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;LIRE note<br>
+&nbsp;&nbsp;&nbsp;&nbsp;somme ← somme + note<br>
+&nbsp;&nbsp;FIN POUR<br>
+&nbsp;&nbsp;moyenne ← somme / 5<br>
+&nbsp;&nbsp;SI moyenne >= 10 ALORS ECRIRE "ADMIS"<br>
+&nbsp;&nbsp;SINON SI moyenne >= 5 ALORS ECRIRE "AJOURNÉ"<br>
+&nbsp;&nbsp;SINON ECRIRE "REDOUBLANT"<br>
+&nbsp;&nbsp;FIN SI<br>
+FIN
+            </div>
+          </div>
+        </div>
+        <div class="exo-item">
+          <div class="exo-num">Exercice 12.2</div>
+          <div class="exo-q">Appliquez le tri à bulles sur [5, 3, 8, 1, 9, 2]. Montrez chaque passage.</div>
+          <button class="show-answer-btn" onclick="toggleAnswer(this)">Voir la correction</button>
+          <div class="answer-block">
+            <strong>Initial :</strong> [5, 3, 8, 1, 9, 2]<br>
+            <strong>Passage 1 :</strong> [3, 5, 1, 8, 2, 9]<br>
+            <strong>Passage 2 :</strong> [3, 1, 5, 2, 8, 9]<br>
+            <strong>Passage 3 :</strong> [1, 3, 2, 5, 8, 9]<br>
+            <strong>Passage 4 :</strong> [1, 2, 3, 5, 8, 9]<br>
+            <strong>Résultat :</strong> [1, 2, 3, 5, 8, 9] — 5 passages max pour 6 éléments.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:40px 0 60px;color:var(--text3);font-size:.83rem">
+    💻 Informatique · Programme Annuel · M. GWETH · Classe de Première · 2025–2026<br>
+    <span style="color:var(--accent)">📚 STUDYBOARD</span> · NDJANPA Alex
+  </div>
+
+</div>
+
+<script>
+function toggleLesson(id, header) {
+  const body = document.getElementById(id);
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  updateProgress();
+}
+function checkQuiz(opt, result) {
+  const parent = opt.closest('.quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const feedback = parent.querySelector('.quiz-feedback');
+  const allOpts = parent.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.style.pointerEvents = 'none');
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  updateProgress();
+}
+function toggleAnswer(btn) {
+  const block = btn.nextElementSibling;
+  const isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+function updateProgress() {
+  const total = document.querySelectorAll('.quiz-item').length;
+  const answered = document.querySelectorAll('.quiz-item[data-answered]').length;
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const target = document.querySelector(pill.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      const id = target.querySelector('.lesson-body')?.id;
+      const header = target.querySelector('.lesson-header');
+      if (id && header) {
+        const body = document.getElementById(id);
+        if (!body.classList.contains('open')) toggleLesson(id, header);
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>

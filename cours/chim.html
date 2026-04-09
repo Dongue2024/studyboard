@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ══ STUDYBOARD — Premium Guard ══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
+  authDomain: "studyboard-ffc3c.firebaseapp.com",
+  projectId: "studyboard-ffc3c",
+  storageBucket: "studyboard-ffc3c.firebasestorage.app",
+  messagingSenderId: "539310334923",
+  appId: "1:539310334923:web:0db4eef8b49cd93d440c4e"
+};
+
+const PREMIUM_EMAILS = [
+  "ndjanpaalex@gmail.com",
+  "sergebelibi05@icloud.com",
+];
+
+// Cacher le contenu pendant la vérification
+document.body.style.visibility = 'hidden';
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = '../login.html';
+    return;
+  }
+  const plan = PREMIUM_EMAILS.includes(user.email.toLowerCase()) ? 'premium' : 'free';
+  if (plan !== 'premium') {
+    window.location.href = '../index.html';
+    return;
+  }
+  // ✅ Premium confirmé — afficher le contenu
+  document.body.style.visibility = 'visible';
+});
+</script>
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Chimie · StudyBoard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f1117;color:#e8eaf6;font-family:'DM Sans',sans-serif;min-height:100vh}
+.back-bar{background:#1a1d27;border-bottom:1px solid #2e3350;padding:10px 24px;position:sticky;top:0;z-index:100}
+.back-bar a{display:inline-flex;align-items:center;gap:8px;color:#9fa8da;font-size:.85rem;text-decoration:none;padding:7px 14px;border:1px solid #2e3350;border-radius:8px;transition:all .2s}
+.back-bar a:hover{color:#00b4d8;border-color:#00b4d8}
+#home-chim{max-width:1100px;margin:0 auto;padding:0 16px 60px}
+
+/* ── Scoped sous #home-chim pour éviter tout conflit avec Studyboard ── */
+#home-chim .ch-hero{background:linear-gradient(135deg,#1a1d27 0%,#0a1628 60%,#1a1d27 100%);padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden;border-radius:16px;margin-bottom:24px}
+#home-chim .ch-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,180,216,.18) 0%,transparent 70%);pointer-events:none}
+#home-chim .ch-hero-icon{font-size:3.5rem;margin-bottom:12px;animation:ch-float 3s ease-in-out infinite}
+@keyframes ch-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+#home-chim .ch-hero h1{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#00b4d8,#0096c7,#0077b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+#home-chim .ch-hero p{color:#9fa8da;font-size:1rem;max-width:600px;margin:0 auto 20px}
+#home-chim .ch-hero-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+#home-chim .ch-stat{background:#22263a;border:1px solid #2e3350;border-radius:12px;padding:12px 24px;text-align:center}
+#home-chim .ch-stat .num{font-size:1.6rem;font-weight:800;color:#00b4d8}
+#home-chim .ch-stat .lbl{font-size:.75rem;color:#616a9e;text-transform:uppercase;letter-spacing:.5px}
+
+#home-chim .ch-progress-wrap{background:#1a1d27;border:1px solid #2e3350;border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+#home-chim .ch-progress-label{font-size:.8rem;color:#616a9e;white-space:nowrap}
+#home-chim .ch-progress-bar{flex:1;min-width:120px;height:6px;background:#2e3350;border-radius:3px;overflow:hidden}
+#home-chim .ch-progress-fill{height:100%;background:linear-gradient(90deg,#00b4d8,#0077b6);border-radius:3px;transition:width .4s}
+#home-chim .ch-progress-pct{font-size:.8rem;color:#00b4d8;font-weight:700;white-space:nowrap}
+
+#home-chim .ch-lesson-nav{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 20px;justify-content:center}
+#home-chim .ch-pill{background:#22263a;border:1px solid #2e3350;color:#9fa8da;padding:7px 16px;border-radius:20px;font-size:.8rem;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap}
+#home-chim .ch-pill:hover,#home-chim .ch-pill.active{background:#00b4d8;border-color:#00b4d8;color:#fff;font-weight:700}
+
+#home-chim .ch-section-title{font-size:1.5rem;font-weight:800;color:#e8eaf6;margin:0 0 20px;padding-left:16px;border-left:4px solid #00b4d8}
+
+#home-chim .ch-lesson-card{background:#1a1d27;border:1px solid #2e3350;border-radius:16px;margin-bottom:20px;overflow:hidden;box-shadow:0 4px 32px rgba(0,180,216,.13);transition:box-shadow .2s}
+#home-chim .ch-lesson-card:hover{box-shadow:0 8px 40px rgba(0,180,216,.22)}
+#home-chim .ch-lesson-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
+#home-chim .ch-lesson-num{background:linear-gradient(135deg,#00b4d8,#0077b6);color:#fff;font-weight:900;font-size:.85rem;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#home-chim .ch-lesson-meta{flex:1}
+#home-chim .ch-lesson-meta h3{font-size:1.05rem;font-weight:700;color:#e8eaf6;margin-bottom:4px}
+#home-chim .ch-lesson-meta .ch-tags{display:flex;gap:6px;flex-wrap:wrap}
+#home-chim .ch-tag{background:#22263a;border:1px solid #2e3350;color:#616a9e;font-size:.7rem;padding:2px 8px;border-radius:10px}
+#home-chim .ch-toggle-icon{color:#616a9e;font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+#home-chim .ch-lesson-body{display:none;padding:0 24px 24px;border-top:1px solid #2e3350}
+#home-chim .ch-lesson-body.open{display:block}
+
+#home-chim .ch-sub-section{margin-top:20px}
+#home-chim .ch-sub-title{font-size:.95rem;font-weight:700;color:#4fc3f7;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+#home-chim .ch-sub-title::before{content:'';display:block;width:3px;height:16px;background:#4fc3f7;border-radius:2px}
+#home-chim .ch-content-block{color:#9fa8da;font-size:.9rem;line-height:1.75;margin-bottom:12px}
+#home-chim .ch-content-block strong{color:#e8eaf6}
+
+#home-chim .ch-def-box{background:#22263a;border-left:4px solid #43e97b;border-radius:0 10px 10px 0;padding:14px 18px;margin:12px 0;font-size:.88rem;color:#9fa8da}
+#home-chim .ch-def-box .ch-def-title{color:#43e97b;font-weight:700;margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+
+#home-chim .ch-example-box{background:rgba(67,233,123,.07);border:1px solid rgba(67,233,123,.2);border-radius:12px;padding:16px;margin:12px 0}
+#home-chim .ch-example-box .ch-ex-title{color:#43e97b;font-weight:700;font-size:.82rem;margin-bottom:8px;text-transform:uppercase}
+#home-chim .ch-example-box p{color:#9fa8da;font-size:.88rem;line-height:1.7}
+
+#home-chim .ch-formula-box{background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.25);border-radius:12px;padding:16px;margin:12px 0}
+#home-chim .ch-formula-box .ch-f-title{color:#00b4d8;font-weight:700;font-size:.82rem;margin-bottom:10px;text-transform:uppercase}
+#home-chim .ch-formula{font-size:1rem;font-weight:700;color:#00b4d8;font-family:'Courier New',monospace;letter-spacing:.3px;display:block;margin:6px 0}
+
+#home-chim .ch-styled-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+#home-chim .ch-styled-table th{background:#22263a;color:#00b4d8;padding:10px 14px;text-align:left;border-bottom:2px solid #2e3350}
+#home-chim .ch-styled-table td{padding:9px 14px;border-bottom:1px solid #2e3350;color:#9fa8da}
+#home-chim .ch-styled-table tr:hover td{background:#22263a}
+
+#home-chim .ch-quiz-section{margin-top:28px}
+#home-chim .ch-quiz-title{font-size:1rem;font-weight:800;color:#ffd700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+#home-chim .ch-quiz-item{background:#22263a;border:1px solid #2e3350;border-radius:12px;padding:16px;margin-bottom:14px}
+#home-chim .ch-quiz-item .ch-q-text{color:#e8eaf6;font-size:.9rem;font-weight:600;margin-bottom:12px}
+#home-chim .ch-quiz-options{display:flex;flex-direction:column;gap:8px}
+#home-chim .ch-quiz-opt{background:#0f1117;border:1px solid #2e3350;border-radius:8px;padding:10px 14px;color:#9fa8da;font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+#home-chim .ch-quiz-opt:hover{border-color:#00b4d8;color:#e8eaf6}
+#home-chim .ch-quiz-opt.correct{background:rgba(67,233,123,.15);border-color:#43e97b;color:#43e97b}
+#home-chim .ch-quiz-opt.wrong{background:rgba(255,101,132,.12);border-color:#ff6584;color:#ff6584}
+#home-chim .ch-quiz-opt .ch-opt-letter{background:#22263a;border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+#home-chim .ch-quiz-feedback{margin-top:10px;font-size:.83rem;padding:8px 12px;border-radius:8px;display:none}
+#home-chim .ch-quiz-feedback.show{display:block}
+#home-chim .ch-quiz-feedback.correct{background:rgba(67,233,123,.1);color:#43e97b;border:1px solid rgba(67,233,123,.25)}
+#home-chim .ch-quiz-feedback.wrong{background:rgba(255,101,132,.1);color:#ff6584;border:1px solid rgba(255,101,132,.25)}
+
+#home-chim .ch-exo-section{margin-top:28px}
+#home-chim .ch-exo-title{font-size:1rem;font-weight:800;color:#ff6584;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+#home-chim .ch-exo-item{background:#22263a;border:1px solid #2e3350;border-radius:12px;padding:16px;margin-bottom:14px}
+#home-chim .ch-exo-item .ch-exo-num{color:#00b4d8;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+#home-chim .ch-exo-item .ch-exo-q{color:#e8eaf6;font-size:.88rem;margin-bottom:10px;line-height:1.6}
+#home-chim .ch-show-answer-btn{background:#1a1d27;border:1px solid #2e3350;color:#00b4d8;padding:7px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s}
+#home-chim .ch-show-answer-btn:hover{background:#00b4d8;color:#fff}
+#home-chim .ch-answer-block{display:none;margin-top:12px;background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.18);border-radius:8px;padding:12px;color:#9fa8da;font-size:.85rem;line-height:1.7}
+#home-chim .ch-answer-block.show{display:block}
+#home-chim .ch-answer-block strong{color:#43e97b}
+
+#home-chim .ch-footer{text-align:center;padding:40px 0 20px;color:#616a9e;font-size:.83rem}
+
+@media(max-width:600px){
+  #home-chim .ch-hero h1{font-size:1.4rem}
+  #home-chim .ch-lesson-header{padding:14px 16px;gap:10px}
+  #home-chim .ch-lesson-body{padding:0 14px 16px}
+  #home-chim .ch-hero-stats{gap:12px}
+  #home-chim .ch-stat{padding:8px 16px}
+}
+
+</style>
+</head>
+<body>
+<div class="back-bar"><a href="../index.html">← Retour à l'accueil</a></div>
+<div id="home-chim">
+<div class="ch-hero">
+  <div class="ch-hero-icon">⚗️</div>
+  <h1>Chimie — Oxydoréduction</h1>
+  <p>Programme Annuel · M. TCHOUADJEU NUI GOUA DONALD · 2025–2026<br>5 leçons · cours détaillés · quiz interactifs · exercices corrigés</p>
+  <div class="ch-hero-stats">
+    <div class="ch-stat"><div class="num">5</div><div class="lbl">Leçons</div></div>
+    <div class="ch-stat"><div class="num">15</div><div class="lbl">Quiz</div></div>
+    <div class="ch-stat"><div class="num">10</div><div class="lbl">Exercices</div></div>
+  </div>
+</div>
+
+
+<div class="ch-progress-wrap">
+  <span class="ch-progress-label">⚗️ Chimie — Progression Quiz</span>
+  <div class="ch-progress-bar"><div class="ch-progress-fill" id="chimProgressFill" style="width:0%"></div></div>
+  <span class="ch-progress-pct" id="chimProgressPct">0%</span>
+</div>
+
+
+<div class="ch-lesson-nav">
+  <a class="ch-pill active" href="#ch-l1">Leçon 1</a>
+  <a class="ch-pill" href="#ch-l2">Leçon 2</a>
+  <a class="ch-pill" href="#ch-l3">Leçon 3</a>
+  <a class="ch-pill" href="#ch-l4">Leçon 4</a>
+  <a class="ch-pill" href="#ch-l5">Leçon 5</a>
+</div>
+
+<div class="ch-section-title">📖 Les 5 Leçons du Programme de Chimie</div>
+
+
+<div class="ch-lesson-card" id="ch-l1">
+  <div class="ch-lesson-header" onclick="chimToggleLesson('ch-body1',this)">
+    <div class="ch-lesson-num">L.1</div>
+    <div class="ch-lesson-meta">
+      <h3>La notion de couple oxydant-réducteur</h3>
+      <div class="ch-tags"><span class="ch-tag">Oxydant</span><span class="ch-tag">Réducteur</span><span class="ch-tag">Couple Ox/Red</span><span class="ch-tag">Demi-équation</span></div>
+    </div>
+    <div class="ch-toggle-icon">▼</div>
+  </div>
+  <div class="ch-lesson-body" id="ch-body1">
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">1.1 — Définitions fondamentales</div>
+      <div class="ch-content-block">
+        Une réaction d'oxydoréduction implique un <strong>transfert d'électrons</strong> entre deux espèces chimiques :<br><br>
+        • <strong>L'oxydant</strong> : espèce qui <em>capte</em> des électrons (il est réduit)<br>
+        • <strong>Le réducteur</strong> : espèce qui <em>cède</em> des électrons (il est oxydé)<br><br>
+        Un <strong>couple oxydant/réducteur (Ox/Red)</strong> regroupe une forme oxydée et sa forme réduite conjuguée, reliées par un échange d'électrons.
+      </div>
+      <div class="ch-def-box">
+        <div class="ch-def-title">💡 Définition — Couple Ox/Red</div>
+        Un couple Ox/Red est constitué d'une forme oxydée <strong>Ox</strong> et d'une forme réduite <strong>Red</strong> liées par la relation : <strong>Ox + n e⁻ ⇌ Red</strong> (demi-équation électronique).
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">1.2 — La demi-équation électronique</div>
+      <div class="ch-content-block">
+        Chaque couple Ox/Red est caractérisé par une <strong>demi-équation électronique</strong> qui exprime l'échange d'électrons. On peut aussi ajouter des ions H⁺ et des molécules H₂O pour équilibrer les charges et les atomes.
+      </div>
+      <div class="ch-formula-box">
+        <div class="ch-f-title">⚡ Forme générale de la demi-équation</div>
+        <span class="ch-formula">Ox + n e⁻ ⇌ Red</span>
+        <span class="ch-formula">Ox + n e⁻ + m H⁺ ⇌ Red + p H₂O  (si H présents)</span>
+      </div>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Exemples de couples Ox/Red</div>
+        <p>
+          • <strong>Fe³⁺ / Fe²⁺</strong> : Fe³⁺ + e⁻ ⇌ Fe²⁺<br>
+          • <strong>Cu²⁺ / Cu</strong> : Cu²⁺ + 2e⁻ ⇌ Cu<br>
+          • <strong>MnO₄⁻ / Mn²⁺</strong> : MnO₄⁻ + 8H⁺ + 5e⁻ ⇌ Mn²⁺ + 4H₂O<br>
+          • <strong>Cl₂ / Cl⁻</strong> : Cl₂ + 2e⁻ ⇌ 2Cl⁻
+        </p>
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">1.3 — Réaction d'oxydoréduction globale</div>
+      <div class="ch-content-block">
+        Pour écrire la réaction globale, on combine deux demi-équations en <strong>multipliant</strong> chacune par un coefficient pour que le nombre d'électrons échangés soit identique des deux côtés (les électrons s'éliminent).
+      </div>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Exemple : Cu²⁺ + Fe → Cu + Fe²⁺</div>
+        <p>
+          Réduction : Cu²⁺ + 2e⁻ → Cu<br>
+          Oxydation : Fe → Fe²⁺ + 2e⁻<br>
+          <strong>Réaction globale : Cu²⁺ + Fe → Cu + Fe²⁺</strong>
+        </p>
+      </div>
+    </div>
+    <div class="ch-quiz-section">
+      <div class="ch-quiz-title">🧠 Quiz — Leçon 1</div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">1. Qu'est-ce qu'un oxydant ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> Une espèce qui cède des électrons</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> Une espèce qui capte des électrons</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> Une espèce qui perd des protons</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Une espèce neutre</div>
+        </div>
+        <div class="ch-quiz-feedback">L'oxydant capte des électrons : il est réduit lors de la réaction. Le réducteur, lui, cède des électrons et est oxydé. Moyen mnémotechnique : OIL RIG (Oxidation Is Loss, Reduction Is Gain).</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">2. Quelle est la demi-équation électronique du couple Fe³⁺/Fe²⁺ ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> Fe²⁺ + e⁻ → Fe³⁺</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> Fe³⁺ + e⁻ → Fe²⁺</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> Fe³⁺ → Fe²⁺ + e⁻</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Fe³⁺ + 2e⁻ → Fe</div>
+        </div>
+        <div class="ch-quiz-feedback">La demi-équation de réduction du couple Fe³⁺/Fe²⁺ est : Fe³⁺ + 1e⁻ → Fe²⁺. Fe³⁺ est l'oxydant qui capte 1 électron pour donner Fe²⁺ (forme réduite).</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">3. Lors d'une réaction globale d'oxydoréduction, que devient le nombre d'électrons ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> Il double</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">B</span> Il est ajouté des deux côtés</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">C</span> Il s'élimine (les électrons ne figurent plus)</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Il reste inchangé</div>
+        </div>
+        <div class="ch-quiz-feedback">Lors de la combinaison des deux demi-équations, les électrons cédés par le réducteur sont exactement captés par l'oxydant : ils s'éliminent de l'équation globale.</div>
+      </div>
+    </div>
+    <div class="ch-exo-section">
+      <div class="ch-exo-title">✏️ Exercices — Leçon 1</div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 1.1</div>
+        <div class="ch-exo-q">Écrire la demi-équation électronique du couple MnO₄⁻/Mn²⁺, sachant que le milieu est acide (présence de H⁺). Équilibrer en atomes et en charges.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>Étape 1 — Équilibrer le Mn :</strong> 1 MnO₄⁻ → 1 Mn²⁺<br><br>
+          <strong>Étape 2 — Équilibrer l'O avec H₂O :</strong> MnO₄⁻ → Mn²⁺ + 4H₂O<br><br>
+          <strong>Étape 3 — Équilibrer H avec H⁺ :</strong> MnO₄⁻ + 8H⁺ → Mn²⁺ + 4H₂O<br><br>
+          <strong>Étape 4 — Équilibrer les charges avec e⁻ :</strong><br>
+          Gauche : -1 + 8 = +7 | Droite : +2 → ajouter 5e⁻ à gauche<br><br>
+          <strong>Résultat : MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</strong>
+        </div>
+      </div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 1.2</div>
+        <div class="ch-exo-q">Écrire la réaction globale entre le permanganate de potassium (KMnO₄) et le sulfate de fer II (FeSO₄) en milieu acide sulfurique. Utiliser les couples MnO₄⁻/Mn²⁺ et Fe³⁺/Fe²⁺.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>Demi-équation 1 (réduction) :</strong> MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O<br><br>
+          <strong>Demi-équation 2 (oxydation) :</strong> Fe²⁺ → Fe³⁺ + e⁻<br><br>
+          <strong>Ajustement :</strong> multiplier demi-éq. 2 par 5 pour égaliser les e⁻ :<br>
+          5 Fe²⁺ → 5 Fe³⁺ + 5e⁻<br><br>
+          <strong>Réaction globale :</strong><br>
+          MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 4H₂O + 5Fe³⁺
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ch-lesson-card" id="ch-l2">
+  <div class="ch-lesson-header" onclick="chimToggleLesson('ch-body2',this)">
+    <div class="ch-lesson-num">L.2</div>
+    <div class="ch-lesson-meta">
+      <h3>Le couple H⁺/H₂ ou H₃O⁺/H₂ — Classification électrochimique</h3>
+      <div class="ch-tags"><span class="ch-tag">H⁺/H₂</span><span class="ch-tag">Classification</span><span class="ch-tag">Électrochimie</span><span class="ch-tag">Réactivité</span></div>
+    </div>
+    <div class="ch-toggle-icon">▼</div>
+  </div>
+  <div class="ch-lesson-body" id="ch-body2">
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">2.1 — Le couple H⁺/H₂ (ou H₃O⁺/H₂)</div>
+      <div class="ch-content-block">Le couple <strong>H⁺/H₂</strong> est le couple de référence de l'électrochimie. Sa demi-équation est :</div>
+      <div class="ch-formula-box">
+        <div class="ch-f-title">⚡ Demi-équation du couple H⁺/H₂</div>
+        <span class="ch-formula">2H⁺ + 2e⁻ ⇌ H₂</span>
+        <span class="ch-formula">En milieu aqueux : 2H₃O⁺ + 2e⁻ ⇌ H₂ + 2H₂O</span>
+      </div>
+      <div class="ch-def-box">
+        <div class="ch-def-title">💡 Électrode Standard à Hydrogène (ESH)</div>
+        L'ESH est la référence universelle : on lui attribue conventionnellement un potentiel standard E° = <strong>0,00 V</strong>. Tous les autres potentiels sont mesurés par rapport à cette électrode.
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">2.2 — Classification électrochimique (série des potentiels)</div>
+      <div class="ch-content-block">La <strong>classification électrochimique</strong> classe les couples Ox/Red par ordre croissant de leur potentiel standard E°. Elle permet de prévoir si une réaction d'oxydoréduction est spontanée.</div>
+      <div class="ch-content-block"><strong>Règle :</strong> La réaction est spontanée si l'oxydant du couple de <em>potentiel le plus élevé</em> réagit avec le réducteur du couple de <em>potentiel le plus faible</em>.</div>
+      <table class="ch-styled-table">
+        <thead><tr><th>Couple Ox/Red</th><th>E° (V)</th><th>Caractère</th></tr></thead>
+        <tbody>
+          <tr><td>Li⁺/Li</td><td>−3,04</td><td>Très bon réducteur</td></tr>
+          <tr><td>Zn²⁺/Zn</td><td>−0,76</td><td>Réducteur</td></tr>
+          <tr><td>Fe²⁺/Fe</td><td>−0,44</td><td>Réducteur</td></tr>
+          <tr><td><strong>H⁺/H₂</strong></td><td><strong>0,00</strong></td><td><strong>Référence</strong></td></tr>
+          <tr><td>Cu²⁺/Cu</td><td>+0,34</td><td>Oxydant faible</td></tr>
+          <tr><td>Ag⁺/Ag</td><td>+0,80</td><td>Oxydant</td></tr>
+          <tr><td>Au³⁺/Au</td><td>+1,50</td><td>Très bon oxydant</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">2.3 — Réaction des métaux avec les acides</div>
+      <div class="ch-content-block">Un métal réagit avec un acide (qui libère H⁺) <strong>si son couple Ox/Red a un E° inférieur à celui de H⁺/H₂</strong>, c'est-à-dire si E° &lt; 0,00 V. Il se dissout en libérant du dihydrogène H₂.</div>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Exemple : Zinc dans HCl</div>
+        <p>E°(Zn²⁺/Zn) = −0,76 V &lt; 0,00 V → <strong>réaction possible</strong><br>
+        Zn + 2H⁺ → Zn²⁺ + H₂↑<br><br>
+        Mais Cu ne réagit pas : E°(Cu²⁺/Cu) = +0,34 V &gt; 0,00 V</p>
+      </div>
+    </div>
+    <div class="ch-quiz-section">
+      <div class="ch-quiz-title">🧠 Quiz — Leçon 2</div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">1. Quelle est la valeur du potentiel standard du couple H⁺/H₂ ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> +1,23 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> 0,00 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> −0,76 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> +0,34 V</div>
+        </div>
+        <div class="ch-quiz-feedback">Par convention internationale, l'électrode standard à hydrogène (ESH) a un potentiel de 0,00 V. C'est la référence absolue de l'électrochimie.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">2. Le fer réagit-il avec une solution d'acide chlorhydrique HCl ? (E°(Fe²⁺/Fe) = −0,44 V)</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">A</span> Oui, car E° &lt; 0 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">B</span> Non, car E° &lt; 0 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> Oui, car E° &gt; 0 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Cela dépend de la température</div>
+        </div>
+        <div class="ch-quiz-feedback">Oui ! E°(Fe²⁺/Fe) = −0,44 V est inférieur à E°(H⁺/H₂) = 0,00 V. Le fer est donc un meilleur réducteur que H₂ → il cède des électrons à H⁺ et se dissout en libérant H₂.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">3. Dans la classification électrochimique, les réducteurs les plus forts se trouvent où ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> En haut (E° élevé)</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> En bas (E° très négatif)</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> Au milieu de la série</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> À E° = 0 V</div>
+        </div>
+        <div class="ch-quiz-feedback">Les réducteurs les plus puissants ont les E° les plus négatifs (ex : Li à −3,04 V). Inversement, les oxydants les plus forts ont les E° les plus élevés (ex : F₂ à +2,87 V).</div>
+      </div>
+    </div>
+    <div class="ch-exo-section">
+      <div class="ch-exo-title">✏️ Exercices — Leçon 2</div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 2.1</div>
+        <div class="ch-exo-q">À partir de la classification électrochimique, déterminer si les réactions suivantes sont spontanées : (a) Cu + 2H⁺ → Cu²⁺ + H₂ ; (b) Zn + Cu²⁺ → Zn²⁺ + Cu. Justifier.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>(a) Cu + 2H⁺ → Cu²⁺ + H₂</strong><br>
+          E°(Cu²⁺/Cu) = +0,34 V &gt; E°(H⁺/H₂) = 0,00 V<br>
+          → Cu est un <em>moins bon réducteur</em> que H₂. La réaction n'est <strong>pas spontanée</strong>.<br><br>
+          <strong>(b) Zn + Cu²⁺ → Zn²⁺ + Cu</strong><br>
+          E°(Zn²⁺/Zn) = −0,76 V &lt; E°(Cu²⁺/Cu) = +0,34 V<br>
+          → L'oxydant Cu²⁺ (E° plus élevé) réagit avec le réducteur Zn (E° plus faible). La réaction est <strong>spontanée</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ch-lesson-card" id="ch-l3">
+  <div class="ch-lesson-header" onclick="chimToggleLesson('ch-body3',this)">
+    <div class="ch-lesson-num">L.3</div>
+    <div class="ch-lesson-meta">
+      <h3>Notion de potentiel d'oxydoréduction</h3>
+      <div class="ch-tags"><span class="ch-tag">Potentiel</span><span class="ch-tag">Nernst</span><span class="ch-tag">Pile</span><span class="ch-tag">F.E.M.</span></div>
+    </div>
+    <div class="ch-toggle-icon">▼</div>
+  </div>
+  <div class="ch-lesson-body" id="ch-body3">
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">3.1 — Le potentiel d'électrode</div>
+      <div class="ch-content-block">Le <strong>potentiel d'électrode E</strong> (en volts) mesure la tendance d'un couple Ox/Red à céder ou capter des électrons. Plus E est élevé, plus l'oxydant est fort. Plus E est faible (négatif), plus le réducteur est fort.<br><br>Le potentiel <strong>standard E°</strong> est mesuré dans des conditions standard : concentration 1 mol/L, température 25°C, pression 1 atm.</div>
+      <div class="ch-def-box">
+        <div class="ch-def-title">💡 Potentiel Standard E°</div>
+        E° est la valeur du potentiel d'électrode mesuré par rapport à l'ESH dans les <strong>conditions standard</strong> (activité = 1, T = 298 K). Il caractérise intrinsèquement la force d'un couple.
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">3.2 — L'équation de Nernst</div>
+      <div class="ch-content-block">En dehors des conditions standard, le potentiel réel E est calculé par l'<strong>équation de Nernst</strong> :</div>
+      <div class="ch-formula-box">
+        <div class="ch-f-title">⚡ Équation de Nernst (T = 25°C)</div>
+        <span class="ch-formula">E = E° + (0,059 / n) × log([Ox] / [Red])</span>
+        <span class="ch-formula">Avec : n = nombre d'électrons échangés</span>
+        <span class="ch-formula">       [Ox] et [Red] = concentrations en mol/L</span>
+      </div>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Application : couple Cu²⁺/Cu</div>
+        <p>E°(Cu²⁺/Cu) = +0,34 V, n = 2<br>
+        Si [Cu²⁺] = 0,01 mol/L :<br>
+        E = 0,34 + (0,059/2) × log(0,01) = 0,34 + 0,0295 × (−2)<br>
+        <strong>E = 0,34 − 0,059 = +0,281 V</strong></p>
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">3.3 — La pile électrochimique et la f.e.m.</div>
+      <div class="ch-content-block">Une <strong>pile</strong> est un dispositif qui convertit l'énergie chimique en énergie électrique par une réaction d'oxydoréduction spontanée. La <strong>force électromotrice (f.e.m.)</strong> est la différence de potentiel entre les deux électrodes :</div>
+      <div class="ch-formula-box">
+        <div class="ch-f-title">⚡ Force électromotrice</div>
+        <span class="ch-formula">E_pile = E_cathode − E_anode</span>
+        <span class="ch-formula">E_pile = E(oxydant fort) − E(réducteur fort)</span>
+        <span class="ch-formula">Une pile spontanée a toujours E_pile &gt; 0</span>
+      </div>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Pile Daniell : Zn/Cu</div>
+        <p>Anode (−) : Zn → Zn²⁺ + 2e⁻  (oxydation, E° = −0,76 V)<br>
+        Cathode (+) : Cu²⁺ + 2e⁻ → Cu  (réduction, E° = +0,34 V)<br>
+        <strong>f.e.m. = 0,34 − (−0,76) = +1,10 V</strong></p>
+      </div>
+    </div>
+    <div class="ch-quiz-section">
+      <div class="ch-quiz-title">🧠 Quiz — Leçon 3</div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">1. Que mesure le potentiel standard E° d'un couple ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> La vitesse de la réaction</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> La tendance à capter ou céder des électrons</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> La concentration en solution</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> L'énergie d'activation</div>
+        </div>
+        <div class="ch-quiz-feedback">E° mesure la force oxydante ou réductrice d'un couple. Un E° élevé indique un fort pouvoir oxydant ; un E° très négatif indique un fort pouvoir réducteur.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">2. Quelle est la f.e.m. d'une pile formée par les couples Ag⁺/Ag (E° = +0,80 V) et Zn²⁺/Zn (E° = −0,76 V) ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> 0,04 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">B</span> 0,80 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">C</span> 1,56 V</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> −0,76 V</div>
+        </div>
+        <div class="ch-quiz-feedback">f.e.m. = E(cathode) − E(anode) = E°(Ag⁺/Ag) − E°(Zn²⁺/Zn) = 0,80 − (−0,76) = +1,56 V. Ag⁺ est réduit à la cathode, Zn est oxydé à l'anode.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">3. Selon l'équation de Nernst, si [Ox] augmente, que se passe-t-il pour E ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">A</span> E augmente</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">B</span> E diminue</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> E ne change pas</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> E devient négatif</div>
+        </div>
+        <div class="ch-quiz-feedback">E = E° + (0,059/n) × log([Ox]/[Red]). Si [Ox] augmente, le rapport [Ox]/[Red] augmente, log augmente, donc E augmente. L'oxydant est plus concentré → plus fort.</div>
+      </div>
+    </div>
+    <div class="ch-exo-section">
+      <div class="ch-exo-title">✏️ Exercices — Leçon 3</div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 3.1</div>
+        <div class="ch-exo-q">Calculer le potentiel du couple Fe³⁺/Fe²⁺ (E° = +0,77 V, n = 1) si [Fe³⁺] = 0,001 mol/L et [Fe²⁺] = 0,1 mol/L.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>Application de Nernst :</strong><br>
+          E = E° + (0,059/1) × log([Fe³⁺]/[Fe²⁺])<br>
+          E = 0,77 + 0,059 × log(0,001/0,1)<br>
+          E = 0,77 + 0,059 × log(0,01)<br>
+          E = 0,77 + 0,059 × (−2)<br>
+          E = 0,77 − 0,118<br>
+          <strong>E = +0,652 V</strong><br><br>
+          Le potentiel est inférieur au E° car la concentration en oxydant (Fe³⁺) est faible par rapport au réducteur (Fe²⁺).
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ch-lesson-card" id="ch-l4">
+  <div class="ch-lesson-header" onclick="chimToggleLesson('ch-body4',this)">
+    <div class="ch-lesson-num">L.4</div>
+    <div class="ch-lesson-meta">
+      <h3>Le nombre d'oxydation</h3>
+      <div class="ch-tags"><span class="ch-tag">N.O.</span><span class="ch-tag">Oxydation</span><span class="ch-tag">Réduction</span><span class="ch-tag">Règles</span></div>
+    </div>
+    <div class="ch-toggle-icon">▼</div>
+  </div>
+  <div class="ch-lesson-body" id="ch-body4">
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">4.1 — Définition et intérêt</div>
+      <div class="ch-content-block">Le <strong>nombre d'oxydation (n.o.)</strong> est une charge fictive attribuée à chaque atome d'une molécule ou d'un ion, comme si toutes les liaisons étaient ioniques. Il permet d'identifier l'<strong>oxydation</strong> (augmentation du n.o.) et la <strong>réduction</strong> (diminution du n.o.) sans chercher les électrons.</div>
+      <div class="ch-def-box">
+        <div class="ch-def-title">💡 Interprétation du n.o.</div>
+        • <strong>n.o. augmente</strong> → espèce <em>oxydée</em> (perd des e⁻)<br>
+        • <strong>n.o. diminue</strong> → espèce <em>réduite</em> (gagne des e⁻)
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">4.2 — Règles de calcul du n.o.</div>
+      <div class="ch-content-block">
+        • Dans un <strong>élément simple</strong> (H₂, O₂, Fe…) : n.o. = 0<br>
+        • Dans un <strong>ion monoatomique</strong> (Na⁺, Cl⁻) : n.o. = charge de l'ion<br>
+        • <strong>O</strong> : n.o. = −2 (sauf dans H₂O₂ : −1, et O₂ : 0)<br>
+        • <strong>H</strong> : n.o. = +1 (sauf dans les hydrures métalliques : −1)<br>
+        • Dans une <strong>molécule neutre</strong> : somme des n.o. = 0<br>
+        • Dans un <strong>ion polyatomique</strong> : somme des n.o. = charge de l'ion
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">4.3 — Exemples de calcul</div>
+      <table class="ch-styled-table">
+        <thead><tr><th>Espèce</th><th>Calcul</th><th>n.o. de l'élément</th></tr></thead>
+        <tbody>
+          <tr><td>H₂O</td><td>2(+1) + n.o.(O) = 0 → n.o.(O) = −2</td><td>O : −2</td></tr>
+          <tr><td>SO₄²⁻</td><td>n.o.(S) + 4(−2) = −2 → n.o.(S) = +6</td><td>S : +6</td></tr>
+          <tr><td>Cr₂O₇²⁻</td><td>2×n.o.(Cr) + 7(−2) = −2 → n.o.(Cr) = +6</td><td>Cr : +6</td></tr>
+          <tr><td>NH₃</td><td>n.o.(N) + 3(+1) = 0 → n.o.(N) = −3</td><td>N : −3</td></tr>
+          <tr><td>NO₃⁻</td><td>n.o.(N) + 3(−2) = −1 → n.o.(N) = +5</td><td>N : +5</td></tr>
+        </tbody>
+      </table>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Identifier oxydant et réducteur dans : Cu + 4HNO₃ → Cu(NO₃)₂ + 2NO₂ + 2H₂O</div>
+        <p>• Cu : n.o. passe de <strong>0 → +2</strong> → <em>oxydé</em> → Cu est le <strong>réducteur</strong><br>
+        • N dans HNO₃ : n.o. = +5 ; N dans NO₂ : n.o. = +4<br>
+        → N passe de <strong>+5 → +4</strong> → <em>réduit</em> → HNO₃ est l'<strong>oxydant</strong></p>
+      </div>
+    </div>
+    <div class="ch-quiz-section">
+      <div class="ch-quiz-title">🧠 Quiz — Leçon 4</div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">1. Quel est le n.o. du soufre dans H₂SO₄ ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> +4</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> +6</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> −2</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> 0</div>
+        </div>
+        <div class="ch-quiz-feedback">Dans H₂SO₄ : 2(+1) + n.o.(S) + 4(−2) = 0 → n.o.(S) = +6. Le soufre est à son degré d'oxydation maximal, ce qui explique que H₂SO₄ est un excellent oxydant.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">2. Dans la réaction Fe → Fe²⁺ + 2e⁻, que se passe-t-il pour le n.o. du fer ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> Il diminue de 0 à −2</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> Il augmente de 0 à +2</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> Il reste à 0</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Il passe à −2 puis +2</div>
+        </div>
+        <div class="ch-quiz-feedback">Fe passe de n.o. = 0 (métal) à n.o. = +2 (Fe²⁺). Le n.o. augmente → le fer est oxydé. C'est le réducteur de la réaction.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">3. Quel est le n.o. de Cl dans Cl₂ (dichlore gazeux) ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">A</span> 0</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">B</span> −1</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> +1</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> −2</div>
+        </div>
+        <div class="ch-quiz-feedback">Dans tout élément simple (espèce non combinée), le n.o. est 0 par définition. Cl₂ est du dichlore pur → n.o.(Cl) = 0.</div>
+      </div>
+    </div>
+    <div class="ch-exo-section">
+      <div class="ch-exo-title">✏️ Exercices — Leçon 4</div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 4.1</div>
+        <div class="ch-exo-q">Calculer le nombre d'oxydation du manganèse dans les espèces suivantes : Mn, MnO₄⁻, MnO₂, Mn²⁺, MnO₄²⁻.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>• Mn</strong> (métal pur) : n.o. = <strong>0</strong><br>
+          <strong>• MnO₄⁻</strong> : n.o.(Mn) + 4(−2) = −1 → n.o. = <strong>+7</strong><br>
+          <strong>• MnO₂</strong> : n.o.(Mn) + 2(−2) = 0 → n.o. = <strong>+4</strong><br>
+          <strong>• Mn²⁺</strong> (ion monoatomique) : n.o. = <strong>+2</strong><br>
+          <strong>• MnO₄²⁻</strong> : n.o.(Mn) + 4(−2) = −2 → n.o. = <strong>+6</strong>
+        </div>
+      </div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 4.2</div>
+        <div class="ch-exo-q">Dans la réaction : 2KMnO₄ + 5H₂O₂ + 3H₂SO₄ → 2MnSO₄ + K₂SO₄ + 5O₂ + 8H₂O, identifier l'oxydant et le réducteur en utilisant les nombres d'oxydation.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>Mn dans KMnO₄ :</strong> n.o. = +7<br>
+          <strong>Mn dans MnSO₄ :</strong> n.o. = +2<br>
+          → Mn : +7 → +2 (diminue) → <em>réduit</em> → <strong>KMnO₄ est l'oxydant</strong><br><br>
+          <strong>O dans H₂O₂ :</strong> n.o. = −1<br>
+          <strong>O dans O₂ :</strong> n.o. = 0<br>
+          → O : −1 → 0 (augmente) → <em>oxydé</em> → <strong>H₂O₂ est le réducteur</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ch-lesson-card" id="ch-l5">
+  <div class="ch-lesson-header" onclick="chimToggleLesson('ch-body5',this)">
+    <div class="ch-lesson-num">L.5</div>
+    <div class="ch-lesson-meta">
+      <h3>Applications de l'oxydoréduction</h3>
+      <div class="ch-tags"><span class="ch-tag">Piles</span><span class="ch-tag">Électrolyse</span><span class="ch-tag">Corrosion</span><span class="ch-tag">Industrie</span></div>
+    </div>
+    <div class="ch-toggle-icon">▼</div>
+  </div>
+  <div class="ch-lesson-body" id="ch-body5">
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">5.1 — Les piles électrochimiques</div>
+      <div class="ch-content-block">Une <strong>pile</strong> convertit l'énergie chimique en énergie électrique via une réaction redox spontanée. Elle est constituée de deux <strong>demi-piles</strong> reliées par un pont salin.<br><br>
+        • <strong>Anode (−)</strong> : oxydation (perte d'électrons)<br>
+        • <strong>Cathode (+)</strong> : réduction (gain d'électrons)<br>
+        • <strong>Pont salin</strong> : assure la neutralité électrique des solutions
+      </div>
+      <div class="ch-example-box">
+        <div class="ch-ex-title">🔬 Pile alcaline (pile LR6 / AA)</div>
+        <p>Anode (−) : Zn + 2OH⁻ → Zn(OH)₂ + 2e⁻<br>
+        Cathode (+) : 2MnO₂ + H₂O + 2e⁻ → Mn₂O₃ + 2OH⁻<br>
+        <strong>Tension nominale : 1,5 V</strong></p>
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">5.2 — L'électrolyse</div>
+      <div class="ch-content-block">L'<strong>électrolyse</strong> est l'opération inverse de la pile : on force une réaction redox <em>non spontanée</em> en appliquant une tension extérieure. Elle est utilisée pour :<br><br>
+        • <strong>Électrodéposition</strong> (galvanoplastie) : déposer un métal sur un objet<br>
+        • <strong>Production d'aluminium</strong> (procédé Hall-Héroult)<br>
+        • <strong>Chlore industriel</strong> : électrolyse de NaCl → Cl₂ + NaOH + H₂<br>
+        • <strong>Électrolyse de l'eau</strong> : production de H₂ (énergie verte)
+      </div>
+      <div class="ch-formula-box">
+        <div class="ch-f-title">⚡ Loi de Faraday</div>
+        <span class="ch-formula">m = (M × I × t) / (n × F)</span>
+        <span class="ch-formula">m = masse déposée (g), M = masse molaire (g/mol)</span>
+        <span class="ch-formula">I = intensité (A), t = durée (s), n = e⁻ échangés</span>
+        <span class="ch-formula">F = constante de Faraday = 96 500 C/mol</span>
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">5.3 — La corrosion des métaux</div>
+      <div class="ch-content-block">La <strong>corrosion</strong> est une oxydation spontanée d'un métal en présence d'humidité et d'oxygène. C'est une réaction d'oxydoréduction naturelle et destructive.<br><br>
+        <strong>Corrosion du fer (rouille) :</strong><br>
+        Oxydation : Fe → Fe²⁺ + 2e⁻<br>
+        Réduction : O₂ + 2H₂O + 4e⁻ → 4OH⁻<br><br>
+        <strong>Protection contre la corrosion :</strong><br>
+        • Peinture ou revêtement isolant<br>
+        • Galvanisation (dépôt de zinc)<br>
+        • Protection cathodique (anode sacrificielle de Zn ou Mg)<br>
+        • Alliages résistants (acier inoxydable : Fe + Cr + Ni)
+      </div>
+      <div class="ch-def-box">
+        <div class="ch-def-title">💡 Protection cathodique</div>
+        On connecte au métal à protéger un métal plus réducteur (Zn, Mg) qui <strong>se corrode à sa place</strong> (anode sacrificielle). Utilisé pour les pipelines, coques de navires, réservoirs enterrés.
+      </div>
+    </div>
+    <div class="ch-sub-section">
+      <div class="ch-sub-title">5.4 — Autres applications industrielles</div>
+      <table class="ch-styled-table">
+        <thead><tr><th>Application</th><th>Réaction</th><th>Utilité</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Accumulateurs (batterie)</strong></td><td>Réaction réversible redox</td><td>Stockage d'énergie rechargeable (Li-ion, Pb)</td></tr>
+          <tr><td><strong>Pile à combustible</strong></td><td>H₂ + O₂ → H₂O + électricité</td><td>Énergie propre, automobile</td></tr>
+          <tr><td><strong>Blanchiment</strong></td><td>ClO⁻ oxyde les pigments</td><td>Désinfection, textile</td></tr>
+          <tr><td><strong>Traitement des eaux</strong></td><td>Cl₂ ou O₃ oxydent les bactéries</td><td>Potabilisation de l'eau</td></tr>
+          <tr><td><strong>Métallurgie</strong></td><td>MO + C → M + CO₂</td><td>Extraction des métaux du minerai</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ch-quiz-section">
+      <div class="ch-quiz-title">🧠 Quiz — Leçon 5</div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">1. Dans une pile, où a lieu l'oxydation ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">A</span> À l'anode (pôle négatif)</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">B</span> À la cathode (pôle positif)</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> Dans le pont salin</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Dans les deux électrodes</div>
+        </div>
+        <div class="ch-quiz-feedback">L'oxydation (perte d'électrons) a toujours lieu à l'anode, qui est le pôle négatif d'une pile. Les électrons libérés circulent dans le circuit extérieur vers la cathode où a lieu la réduction.</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">2. En électrolyse, quelle est la différence principale avec une pile ?</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> Il n'y a pas d'électrodes</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> On force une réaction non spontanée avec une tension extérieure</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> La réaction est plus rapide</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> Il n'y a pas d'échange d'électrons</div>
+        </div>
+        <div class="ch-quiz-feedback">En électrolyse, on impose une tension externe pour forcer une réaction redox non spontanée (conversion d'énergie électrique → chimique). C'est l'inverse de la pile (chimique → électrique).</div>
+      </div>
+      <div class="ch-quiz-item">
+        <div class="ch-q-text">3. Quelle est la masse de cuivre déposée par électrolyse avec I = 2 A pendant t = 1930 s ? (M(Cu) = 64 g/mol, n = 2, F = 96500 C/mol)</div>
+        <div class="ch-quiz-options">
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">A</span> 0,64 g</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'correct')"><span class="ch-opt-letter">B</span> 1,28 g</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">C</span> 2,56 g</div>
+          <div class="ch-quiz-opt" onclick="chimCheckQuiz(this,'wrong')"><span class="ch-opt-letter">D</span> 0,32 g</div>
+        </div>
+        <div class="ch-quiz-feedback">m = (M × I × t) / (n × F) = (64 × 2 × 1930) / (2 × 96500) = 247040 / 193000 ≈ 1,28 g de cuivre déposé.</div>
+      </div>
+    </div>
+    <div class="ch-exo-section">
+      <div class="ch-exo-title">✏️ Exercices — Leçon 5</div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 5.1</div>
+        <div class="ch-exo-q">On réalise l'électrodéposition d'argent (Ag⁺ + e⁻ → Ag, M = 108 g/mol) avec un courant de 0,5 A pendant 2 heures. Calculer la masse d'argent déposée (F = 96500 C/mol).</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>Données :</strong> I = 0,5 A, t = 2h = 7200 s, M = 108 g/mol, n = 1, F = 96500 C/mol<br><br>
+          <strong>Loi de Faraday :</strong> m = (M × I × t) / (n × F)<br>
+          m = (108 × 0,5 × 7200) / (1 × 96500)<br>
+          m = 388 800 / 96 500<br>
+          <strong>m ≈ 4,03 g d'argent déposé</strong>
+        </div>
+      </div>
+      <div class="ch-exo-item">
+        <div class="ch-exo-num">Exercice 5.2</div>
+        <div class="ch-exo-q">Expliquer pourquoi une canalisation en fer enterrée se corrode plus rapidement si elle est en contact avec une pièce en cuivre. Proposer une solution de protection.</div>
+        <button class="ch-show-answer-btn" onclick="chimToggleAnswer(this)">Voir la correction</button>
+        <div class="ch-answer-block">
+          <strong>Explication :</strong><br>
+          Le fer et le cuivre forment une pile galvanique dans le sol humide (électrolyte).<br>
+          E°(Cu²⁺/Cu) = +0,34 V &gt; E°(Fe²⁺/Fe) = −0,44 V<br>
+          → Le fer (réducteur plus fort) est oxydé préférentiellement :<br>
+          <strong>Fe → Fe²⁺ + 2e⁻</strong> (le fer se corrode rapidement à l'anode)<br>
+          Le cuivre est protégé (cathode).<br><br>
+          <strong>Solution :</strong> Utiliser une <em>anode sacrificielle</em> de zinc (E° = −0,76 V) fixée sur la canalisation. Le zinc, plus réducteur, se corrode à la place du fer.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ch-footer">
+  ⚗️ Chimie · Programme Oxydoréduction · M. TCHOUADJEU NUI GOUA DONALD · 2025–2026<br>
+  <span style="color:#00b4d8">📚 STUDYBOARD</span>
+</div>
+</div>
+<script>
+
+/* ── Fonctions Chimie — préfixées chim_ pour éviter conflits avec app.js ── */
+function chimToggleLesson(id, header) {
+  var body = document.getElementById(id);
+  var icon = header.querySelector('.ch-toggle-icon');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  chimUpdateProgress();
+}
+
+function chimCheckQuiz(opt, result) {
+  var parent = opt.closest('.ch-quiz-item');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  var feedback = parent.querySelector('.ch-quiz-feedback');
+  var allOpts = parent.querySelectorAll('.ch-quiz-opt');
+  allOpts.forEach(function(o) { o.style.pointerEvents = 'none'; });
+  opt.classList.add(result);
+  feedback.classList.add('show', result);
+  chimUpdateProgress();
+}
+
+function chimToggleAnswer(btn) {
+  var block = btn.nextElementSibling;
+  var isShown = block.classList.contains('show');
+  block.classList.toggle('show', !isShown);
+  btn.textContent = isShown ? 'Voir la correction' : 'Masquer la correction';
+}
+
+function chimUpdateProgress() {
+  var homeEl = document.getElementById('home-chim');
+  if (!homeEl) return;
+  var total = homeEl.querySelectorAll('.ch-quiz-item').length;
+  var answered = homeEl.querySelectorAll('.ch-quiz-item[data-answered]').length;
+  var pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  var fill = document.getElementById('chimProgressFill');
+  var pctEl = document.getElementById('chimProgressPct');
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+</script>
+</body>
+</html>

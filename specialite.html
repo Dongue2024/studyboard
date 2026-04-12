@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>STUDYBOARD · Choisir sa Spécialité</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="module" src="assets/js/firebase.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c18;--s1:#0f1426;--s2:#161c30;--s3:#1c2340;
+  --brd:rgba(201,146,42,.2);--gold:#c9922a;--gold2:#e8b84b;
+  --blue:#4f8ef7;--green:#34d399;--txt:#e8ecf7;--muted:#6b7299;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;}
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(201,146,42,.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 20%,rgba(79,142,247,.06) 0%,transparent 50%);pointer-events:none;}
+
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,12,24,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--brd);
+  padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.user-info{display:flex;align-items:center;gap:10px;}
+.avatar{width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:700;color:#080c18;flex-shrink:0;}
+.user-name-top{font-size:.85rem;color:var(--txt);}
+.plan-badge{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;
+  color:#080c18;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border-radius:99px;padding:2px 8px;font-weight:700;}
+.signout-btn{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);
+  color:#f87171;font-family:'DM Sans',sans-serif;font-size:.78rem;
+  padding:7px 14px;border-radius:8px;cursor:pointer;transition:all .2s;}
+.signout-btn:hover{background:rgba(248,113,113,.2);}
+
+/* ── HERO ── */
+.hero{padding:120px 24px 40px;text-align:center;position:relative;z-index:1;}
+.hero-tag{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;
+  margin-bottom:12px;line-height:1.2;}
+.hero h1 em{font-style:italic;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.95rem;max-width:500px;margin:0 auto;}
+
+/* ── GRID SPÉCIALITÉS ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;max-width:1100px;margin:0 auto;padding:20px 24px 80px;
+  position:relative;z-index:1;}
+
+/* ── CARTE ── */
+.card{background:var(--s1);border:1px solid var(--brd);border-radius:20px;
+  padding:28px 24px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:20px;}
+.card:hover{transform:translateY(-6px);border-color:var(--card-color);}
+.card:hover::before{opacity:1;}
+.card.coming{cursor:default;opacity:.55;}
+.card.coming:hover{transform:none;}
+
+.card-icon{font-size:2.8rem;margin-bottom:14px;display:block;}
+.card-badge{position:absolute;top:16px;right:16px;font-size:.62rem;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 10px;border-radius:99px;}
+.badge-premium{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#080c18;}
+.badge-soon{background:rgba(107,114,153,.2);color:var(--muted);border:1px solid rgba(107,114,153,.2);}
+.card-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;
+  margin-bottom:6px;}
+.card-sub{font-size:.78rem;color:var(--gold);font-weight:600;
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.card-desc{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.card-matieres{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+.mat-tag{background:var(--s3);border:1px solid rgba(255,255,255,.06);
+  color:#9fa8da;font-size:.7rem;padding:3px 9px;border-radius:8px;}
+.card-btn{width:100%;padding:11px;border-radius:10px;border:none;
+  font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;
+  justify-content:center;gap:8px;}
+.card-btn.active{background:linear-gradient(135deg,var(--card-color),var(--card-color2));
+  color:#fff;}
+.card-btn.active:hover{opacity:.9;}
+.card-btn.disabled{background:var(--s3);color:var(--muted);cursor:not-allowed;}
+
+/* ── COULEURS PAR SPÉCIALITÉ ── */
+.card.mise{--card-color:#4f8ef7;--card-color2:#6c63ff;}
+.card.mise::before{background:linear-gradient(135deg,rgba(79,142,247,.06),transparent);}
+.card.serie-a{--card-color:#34d399;--card-color2:#059669;}
+.card.serie-a::before{background:linear-gradient(135deg,rgba(52,211,153,.06),transparent);}
+.card.serie-c{--card-color:#f59e0b;--card-color2:#d97706;}
+.card.serie-c::before{background:linear-gradient(135deg,rgba(245,158,11,.06),transparent);}
+.card.serie-d{--card-color:#f72585;--card-color2:#7209b7;}
+.card.serie-d::before{background:linear-gradient(135deg,rgba(247,37,133,.06),transparent);}
+
+/* ── AUTH LOADING ── */
+#auth-loading{display:flex;position:fixed;inset:0;z-index:9999;
+  background:var(--bg);align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;}
+.load-icon{width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--blue));
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+  animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.8}}
+.load-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold2);}
+.load-sub{font-size:.75rem;color:var(--muted);letter-spacing:1px;}
+
+@media(max-width:600px){
+  .hero h1{font-size:1.6rem;}
+  .grid{grid-template-columns:1fr;padding:16px 16px 60px;}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH LOADING -->
+<div id="auth-loading">
+  <div class="load-icon">📚</div>
+  <div class="load-title">STUDYBOARD</div>
+  <div class="load-sub">Chargement...</div>
+</div>
+
+<!-- APP CONTENT -->
+<div id="app-content" style="display:none;min-height:100vh;">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">📚 STUDYBOARD</div>
+    <div class="user-info">
+      <div class="avatar user-avatar">?</div>
+      <div>
+        <div class="user-name-top user-name">—</div>
+        <div id="plan-badge" class="plan-badge">👑 Premium</div>
+      </div>
+      <button class="signout-btn" onclick="window.doSignOut && window.doSignOut()">🚪 Déconnexion</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">📚 Studyboard · Première</div>
+    <h1>Choisissez votre<br><em>Spécialité</em></h1>
+    <p>Sélectionnez votre filière pour accéder à vos cours, quiz et exercices.</p>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <!-- MISE -->
+    <div class="card mise" onclick="window.location.href='index.html'">
+      <span class="card-badge badge-premium">👑 Premium</span>
+      <span class="card-icon">⚙️</span>
+      <div class="card-title">MISE</div>
+      <div class="card-sub">Maintenance Industrielle & Systèmes Électroniques</div>
+      <div class="card-desc">Électronique, électricité, mécanique et systèmes automatisés.</div>
+      <div class="card-matieres">
+        <span class="mat-tag">⚛ Physique</span>
+        <span class="mat-tag">⚡ Électricité</span>
+        <span class="mat-tag">🔧 SAV</span>
+        <span class="mat-tag">📊 SAS</span>
+        <span class="mat-tag">🖥️ Info</span>
+        <span class="mat-tag">🧪 Chimie</span>
+        <span class="mat-tag">📐 Maths</span>
+        <span class="mat-tag">⚡ Électronique</span>
+      </div>
+      <button class="card-btn active" style="background:linear-gradient(135deg,#4f8ef7,#6c63ff);">
+        ➜ Accéder aux cours
+      </button>
+    </div>
+
+    <!-- SÉRIE A -->
+    <div class="card serie-a" onclick="window.location.href='serie-a.html'">
+      <span class="card-badge badge-premium">👑 Premium</span>
+      <span class="card-icon">📖</span>
+      <div class="card-title">Série A</div>
+      <div class="card-sub">Lettres & Sciences Humaines</div>
+      <div class="card-desc">Physique, Chimie, SVT, Maths et matières littéraires.</div>
+      <div class="card-matieres">
+        <span class="mat-tag">⚛ Physique</span>
+        <span class="mat-tag">🧪 Chimie</span>
+        <span class="mat-tag">🌿 SVT</span>
+        <span class="mat-tag">📐 Maths</span>
+        <span class="mat-tag">🖥️ Info</span>
+        <span class="mat-tag">🇬🇧 Anglais</span>
+        <span class="mat-tag">🇪🇸 Espagnol</span>
+        <span class="mat-tag">🇩🇪 Allemand</span>
+        <span class="mat-tag">🧠 Philo</span>
+      </div>
+      <button class="card-btn active" style="background:linear-gradient(135deg,#34d399,#059669);">
+        ➜ Accéder aux cours
+      </button>
+    </div>
+
+    <!-- SÉRIE C -->
+    <div class="card serie-c coming">
+      <span class="card-badge badge-soon">🔜 Bientôt</span>
+      <span class="card-icon">🔬</span>
+      <div class="card-title">Série C</div>
+      <div class="card-sub">Sciences & Mathématiques</div>
+      <div class="card-desc">Cours de la série C disponibles très prochainement.</div>
+      <div class="card-matieres">
+        <span class="mat-tag">À venir</span>
+      </div>
+      <button class="card-btn disabled" disabled>⏳ Bientôt disponible</button>
+    </div>
+
+    <!-- SÉRIE D -->
+    <div class="card serie-d coming">
+      <span class="card-badge badge-soon">🔜 Bientôt</span>
+      <span class="card-icon">🌱</span>
+      <div class="card-title">Série D</div>
+      <div class="card-sub">Sciences de la Vie & Terre</div>
+      <div class="card-desc">Cours de la série D disponibles très prochainement.</div>
+      <div class="card-matieres">
+        <span class="mat-tag">À venir</span>
+      </div>
+      <button class="card-btn disabled" disabled>⏳ Bientôt disponible</button>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const cfg = {
+  apiKey:"AIzaSyARuEQK8d50zRD5eEiOVQHB41WyCY2VHh8",
+  authDomain:"studyboard-ffc3c.firebaseapp.com",
+  projectId:"studyboard-ffc3c",
+  storageBucket:"studyboard-ffc3c.firebasestorage.app",
+  messagingSenderId:"539310334923",
+  appId:"1:539310334923:web:0db4eef8b49cd93d440c4e"
+};
+
+const PREMIUM_EMAILS = [
+  "ndjanpaalex@gmail.com",
+  "sergebelibi05@icloud.com",
+];
+
+const app = getApps().length ? getApps()[0] : initializeApp(cfg);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) { window.location.href = 'login.html'; return; }
+
+  const plan = PREMIUM_EMAILS.includes(user.email.toLowerCase()) ? 'premium' : 'free';
+  window.USER_PLAN = plan;
+  sessionStorage.setItem('sf_plan', plan);
+
+  // Afficher l'app
+  document.getElementById('auth-loading').style.display = 'none';
+  document.getElementById('app-content').style.display = 'block';
+
+  // Nom & avatar
+  const name = user.displayName || user.email.split('@')[0];
+  document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
+  if (user.photoURL) {
+    document.querySelectorAll('.user-avatar').forEach(el => {
+      el.style.backgroundImage = 'url(' + user.photoURL + ')';
+      el.style.backgroundSize = 'cover';
+      el.textContent = '';
+    });
+  } else {
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
+  }
+
+  // Badge
+  const badge = document.getElementById('plan-badge');
+  if (badge) {
+    if (plan === 'premium') {
+      badge.textContent = '👑 Premium';
+      badge.style.cssText = 'display:inline-flex;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:#080c18;background:linear-gradient(135deg,#e8b84b,#c9922a);border-radius:99px;padding:2px 8px;font-weight:700;';
+    } else {
+      badge.textContent = '🆓 Gratuit';
+      badge.style.cssText = 'display:inline-flex;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:#6b7299;background:rgba(107,114,153,.15);border:1px solid rgba(107,114,153,.3);border-radius:99px;padding:2px 8px;font-weight:600;';
+    }
+  }
+
+  // Déconnexion
+  window.doSignOut = async () => {
+    sessionStorage.removeItem('sf_plan');
+    await signOut(auth);
+    window.location.href = 'login.html';
+  };
+});
+</script>
+</body>
+</html>
